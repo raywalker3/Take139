@@ -606,11 +606,17 @@ body {
 <!-- PASSCODE MODAL -->
 <div class="modal-overlay" id="passcodeModal">
   <div class="modal-box">
-    <h3>Enter Access Code</h3>
-    <p>This assessment requires an access code from your counselor or pastor.</p>
+    <h3>Access the Assessment</h3>
+    <p>Enter an access code from your counselor, or purchase access below.</p>
     <input type="text" class="modal-input" id="passcodeInput" placeholder="Access code" autocomplete="off" spellcheck="false">
     <div class="modal-error" id="passcodeError"></div>
-    <button class="modal-btn" onclick="submitPasscode()">Continue</button>
+    <button class="modal-btn" onclick="submitPasscode()">Continue with Code</button>
+    <div style="display:flex;align-items:center;gap:1rem;margin:1.25rem 0 0.75rem;">
+      <div style="flex:1;height:1px;background:var(--border);"></div>
+      <span style="font-size:0.8rem;color:var(--faint);text-transform:uppercase;letter-spacing:0.08em;">or</span>
+      <div style="flex:1;height:1px;background:var(--border);"></div>
+    </div>
+    <a href="https://buy.stripe.com/test_8x228jcq90WigWg1Lx5Rm00" class="modal-btn" style="display:block;text-align:center;text-decoration:none;background:transparent;border:1.5px solid var(--accent);color:var(--accent);margin-bottom:0.5rem;">Purchase Access — $14.99</a>
     <button class="modal-close" onclick="closePasscodeModal()">Cancel</button>
   </div>
 </div>
@@ -3079,6 +3085,25 @@ document.addEventListener('keydown', (e) => {
     submitPasscode();
   }
 });
+
+// Check for Stripe payment redirect on page load
+(function checkPaymentRedirect() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('paid') === 'true') {
+    passcodeVerified = true;
+    // Clean the URL so it doesn't show ?paid=true
+    window.history.replaceState({}, '', window.location.pathname);
+    // Auto-scroll to the CTA and flash a success message
+    setTimeout(() => {
+      const hero = document.querySelector('.hero-cta');
+      if (hero) {
+        hero.textContent = 'Payment Received — Begin';
+        hero.style.animation = 'none';
+        hero.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 500);
+  }
+})();
 
 // Override startAssessment to use beginAssessment flow
 function startAssessment() {
