@@ -3126,6 +3126,29 @@ async function submitResultsToBackend(opts = {}) {
     });
   }
 
+  // Convert wrapupAnswers into the backend-friendly shape:
+  //   { mechanism: {mc: 'b', rank: [3,0,1,4,2]}, breakdown: {mc: 'a', rank: [2,1,0,3,4]} }
+  // where rank is a list of original item indexes in rank order (rank 0 = most-true, first).
+  function rankObjToOrderedList(rankObj) {
+    if (!rankObj || typeof rankObj !== 'object') return null;
+    const entries = Object.entries(rankObj).map(([idx, rankVal]) => ({
+      idx: parseInt(idx, 10),
+      rank: rankVal,
+    }));
+    if (entries.length === 0) return null;
+    entries.sort((a, b) => a.rank - b.rank);
+    return entries.map(e => e.idx);
+  }
+  const wrapupPayload = {};
+  if (wrapupAnswers) {
+    const mechMc = wrapupAnswers['wu_mech_mc'];
+    const mechRank = rankObjToOrderedList(wrapupAnswers['wu_mech_rank']);
+    if (mechMc || mechRank) wrapupPayload.mechanism = { mc: mechMc || null, rank: mechRank || null };
+    const bdMc = wrapupAnswers['wu_bd_mc'];
+    const bdRank = rankObjToOrderedList(wrapupAnswers['wu_bd_rank']);
+    if (bdMc || bdRank) wrapupPayload.breakdown = { mc: bdMc || null, rank: bdRank || null };
+  }
+
   const payload = {
     name: name,
     email: email,
@@ -3141,6 +3164,7 @@ async function submitResultsToBackend(opts = {}) {
     breakdown: bd,
     trigger_scores: triggerScores,
     home_desc: homeDesc,
+    wrapup_answers: Object.keys(wrapupPayload).length > 0 ? wrapupPayload : null,
   };
 
   try {
