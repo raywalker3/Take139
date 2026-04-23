@@ -470,6 +470,69 @@ body {
   flex-wrap: wrap;
 }
 
+/* ── EMAIL DELIVERY ── */
+.email-delivery {
+  margin-top: 3rem;
+  padding: 2rem 1.75rem;
+  background: linear-gradient(180deg, rgba(200,149,108,0.06), rgba(200,149,108,0.02));
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+}
+.email-delivery-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+.email-delivery-title {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  color: var(--text);
+  margin: 0 0 0.5rem 0;
+  font-weight: 400;
+}
+.email-delivery-copy {
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 0.95rem;
+  margin-bottom: 1.25rem;
+}
+.email-form {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.email-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.85rem 1rem;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.email-input:focus { border-color: var(--accent); }
+.email-input::placeholder { color: var(--faint); }
+.email-status {
+  margin-top: 0.85rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  min-height: 1em;
+}
+.email-status.ok { color: #8fb174; }
+.email-status.err { color: #c87a6c; }
+@media (max-width: 560px) {
+  .email-form { flex-direction: column; }
+  .email-form .btn { width: 100%; }
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 640px) {
   .how-cards { grid-template-columns: 1fr; }
@@ -2887,6 +2950,18 @@ function showResults() {
       ${PRAYERS[mech].split('\n\n').map(p => `<p>${p}</p>`).join('')}
     </div>
 
+    <!-- EMAIL DELIVERY -->
+    <div class="email-delivery" id="emailDelivery">
+      <div class="email-delivery-label">Want a Professional PDF Version?</div>
+      <h3 class="email-delivery-title">Receive Your Full Report</h3>
+      <p class="email-delivery-copy">Enter your email and we'll send you a beautifully formatted PDF of your complete profile &mdash; cover page, full behavioral markers, gospel truth, reflection questions, and a closing prayer. It's also a keepsake you can share with your partner or counselor.</p>
+      <div class="email-form">
+        <input type="email" class="email-input" id="emailInput" placeholder="your@email.com" autocomplete="email">
+        <button class="btn btn-primary" onclick="submitResultsToBackend()" id="emailSendBtn">Email My Report</button>
+      </div>
+      <div class="email-status" id="emailStatus"></div>
+    </div>
+
     <!-- ACTIONS -->
     <div class="actions-row">
       <button class="btn btn-primary" onclick="window.print()">Print / Save as PDF</button>
@@ -2901,8 +2976,15 @@ function showResults() {
   window._bd = bd;
   window._atmosStr = atmosStr;
   window._familyLabel = familyLabel;
+  window._familyType = familyType;
+  window._atmosphere = atmosphere;
+  window._resultsSubmitted = false;
   updateSentence();
   buildRadarChart(results.trigger);
+
+  // Fire-and-forget backend submit without email (admin copy only).
+  // If user enters email and clicks Email My Report, we'll send again tagged with their email.
+  submitResultsToBackend({ silent: true });
 }
 
 function updateSentence() {
@@ -3002,6 +3084,96 @@ function toggleCard(id) {
   document.getElementById(id).classList.toggle('open');
 }
 
+// ==================== BACKEND SUBMIT ====================
+// Once api.take139.com DNS propagates, swap to: 'https://api.take139.com'
+const BACKEND_URL = 'https://take139-backend-production.up.railway.app';
+
+async function submitResultsToBackend(opts = {}) {
+  const silent = opts.silent === true;
+  const statusEl = document.getElementById('emailStatus');
+  const btn = document.getElementById('emailSendBtn');
+
+  const name = document.getElementById('nameInput')?.value?.trim() || null;
+  const email = document.getElementById('emailInput')?.value?.trim() || null;
+
+  if (!silent) {
+    if (!email || !email.includes('@') || !email.includes('.')) {
+      if (statusEl) {
+        statusEl.textContent = 'Please enter a valid email address.';
+        statusEl.className = 'email-status err';
+      }
+      return;
+    }
+    if (btn) { btn.disabled = true; btn.textContent = 'Sending...'; }
+    if (statusEl) { statusEl.textContent = ''; statusEl.className = 'email-status'; }
+  }
+
+  const trig = window._trig;
+  const cq = window._cq;
+  const mech = window._mech;
+  const bd = window._bd;
+  const results = window._results;
+  const familyLabel = window._familyLabel || 'home';
+  const atmosStr = window._atmosStr || '';
+  const homeDesc = atmosStr ? `${atmosStr} ${familyLabel}` : familyLabel;
+
+  const triggerScores = { DIS: 0, DISC: 0, INJ: 0, CTRL: 0, SHAM: 0, SIG: 0 };
+  if (results && results.trigger && results.trigger.sorted) {
+    results.trigger.sorted.forEach(item => {
+      if (triggerScores.hasOwnProperty(item.cat)) {
+        triggerScores[item.cat] = Math.round(item.pct || 0);
+      }
+    });
+  }
+
+  const payload = {
+    name: name,
+    email: email,
+    access_code_used: (typeof window._currentAccessCode !== 'undefined') ? window._currentAccessCode : null,
+    intake: {
+      family_type: window._familyType || null,
+      atmosphere: window._atmosphere || [],
+    },
+    answers: (typeof answers !== 'undefined') ? answers : {},
+    primary_trigger: trig,
+    core_question: cq,
+    mechanism: mech,
+    breakdown: bd,
+    trigger_scores: triggerScores,
+    home_desc: homeDesc,
+  };
+
+  try {
+    const res = await fetch(BACKEND_URL + '/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) throw new Error('Server returned ' + res.status);
+    const data = await res.json();
+    window._resultsSubmitted = true;
+    window._pairCode = data.pair_code;
+
+    if (!silent && statusEl) {
+      if (data.email_sent_to_user) {
+        statusEl.textContent = `Sent. Check ${email} for your PDF (may take a minute).`;
+        statusEl.className = 'email-status ok';
+      } else {
+        statusEl.textContent = 'Received. Your report is processing and will arrive shortly.';
+        statusEl.className = 'email-status ok';
+      }
+    }
+  } catch (err) {
+    if (!silent && statusEl) {
+      statusEl.textContent = 'We hit a snag. Please try again in a minute, or contact us if it persists.';
+      statusEl.className = 'email-status err';
+    }
+    console.error('submit error', err);
+  } finally {
+    if (!silent && btn) { btn.disabled = false; btn.textContent = 'Email My Report'; }
+  }
+}
+
 function startOver() {
   answers = {};
   wrapupAnswers = {};
@@ -3068,6 +3240,7 @@ function submitPasscode() {
 
   if (VALID_CODES.includes(code)) {
     passcodeVerified = true;
+    window._currentAccessCode = code;
     closePasscodeModal();
     launchDiagnostic();
   } else {
