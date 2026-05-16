@@ -552,6 +552,174 @@ body {
   .email-form .btn { width: 100%; }
 }
 
+/* ── PAIR SECTION (couples connect) ── */
+.pair-section {
+  margin-top: 2rem;
+  padding: 2rem 1.75rem;
+  background: linear-gradient(180deg, rgba(200,149,108,0.05), rgba(200,149,108,0.01));
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+}
+.pair-section-label {
+  font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--accent); font-weight: 600; margin-bottom: 0.4rem;
+}
+.pair-section-title {
+  font-family: var(--font-heading); font-size: 1.6rem; color: var(--text);
+  margin: 0 0 0.5rem 0; font-weight: 400;
+}
+.pair-section-copy {
+  color: var(--muted); line-height: 1.6; font-size: 0.95rem; margin-bottom: 1.5rem;
+}
+.pair-your-code {
+  padding: 1rem 1.25rem; background: var(--bg);
+  border: 1px solid var(--border); border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+.pair-code-label {
+  font-size: 0.78rem; color: var(--muted); margin-bottom: 0.5rem;
+  text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600;
+}
+.pair-code-display {
+  font-family: var(--font-heading); font-size: 1.7rem;
+  letter-spacing: 0.08em; color: var(--accent); font-weight: 500;
+  padding: 0.25rem 0;
+}
+.pair-code-hint {
+  font-size: 0.82rem; color: var(--faint); font-style: italic;
+  margin-top: 0.25rem;
+}
+.pair-form {
+  display: flex; gap: 0.6rem; flex-wrap: wrap;
+}
+.pair-input {
+  flex: 1; min-width: 200px; padding: 0.85rem 1rem;
+  background: var(--bg); border: 1.5px solid var(--border); border-radius: 6px;
+  font-family: var(--font-body); font-size: 1rem; color: var(--text);
+  letter-spacing: 0.04em; outline: none; transition: border-color 0.2s;
+  text-transform: uppercase;
+}
+.pair-input:focus { border-color: var(--accent); }
+.pair-input::placeholder { color: var(--faint); }
+.pair-status {
+  margin-top: 0.85rem; font-size: 0.9rem; line-height: 1.5; min-height: 1em;
+}
+.pair-status.ok { color: #8fb174; }
+.pair-status.err { color: #c87a6c; }
+@media (max-width: 560px) {
+  .pair-form { flex-direction: column; }
+  .pair-form .btn { width: 100%; }
+}
+
+/* ── SYNTHESIS PAGE (couples results) ── */
+.synthesis-screen {
+  padding: 2rem 0;
+}
+.synthesis-hero {
+  text-align: center; margin-bottom: 2.5rem;
+}
+.synthesis-eyebrow {
+  font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--accent); font-weight: 600; margin-bottom: 0.4rem;
+}
+.synthesis-title {
+  font-family: var(--font-heading); font-size: 2.4rem; color: var(--text);
+  font-weight: 400; margin: 0 0 0.5rem 0;
+}
+.synthesis-subtitle {
+  color: var(--muted); font-size: 1rem; line-height: 1.6;
+  max-width: 36rem; margin: 0 auto;
+}
+.synthesis-overview {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+  margin: 2rem 0 3rem;
+}
+@media (max-width: 720px) {
+  .synthesis-overview { grid-template-columns: 1fr; }
+}
+.partner-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem;
+}
+.partner-card-name {
+  font-family: var(--font-heading); font-size: 1.4rem; color: var(--text);
+  margin: 0 0 0.5rem 0; font-weight: 500;
+}
+.partner-card-code {
+  font-size: 0.78rem; color: var(--faint); letter-spacing: 0.05em;
+  margin-bottom: 1.25rem;
+}
+.partner-row {
+  display: flex; gap: 1rem; margin-bottom: 0.85rem;
+  padding-bottom: 0.85rem; border-bottom: 1px solid var(--border);
+}
+.partner-row:last-child { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+.partner-row-label {
+  font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--muted); font-weight: 600; min-width: 6rem;
+}
+.partner-row-value {
+  font-family: var(--font-heading); font-size: 1.05rem; color: var(--text);
+  flex: 1; line-height: 1.4;
+}
+.synthesis-section {
+  margin-bottom: 2.5rem;
+  padding: 1.75rem 1.75rem;
+  background: var(--surface);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 10px 10px 0;
+}
+.synthesis-section-label {
+  font-size: 0.72rem; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--accent); font-weight: 700; margin-bottom: 0.4rem;
+}
+.synthesis-section-title {
+  font-family: var(--font-heading); font-size: 1.5rem; color: var(--text);
+  margin: 0 0 1rem 0; font-weight: 500;
+}
+.synthesis-section p {
+  font-size: 0.98rem; line-height: 1.7; color: var(--text); margin-bottom: 1rem;
+}
+.synthesis-section p:last-child { margin-bottom: 0; }
+.commitments-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  margin-top: 1rem;
+}
+@media (max-width: 720px) {
+  .commitments-grid { grid-template-columns: 1fr; }
+}
+.commitment-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem 1.25rem 1.25rem 1.25rem;
+  border-top: 3px solid var(--accent);
+}
+.commitment-card-name {
+  font-family: var(--font-heading); font-size: 1.05rem;
+  color: var(--accent); font-weight: 600;
+  margin-bottom: 0.4rem; letter-spacing: 0.02em;
+}
+.commitment-card-mech {
+  font-size: 0.78rem; color: var(--muted);
+  margin-bottom: 0.85rem; letter-spacing: 0.04em;
+}
+.commitment-card p {
+  font-size: 0.95rem; line-height: 1.65; color: var(--text); margin: 0;
+}
+.synthesis-actions {
+  display: flex; gap: 0.75rem; justify-content: center; margin-top: 2rem;
+  flex-wrap: wrap;
+}
+.synthesis-back-link {
+  display: inline-block; margin-top: 1rem;
+  color: var(--accent); cursor: pointer; font-size: 0.95rem;
+  text-decoration: underline; background: none; border: none;
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 640px) {
   .how-cards { grid-template-columns: 1fr; }
@@ -808,6 +976,9 @@ body {
     </div>
     <div class="screen results-screen" id="screen-results">
       <div id="resultsContent"></div>
+    </div>
+    <div class="screen synthesis-screen" id="screen-synthesis">
+      <div id="synthesisContent"></div>
     </div>
   </div>
 </div>
@@ -2230,6 +2401,264 @@ So would you give this person permission to rest? Real rest — not vacation wit
 
 In Jesus' name. Amen.`
 };
+// ==================== COUPLES SYNTHESIS CONTENT ====================
+// Pastoral, integrated voice. Each mechanism × mechanism pairing produces three
+// sections: forwardTo (what to anticipate as a gift), cautionOf (where the two
+// patterns clash and create predictable friction), commitments (two commitments,
+// one per partner, named directly).
+//
+// Pairs are stored by canonical key "A_B" where A,B are sorted alphabetically.
+// At runtime we sort the two mechanism codes alphabetically and look up the
+// key — that way ARCH+ISLE and ISLE+ARCH resolve to the same entry.
+//
+// The commitments are keyed per-mechanism so that we can return the right one
+// to each partner (commitments["ARCH+ISLE"]["ARCH"] is the commitment for the
+// Architect in an Architect-Island pairing).
+
+const MECH_PAIR_SYNTHESIS = {
+
+  // ─── ARCHITECT + ARCHITECT ──────────────────────────────────────────
+  "ARCH+ARCH": {
+    forwardTo: "Two Architects can build something truly remarkable together. You will not be the couple whose life falls apart from neglected logistics — your home will run, your plans will hold, and you will be the people your friends call when they need help thinking something through. There is a deep, settled love that lives in two people who can trust each other to handle their share. That is yours to enjoy.",
+    cautionOf: "The risk is that nothing soft ever has time to surface. When both of you are managing, planning, and optimizing, the tender questions — am I tired? am I sad? am I drifting? — go unasked because neither of you has built a habit of asking them. You may find yourselves living in a well-run house where neither person actually knows how the other is doing under the surface. The other risk is that you will compete, gently, over whose system is more efficient, whose handling of the situation is the right one. That competition, even when affectionate, is a way of avoiding rest.",
+    commitments: {
+      "ARCH": "Commit to a weekly rhythm where you put the project list down and ask your spouse a question that has no logistical answer. \"How is your soul this week?\" is the kind of question I mean. You are competent enough to handle the answer. Be brave enough to ask."
+    },
+  },
+
+  // ─── ARCHITECT + ISLAND ──────────────────────────────────────────────
+  "ARCH+ISLE": {
+    forwardTo: "This is one of the most stable, low-drama pairings the marriage typology produces. Neither of you needs constant emotional weather to feel loved. You can spend a quiet Saturday in the same house, in separate rooms, working on separate things, and feel deeply connected. The Architect builds the world; the Island inhabits it well. There is real peace here, and friends will notice it.",
+    cautionOf: "The Architect's instinct is to fix problems. The Island's instinct is to handle problems internally and surface only the resolved version. Over time, the Architect can feel that they never get to *help* their spouse with anything that matters, because by the time anything is mentioned it has already been worked through. The Island can feel managed — the Architect's care can land as another item on a checklist. The deepest risk: two competent people who never need each other can drift into being roommates with shared logistics.",
+    commitments: {
+      "ARCH": "Commit to asking less and waiting longer. When your Island spouse goes quiet, your instinct will be to solve it. Resist. Be a non-anxious presence in the same room. Trust that they will surface when they are ready, and that your patience is itself a form of care.",
+      "ISLE": "Commit to surfacing things before they are tidy. Pick one thing each week that you would normally have processed alone, and bring it to your spouse mid-process. They want to be in it with you, not be handed the finished report. Their love wants somewhere to land."
+    },
+  },
+
+  // ─── ARCHITECT + AMBASSADOR ─────────────────────────────────────────
+  "ARCH+AMB": {
+    forwardTo: "This pairing brings together someone who builds the structure and someone who tends the relationships inside it. You will run a warm, functional home — the Architect handles the systems and the Ambassador holds the emotional temperature. Your friends and family will experience your home as a place where everything works and everyone is cared for. That is rare, and it is a real ministry.",
+    cautionOf: "The Architect's competence can quietly disable the Ambassador's giving — there is less to fix, less to smooth — and the Ambassador can drift into resentment because their currency feels unnecessary. Meanwhile, the Architect can feel that the Ambassador's emotional energy is misdirected at the wider world and not enough of it lands at home. The Architect's standards can also feel like quiet judgment to an Ambassador who is wired to read every signal. A small frown becomes a verdict; a small correction becomes a wound.",
+    commitments: {
+      "ARCH": "Commit to receiving care without immediately deflecting it into action. When your spouse asks how you are, do not answer with what needs to be done. Answer with how you are. Their care is not a problem to be solved — it is a gift to be opened.",
+      "AMB": "Commit to telling your spouse what you actually need before the resentment builds. The unspoken tally is the most dangerous thing in this pairing. Bring the small needs to the surface in small doses, so they do not have to become a flood later."
+    },
+  },
+
+  // ─── ARCHITECT + VAULT ──────────────────────────────────────────────
+  "ARCH+VAULT": {
+    forwardTo: "Two people who can both *handle their stuff* are now in a room together. From the outside, this couple looks remarkably together — and they often are. The Architect's external order and the Vault's internal composure produce a household and a public-facing life that is impressive and dependable. People look up to you. That is a gift, and it is something you have both worked for.",
+    cautionOf: "The risk is shared: neither of you spontaneously surfaces what's hard. The Architect manages it; the Vault contains it. Two competent processors of pain can spend years sitting beside each other without ever genuinely getting at what's actually true underneath. The marriage can become *functional* in a way that is also lonely. The Architect's question — am I competent? — gets answered through the work. The Vault's question — am I acceptable? — does not get answered, because the parts that would need to be exposed never are.",
+    commitments: {
+      "ARCH": "Commit to building a weekly window of unstructured conversation where there is no agenda and no problem to solve. The Vault you love will not walk into the open by themselves — they need a room where being known costs them nothing. Build that room.",
+      "VAULT": "Commit to letting your spouse see one tender thing per week that you would normally keep inside. Not the worst thing. Just one thing. A fear, a discouragement, an old grief — small enough that you can survive showing it, real enough that they actually meet the you that exists underneath."
+    },
+  },
+
+  // ─── ARCHITECT + ADAPTER ────────────────────────────────────────────
+  "ARCH+ADPT": {
+    forwardTo: "The Architect provides shape; the Adapter provides flow. You can both serve any room you walk into together — the Architect handles the logistics, the Adapter reads the people. This is a couple who will be reliable on a committee, in a small group, in a crisis. Your respective gifts complement each other in a way that, on the good days, makes life easier for both of you.",
+    cautionOf: "The Architect's clear preferences and high standards can become the frame that the Adapter shapes themselves around — which is dangerous, because the Adapter will do it without even noticing. Over time, the Adapter loses access to their own voice in the marriage, and the Architect ends up married to their own preferences rather than to a distinct person. The Architect may eventually wonder what the Adapter actually thinks about anything. The Adapter may not know either. The other risk: the Adapter's chameleon quality can make the Architect's high standards feel impossible to satisfy, because the Adapter is always one step behind trying to figure out what version of themselves is supposed to show up.",
+    commitments: {
+      "ARCH": "Commit to actively asking what your spouse wants — and then waiting through the discomfort if the answer is slow. Do not rescue them with your own preferences when they hesitate. The hesitation is them learning to find their own voice. Your patience is the soil they need.",
+      "ADPT": "Commit to disagreeing out loud at least once a week. Pick a small thing — a restaurant, a movie, a Sunday plan — where you actually have a preference and say it without softening it for your spouse. Practice being a separate person inside the marriage. Your spouse fell in love with someone, not a mirror."
+    },
+  },
+
+  // ─── ARCHITECT + PERFORMANCE ────────────────────────────────────────
+  "ARCH+CAMP": {
+    forwardTo: "Two driven people who both make things happen. This marriage will accomplish a striking amount over its course — projects, ministries, a built life that other people will admire. The Architect makes the plan; the Performance creates the energy. When you both bring your gifts to a shared mission, you are a formidable team. The dynamic duo move is unmistakable when you are working on something together that matters.",
+    cautionOf: "The risk is that the marriage becomes another project — managed, optimized, and made impressive — rather than a place of mutual rest. Both of you can be tempted to evaluate the marriage by its outputs (the house, the social life, the kids' success) rather than by the quality of what passes between you on a Tuesday night. The Architect's standards plus the Performance's image-management can produce a relationship that looks great in photographs and feels effortful in private. Stillness threatens both of you. The marriage needs both of you to learn that being together when nothing is happening is not nothing happening.",
+    commitments: {
+      "ARCH": "Commit to one true sabbath weekly — no projects, no optimizing, no productive rest. Sit with your spouse in unscheduled time and resist the urge to make it useful. The marriage needs you both to learn what you are like when you are not building anything.",
+      "CAMP": "Commit to letting your spouse see a failure or a fear you have not yet publicly redeemed. The version of you they need most is not the one in the highlight reel. Bring them the raw footage. The intimacy they're hungry for lives in the part of you you usually edit out."
+    },
+  },
+
+  // ─── ISLAND + ISLAND ────────────────────────────────────────────────
+  "ISLE+ISLE": {
+    forwardTo: "A surprisingly serene marriage. Two Islands enjoy each other's company in a way that does not demand much, and that is exactly the kind of marriage some people thrive in. You can both come home from your separate worlds, decompress without performance, and feel the relief of being with someone who does not require constant emotional output. There is genuine, restful love here.",
+    cautionOf: "The danger is silent drift. Two Islands can love each other deeply and still spend years living parallel lives in the same house, because neither of you has built a habit of reaching toward the other. Hard things — financial pressure, a child's struggle, a grief — can pass through both of you and never quite get spoken about between you. The marriage stays peaceful and grows hollow. Years later, one of you may surface the realization that you have not actually known each other well in a long time.",
+    commitments: {
+      "ISLE": "Commit to scheduled reaching. Two Islands will not naturally drift toward each other; you have to plan it. A weekly walk, a Sunday afternoon question, a Tuesday-night unhurried conversation. Treat connection like an appointment you would not skip. The serenity is real, but it has to be defended from becoming distance."
+    },
+  },
+
+  // ─── ISLAND + AMBASSADOR ────────────────────────────────────────────
+  "ISLE+AMB": {
+    forwardTo: "The Island gets to be quietly known by someone wired for noticing. The Ambassador gets to love someone who, when they do let you in, lets you in deeply. This is a pairing where the Ambassador's attentiveness has somewhere settled to go, and the Island finally has a witness to the inner life they normally process alone. When it works, it is profoundly tender.",
+    cautionOf: "The Ambassador's giving easily outpaces the Island's capacity to receive — and over time the Ambassador can build a quiet resentment that surprises both of you when it surfaces. The Island, meanwhile, can feel pursued in a way that activates their withdrawal. The more the Ambassador reaches, the more the Island retreats; the more the Island retreats, the more anxiously the Ambassador reaches. This dynamic, left unaddressed, becomes the deepest fault line in the marriage. The Ambassador's significance question — am I loved? — collides directly with the Island's autonomy.",
+    commitments: {
+      "ISLE": "Commit to giving your spouse small, regular signals of connection that do not require emotional disclosure from you. A text in the middle of the day. A hand on their back. A specific, observed compliment. Your Ambassador is not asking for your inner monologue — they're asking to know that they're in your awareness. Make them visible to themselves through your steady presence.",
+      "AMB": "Commit to giving your Island spouse the gift of being un-pursued for stretches of time. Their love grows in the space you protect for them. When they are quiet, do not interpret it. When they need an evening to themselves, give it gladly. Your steadiness when they retreat is what teaches them that closeness with you is safe."
+    },
+  },
+
+  // ─── ISLAND + VAULT ─────────────────────────────────────────────────
+  "ISLE+VAULT": {
+    forwardTo: "Two private people who both respect interiority. Neither of you will demand inner life from the other; you both understand that some things live underneath, and that respecting that underneath is its own form of love. From the outside this couple often looks understated and undramatic — but the depth between them, when it gets spoken, can be remarkable.",
+    cautionOf: "The deepest risk in this marriage is that neither of you ever surfaces what matters most. The Island doesn't naturally access it; the Vault accesses it but chooses not to share it. So the marriage runs on what is shareable — logistics, current events, work, mutual interests — while the real questions stay below decks for years. The marriage can be entirely real and remain peripheral to the most important parts of either of you. The other risk: a small grievance in either spouse can sit unspoken for years and slowly poison the well.",
+    commitments: {
+      "ISLE": "Commit to a low-stakes habit of small disclosure. Once a week, share something you noticed in yourself — a worry, a hope, an old memory — that you would not have shared otherwise. Your Vault spouse knows what it costs you. The cost itself is part of the gift.",
+      "VAULT": "Commit to taking the first risk of vulnerability in this marriage, regularly. Your Island spouse will probably never demand it, which means it has to come from you. Pick one thing per week that you would normally keep behind the wall, and let them see it. You are not just sharing — you are teaching them that the door opens. Most of all, you are showing them that they are someone worth opening it for."
+    },
+  },
+
+  // ─── ISLAND + ADAPTER ───────────────────────────────────────────────
+  "ISLE+ADPT": {
+    forwardTo: "The Island is loved by someone who reads them with extraordinary precision. The Adapter is in a relationship that asks little of them in terms of constant relational performance. There is a quiet rest in this — the Adapter does not have to be on, and the Island does not have to explain themselves. When the Adapter is genuinely seen by the Island, in turn, it can be one of the most clarifying experiences of their life.",
+    cautionOf: "The Adapter's instinct to read the Island and become what they need is — paradoxically — exactly the wrong move with this spouse. An Adapter shaped around an Island disappears entirely, because the Island doesn't actively pull a shape out of them. The result: the Adapter loses themselves in the absence of strong demands, and the Island ends up married to a slowly-fading partner whose actual preferences they cannot find. Both of you can grow distant without ever fighting about it. The other risk: when the Adapter does eventually need something, the Island's first instinct is to retreat — exactly the opposite of what the Adapter needs.",
+    commitments: {
+      "ISLE": "Commit to making real, regular requests of your spouse. Ask for things. State preferences. Take up more space than feels natural. Your Adapter spouse is in danger of disappearing in the absence of someone who pulls a shape out of them. You can be that person without violating your own nature — just be more explicit than you would otherwise be.",
+      "ADPT": "Commit to developing your own routines and preferences inside this marriage that exist whether or not your spouse is present. A weekly habit that is yours. A friendship of your own. An opinion held without checking. The Island you love will not pull a self out of you — you have to do that work, and they will be grateful for who they meet on the other side of it."
+    },
+  },
+
+  // ─── ISLAND + PERFORMANCE ───────────────────────────────────────────
+  "ISLE+CAMP": {
+    forwardTo: "An interesting pairing — the contemplative and the dynamic. The Island provides the still point in the Performance's life of pursuit; the Performance brings movement and stake into a life that might otherwise be too quiet. When this works, the Performance learns rest from their spouse and the Island learns engagement. You can each become someone you would not have become alone.",
+    cautionOf: "The Performance's drive runs at a pace that drains the Island, who needs interior recovery time the Performance neither understands nor patiently provides. The Performance can feel that the Island is not invested in their life — not coming to the events, not promoting the work, not generating the energy a performer needs. The Island can feel that the Performance's life crowds theirs out and that they are increasingly an audience to someone else's pursuit. Worst case: the Performance heads out into the world for the validation they cannot get at home, and the Island sits inside their walls feeling slowly diminished.",
+    commitments: {
+      "ISLE": "Commit to showing up to your spouse's pursuits with real, embodied presence — not as performance, but as an act of love. Your Performance spouse needs your eyes on what they are building. You do not have to match their energy; you just have to be visibly there. Your steady witness is more valuable to them than they will easily admit.",
+      "CAMP": "Commit to building rhythms of slowness with your spouse that have no goal. A walk that doesn't lead anywhere. A meal without a conversation agenda. An evening when nothing gets built. Your Island spouse loves you through stillness — meet them there. The marriage is one of the few places where you do not need to be remarkable to be wanted."
+    },
+  },
+
+  // ─── AMBASSADOR + AMBASSADOR ────────────────────────────────────────
+  "AMB+AMB": {
+    forwardTo: "A genuinely warm marriage. Two Ambassadors create a home where care flows in all directions — toward each other, toward kids, toward extended family, toward whoever happens to be in their orbit. Your friends will name your home as one of the few places they feel completely cared for. That is a real ministry, and it comes from both of you.",
+    cautionOf: "The risk is that you both exhaust yourselves on behalf of everyone else, and the marriage becomes the relationship where each of you is always *almost* getting attended to — but never quite, because there is someone else's need that came up first. Worse: the unspoken resentment, built quietly in each of you, surfaces eventually in ways neither of you saw coming. Two Ambassadors can spend a decade being kind to each other while neither feels truly seen, because each is too busy caretaking to ask the other to caretake them. The Ambassador trap is doubled.",
+    commitments: {
+      "AMB": "Commit, both of you, to a weekly window where the marriage gets first claim on your energy — not the kids, not the church, not the friend in crisis. Ambassadors will give themselves to whoever's need is loudest. Make this marriage's quieter need the one that wins, once a week, on schedule. And practice naming your own needs out loud to each other before they become resentment. Both of you. The unspoken tally is the most dangerous thing in this pairing."
+    },
+  },
+
+  // ─── AMBASSADOR + VAULT ─────────────────────────────────────────────
+  "AMB+VAULT": {
+    forwardTo: "The Ambassador finally has a spouse whose inner life is worth working to access — and the Vault, when they let the Ambassador in, has someone who will hold what they share with extraordinary care. When this works, the Ambassador is the one person who reliably sees behind the Vault's locked rooms, and the Vault knows that what they share will be loved, not weaponized. That is rare and precious.",
+    cautionOf: "The Ambassador can spend years feeling locked out by a Vault who is selectively sharing — funny and engaged in public, closed and impassive at home. The Ambassador's giving meets a wall, and they conclude (often wrongly) that the Vault doesn't trust them or doesn't really love them. The Vault, meanwhile, can feel that the Ambassador's reaching is too much, too constant, and too pressured. The Ambassador's question — am I loved? — gets answered slowly and only sometimes by a Vault who shares on their own timetable.",
+    commitments: {
+      "AMB": "Commit to giving your Vault spouse time to surface things at their own pace. Your reach, however loving, can feel like demand to them. The thing they are protecting is not against you — it is against exposure itself. Trust that your steady presence over years is the credential that earns access. You are not failing because the door is slow. The door is slow with everyone.",
+      "VAULT": "Commit to opening one room per month that you would otherwise keep closed. Your Ambassador spouse is not casually asking — they are asking because they cannot fully love what they cannot see. The thing you are protecting from exposure is, in here, safe. Give them the gift of being one of the very few people who knows the unedited version. They have earned it. Let them in."
+    },
+  },
+
+  // ─── AMBASSADOR + ADAPTER ───────────────────────────────────────────
+  "AMB+ADPT": {
+    forwardTo: "Two relationally attuned people. This marriage is unusually empathetic in both directions — neither of you misses what the other is feeling, and the home you build will be a sensitive, gentle place. Your kids, your friends, and your extended family will experience this couple as the ones who get it. You give the world a model of how two people can love each other with their full attention.",
+    cautionOf: "The risk is that nobody is anchored. Two people whose default mode is reading the room and adjusting can leave each other without a fixed point to come back to. The Ambassador needs the Adapter to be a stable, distinct self who can receive their care. The Adapter needs the Ambassador to be a stable, distinct self whose preferences are not negotiable. Without that, you can both spend years trying to figure out what the other person actually wants — and never get a clear answer, because neither of you is quite landing a clear answer of your own. The marriage can become an infinite mutual deferral. The other risk: when conflict comes, neither of you has a position. The fight becomes a fog.",
+    commitments: {
+      "AMB": "Commit to having opinions and naming them. Your Adapter spouse cannot shape themselves around someone whose preferences are all 'whatever works for you.' You both need at least one of you to hold ground, and the marriage will be healthier if it is sometimes you. Practice the small no. Practice the unsoftened preference.",
+      "ADPT": "Commit to bringing your own self into the marriage, not just your adapted self. The Ambassador you love is already attuned — they do not need you to mirror them. They need someone with a center for them to relate to. The thing you are most afraid will burden them — your actual preferences, your actual frustrations, your actual desires — is the thing they are most hungry to receive."
+    },
+  },
+
+  // ─── AMBASSADOR + PERFORMANCE ───────────────────────────────────────
+  "AMB+CAMP": {
+    forwardTo: "The Performance has someone who genuinely sees them — and the Ambassador has a spouse whose life is dynamic and substantive enough to be worth orienting their care around. When this works, the Performance learns to receive love that isn't performance-contingent, and the Ambassador's care lands on someone whose movement and ambition give it scale. You can do remarkable things together when the Ambassador's tending and the Performance's drive are aligned.",
+    cautionOf: "The Performance can use the Ambassador. Not maliciously — but a Performance is built to receive support, and an Ambassador is built to give it, and the equation can run for years before someone notices that one person is feeding the other's ambition without much of their own life being honored. The Ambassador's quiet resentment can build under the surface of an admirable marriage. Meanwhile, the Performance's need for image management can leave the Ambassador feeling like the support staff for a public-facing brand rather than a spouse in their own right. The Performance's significance question can crowd out the Ambassador's significance entirely.",
+    commitments: {
+      "AMB": "Commit to having a life of your own that is not in service of your spouse's pursuit. A friendship of your own. A creative project of your own. A vocation of your own — even an unpaid one. Your Performance spouse needs to be married to a person, not a support system. The marriage will be healthier if you have somewhere your significance comes from besides them.",
+      "CAMP": "Commit to noticing what your spouse is carrying and asking about it without redirecting back to your own thing. Your Ambassador spouse will not ask you to make space for them. You have to do that proactively. Once a week, set the Performance down and pour care into them with the same energy you usually put into the next stage of your project. Their soul is not the audience for your life. It is the marriage."
+    },
+  },
+
+  // ─── VAULT + VAULT ──────────────────────────────────────────────────
+  "VAULT+VAULT": {
+    forwardTo: "Two people who genuinely respect interiority. There is no performative pressure between you — neither of you demands that the other emote on cue, and neither of you reads silence as rejection. From the outside, this couple appears confident, self-possessed, and admirable. Inside, when you do choose to open up to each other, the conversations can have unusual depth precisely because neither of you wastes them on unnecessary chatter.",
+    cautionOf: "The deepest risk in any marriage type: two Vaults can love each other and never quite manage to be known by each other. Each of you is competent at the closed door. Each of you waits for the other to open theirs first. Years can pass like this. The marriage can be entirely warm and remain almost entirely surface. A genuine crisis — a job loss, an addiction, a parent's death — can pass through the home and never quite get spoken about between you, because both of you are processing it the way you have always processed: alone.",
+    commitments: {
+      "VAULT": "Commit, both of you, to a weekly disclosure rhythm where one of you brings something you would otherwise keep inside, and the other receives it without trying to solve or escape it. Alternate weeks. The structure matters. Two Vaults will not stumble into intimacy. You have to schedule the door open, and trust each other to walk through it. What you are giving each other is exactly what you have given few others in your lives: access. That is sacred."
+    },
+  },
+
+  // ─── VAULT + ADAPTER ────────────────────────────────────────────────
+  "VAULT+ADPT": {
+    forwardTo: "An interesting and often underrated pairing. The Vault has someone who reads their unspoken signals with unusual accuracy and adapts gracefully around them. The Adapter has a spouse who, when they do show themselves, shows depth and substance. When this works, the Adapter feels chosen by someone who shares carefully, and the Vault feels accommodated without being intruded upon. It is gentle, intelligent love.",
+    cautionOf: "The Vault's selective sharing combined with the Adapter's tendency to shape themselves around the room means neither of you ever quite finds the other. The Adapter, lacking a fixed shape to relate to, mirrors the Vault's restraint. The Vault, finding nothing pressing them to open, stays closed. The marriage can be unusually polite and unusually empty at the same time. Both of you can spend years feeling fine and never feeling quite met. When conflict comes, both of you have a strong instinct to withdraw and rearrange rather than engage.",
+    commitments: {
+      "VAULT": "Commit to being the one who initiates real disclosure, regularly. Your Adapter spouse will not push against your walls because pushing isn't in their nature. The door has to come open from your side. They are exactly the kind of safe space you would have wanted as a child — and the work is to let yourself believe that as an adult.",
+      "ADPT": "Commit to bringing your own self forward in this marriage, especially the parts of you that don't naturally surface around your spouse. The Vault you love is not asking you to read them and become what fits — they're hoping you will be your own person, so they finally have someone to relate to from inside their walls."
+    },
+  },
+
+  // ─── VAULT + PERFORMANCE ────────────────────────────────────────────
+  "VAULT+CAMP": {
+    forwardTo: "The Performance has, in the Vault, someone who is not impressed by their public self — and who therefore can finally meet them where they actually are. The Vault, in turn, has a spouse whose dynamic outward life provides scale, ambition, and movement to a private inner world. When this works, the Performance learns rest from a partner who doesn't need them on, and the Vault is drawn out by a partner whose energy makes engagement worth the risk.",
+    cautionOf: "Both of you manage your image carefully — the Performance for public reasons, the Vault for private ones. So your marriage can have unusually polished surfaces with very little underneath actually being processed. Friends see a remarkable couple. Inside, the Performance is exhausting themselves to stay impressive, and the Vault is sitting behind their door wondering when the curtain will drop. Neither of you will easily surface the suspicion that something is missing, because admitting it is exactly the kind of vulnerability both of you most resist.",
+    commitments: {
+      "VAULT": "Commit to being the one person in your spouse's life who knows the failures, the doubts, and the unredeemed parts. You are good at receiving without spectacle. Use that. Your spouse's secret hope is that someone will know the un-impressive version of them and love them anyway. Be that person.",
+      "CAMP": "Commit to dropping the Performance with your spouse, regularly, on purpose. Your Vault spouse does not need to be impressed — and may, in fact, be alienated by the curated version of you. Show them the part of you you don't show your followers. That is what they actually want. That is what they are waiting for."
+    },
+  },
+
+  // ─── ADAPTER + ADAPTER ──────────────────────────────────────────────
+  "ADPT+ADPT": {
+    forwardTo: "Two extraordinarily relationally attuned people. Neither of you will misread the other often, and the home you build will be sensitive, gracious, and easy on its guests. You will be excellent in groups, in church, in extended family — wherever fluid social attunement is the gift required. There is real loveliness here.",
+    cautionOf: "The risk is profound: two Adapters can spend years in a marriage neither of them has decided on. Each of you defers to the other. Each of you reads the other and shapes accordingly. Conflict is rare — and so is genuine clarity about anything. Major decisions get made by mutual gentle drift rather than by either of you taking ground. Years in, both of you may quietly wonder whether you are actually married to a person or to an attuned mutual silhouette of what each of you wants the other to be. When conflict eventually does come, neither of you knows how to hold a position.",
+    commitments: {
+      "ADPT": "Commit, both of you, to having opinions and naming them — even small ones. Pick disagreements on purpose, small ones, just to practice being two distinct people. The marriage needs both of you to have an actual shape that the other can run into. Pray together for the courage to be specific. And consider naming a third party — a counselor, a mentor couple, a wise pastor — who can ask you both, every few months, the question neither of you will ask each other: what do you actually want?"
+    },
+  },
+
+  // ─── ADAPTER + PERFORMANCE ──────────────────────────────────────────
+  "ADPT+CAMP": {
+    forwardTo: "An Adapter married to a Performance often makes for a powerfully dynamic couple. The Adapter reads what the Performance needs and provides it; the Performance brings energy, vision, and forward motion into the Adapter's life. When this works, the Adapter is brought into pursuits they would not have undertaken alone, and the Performance is supported in deep, sensitive ways by a partner who reads the cost behind every win.",
+    cautionOf: "This pairing has one of the highest risks for the Adapter to lose themselves entirely. The Performance, by design, generates a strong gravitational pull — and the Adapter, by design, shapes themselves to it. Years in, the Adapter may not be able to find their own preferences, their own opinions, or their own life apart from the Performance's project. The Performance, meanwhile, may not realize this is happening because the Adapter never resists. By the time anyone notices, the Adapter has been a support role for a decade. The Performance's image management plus the Adapter's mirroring can also produce a couple that looks great from the outside and is profoundly unanchored on the inside.",
+    commitments: {
+      "ADPT": "Commit to maintaining a life of your own that exists whether or not your spouse's project is going well. A vocation. A friendship. A creative pursuit. A regular routine you do not skip to support their thing. Your spouse will not protect this for you. You have to.",
+      "CAMP": "Commit to actively asking your spouse what they want, and waiting until they give you a real answer, not the gracious version of yours. Their gift of accommodation is real — and dangerous to them. The marriage you both want will require you to make space for them to be a person. Step back from the spotlight regularly. Their light matters too."
+    },
+  },
+
+  // ─── PERFORMANCE + PERFORMANCE ──────────────────────────────────────
+  "CAMP+CAMP": {
+    forwardTo: "When two Performances align their pursuits, they accomplish things neither could alone. The energy in this home is high; the ambition is shared; and from the outside this couple is admirable, impressive, and obviously going somewhere. Your friends will tell their kids about the way you two go after what matters to you.",
+    cautionOf: "The marriage can become a vehicle for two adjacent careers and image-projects rather than a place of mutual rest. Both of you are wired to be on, to be impressive, to be building. Stillness is alien to both of you, which means neither of you brings the other to it. Your most dangerous shared blind spot: a marriage that looks like a success and is, privately, a tired transaction. Both of you can spend years chasing the answer to your significance question through achievement, and never sit still long enough to discover that the question was already answered.",
+    commitments: {
+      "CAMP": "Commit, both of you, to a weekly sabbath together that is real — no projects, no networking, no productive rest, no posting about it. Just stillness. The thing you most need to learn from each other is how to be without doing. The marriage is one of the few places that question can get answered the right way. Let it."
+    },
+  },
+
+};
+
+// Breakdown-pair MODIFIERS — short caution clauses that append to the "Be Cautious Of"
+// section when the breakdown pairings create a known dangerous dynamic.
+// We don't write all 21 breakdown pairings — only the ones that produce a known
+// dangerous spiral (e.g. Attorney + Ghost = pursue/withdraw; Plea + Quiet Exit =
+// the most painful asymmetric attachment).
+
+const BD_PAIR_MODIFIERS = {
+  // Pursue-withdraw: Attorney prosecutes; Ghost retreats. Classic Gottman dynamic.
+  "COURT+DISAP": "Under stress, one of you prosecutes the case while the other goes unreachable. This is the most studied conflict pattern in marriage research, and it predicts divorce when it is left unaddressed. The Attorney's pursuit drives the Ghost further away; the Ghost's withdrawal makes the Attorney press harder. You will have to interrupt this pattern by name, not just by feel.",
+
+  // Attorney + Mask: argument with an invisible adversary
+  "COURT+GHOST": "When conflict hits, one of you builds the case while the other puts on the mask of normalcy. The Attorney finds themselves arguing with someone who keeps insisting nothing is wrong. The Mask finds themselves prosecuted for a wound they have not yet named. You will both feel unheard for different reasons.",
+
+  // Flood + Quiet Exit: emotional pursue with terminal withdraw
+  "FLOOD+VERD": "One of you releases everything at once; the other quietly decides the marriage has failed. This combination is dangerous because the Flood reads as evidence to the Quiet Exit that the marriage has become unmanageable, while the Quiet Exit's withdrawal makes the Flood feel more unheard, which makes them flood harder. Surface the pattern early.",
+
+  // Plea + Ghost: anxious attachment meets avoidant
+  "PLEA+DISAP": "One of you panics when the relational temperature drops; the other goes completely unreachable. This is anxious attachment colliding directly with avoidant attachment — both of you are doing what your nervous systems learned in childhood, and both of you are making each other's wounds worse without meaning to. Therapy or careful pastoral counsel is recommended.",
+
+  // Plea + Quiet Exit: the most painful asymmetric
+  "PLEA+VERD": "One of you is desperately trying to keep the connection alive while the other has quietly decided to let it die. This is one of the most painful asymmetric pairings — and one of the most recoverable when the Quiet Exit's deliberation is caught and surfaced before it hardens. The Plea cannot save this alone; the Quiet Exit has to be brave enough to actually have the conversation they have been internally rehearsing.",
+
+  // Two Floods: emotional escalation spiral
+  "FLOOD+FLOOD": "When you both flood, you can flood at the same time — which means neither of you has the capacity to receive what the other is saying. Plan for this. Agree, while calm, on what you will do when both of you are dysregulated. The agreement itself, made in advance, is most of the work.",
+
+  // Two Attorneys: argument as default
+  "COURT+COURT": "When both of you build cases, conflict becomes a courtroom with two prosecutors and no judge. Neither of you can be acquitted because neither of you is willing to drop the prosecution first. Practice the discipline of being the first to ask 'what did I miss?' rather than the first to make the next point.",
+
+  // Two Ghosts: total mutual withdrawal
+  "DISAP+DISAP": "When both of you ghost, you can both vanish at the same time — and the marriage can spend days in emotional winter while nothing actually gets resolved. Agree, while calm, on a signal you will use when you need space without disappearing entirely.",
+
+  // Two Masks: parallel performance of normalcy
+  "GHOST+GHOST": "When both of you mask, the marriage can run on a polished surface while two real wounds sit underneath it for weeks. Build a habit of asking each other 'is there something behind the smile?' — and meaning it.",
+};
+
+
 // ==================== APP STATE ====================
 
 let currentScreen = 'welcome';
@@ -3094,6 +3523,28 @@ function showResults() {
       ${PRAYERS[mech].split('\n\n').map(p => `<p>${p}</p>`).join('')}
     </div>
 
+    <!-- PAIR CODE / PARTNER SYNTHESIS -->
+    <div class="pair-section" id="pairSection">
+      <div class="pair-section-label">For Couples</div>
+      <h3 class="pair-section-title">Connect With Your Partner</h3>
+      <p class="pair-section-copy">If your partner has also taken Take 139, you can connect your two profiles to see what your wiring looks like together — the strengths you bring as a pair, where you will predictably clash, and the commitments each of you can make to honor what the other carries. Codes expire after 30 days for privacy.</p>
+
+      <div class="pair-your-code">
+        <div class="pair-code-label">Your pair code (share this with your partner):</div>
+        <div class="pair-code-display" id="pairCodeDisplay">—</div>
+        <div class="pair-code-hint" id="pairCodeHint">Submit your email above first to get a pair code.</div>
+      </div>
+
+      <div class="pair-enter">
+        <div class="pair-code-label">Enter your partner's pair code to see your couples profile:</div>
+        <div class="pair-form">
+          <input type="text" class="pair-input" id="partnerCodeInput" placeholder="e.g. ANCHOR-4829" autocomplete="off" oninput="this.value = this.value.toUpperCase()">
+          <button class="btn btn-primary" onclick="connectPartner()" id="connectBtn">Connect</button>
+        </div>
+        <div class="pair-status" id="pairStatus"></div>
+      </div>
+    </div>
+
     <!-- EMAIL DELIVERY -->
     <div class="email-delivery" id="emailDelivery">
       <div class="email-delivery-label">Want a Professional PDF Version?</div>
@@ -3322,6 +3773,12 @@ async function submitResultsToBackend(opts = {}) {
     window._resultsSubmitted = true;
     window._pairCode = data.pair_code;
 
+    // Populate pair-code display in the pair section, if present
+    const pairCodeDisplay = document.getElementById('pairCodeDisplay');
+    const pairCodeHint = document.getElementById('pairCodeHint');
+    if (pairCodeDisplay) pairCodeDisplay.textContent = data.pair_code;
+    if (pairCodeHint) pairCodeHint.textContent = 'Codes are valid for 30 days. Your partner enters this on their own results page after completing the assessment.';
+
     if (!silent && statusEl) {
       if (data.email_sent_to_user) {
         statusEl.textContent = `Sent. Check ${email} for your PDF (may take a minute).`;
@@ -3496,6 +3953,235 @@ function buildRadarChart(triggerResult) {
       plugins: { legend: { display: false } }
     }
   });
+}
+
+// ==================== PAIR CONNECT + SYNTHESIS ====================
+
+async function connectPartner() {
+  const myCode = window._pairCode;
+  const partnerInput = document.getElementById('partnerCodeInput');
+  const statusEl = document.getElementById('pairStatus');
+  const btn = document.getElementById('connectBtn');
+  if (!partnerInput || !statusEl || !btn) return;
+
+  const partnerCode = (partnerInput.value || '').trim().toUpperCase();
+
+  if (!myCode) {
+    statusEl.textContent = 'Submit your email above first to get your own pair code.';
+    statusEl.className = 'pair-status err';
+    return;
+  }
+  if (!partnerCode) {
+    statusEl.textContent = 'Enter your partner\'s pair code.';
+    statusEl.className = 'pair-status err';
+    return;
+  }
+  if (partnerCode === myCode) {
+    statusEl.textContent = 'That is your own code. Ask your partner for theirs.';
+    statusEl.className = 'pair-status err';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Connecting...';
+  statusEl.textContent = '';
+  statusEl.className = 'pair-status';
+
+  try {
+    const res = await fetch(BACKEND_URL + '/pair/connect', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ my_code: myCode, partner_code: partnerCode }),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      if (res.status === 404) {
+        statusEl.textContent = (err.detail || 'Pair code not found.') + ' Double-check the code with your partner.';
+      } else if (res.status === 400) {
+        statusEl.textContent = err.detail || 'Could not connect.';
+      } else {
+        statusEl.textContent = 'Connection failed. Try again in a moment.';
+      }
+      statusEl.className = 'pair-status err';
+      return;
+    }
+    const data = await res.json();
+    statusEl.textContent = 'Connected. Building your couples profile...';
+    statusEl.className = 'pair-status ok';
+    setTimeout(() => renderSynthesis(data.me, data.partner), 500);
+  } catch (err) {
+    console.error('connect error', err);
+    statusEl.textContent = 'Connection failed. Check your internet and try again.';
+    statusEl.className = 'pair-status err';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Connect';
+  }
+}
+
+// Look up a mechanism pairing by either ordering of the two codes.
+function lookupMechPair(mechA, mechB) {
+  if (!MECH_PAIR_SYNTHESIS) return null;
+  // Try both orderings
+  const candidates = [`${mechA}+${mechB}`, `${mechB}+${mechA}`];
+  for (const key of candidates) {
+    if (MECH_PAIR_SYNTHESIS[key]) return { key, data: MECH_PAIR_SYNTHESIS[key] };
+  }
+  return null;
+}
+
+// Look up breakdown modifier by either ordering of the two codes.
+function lookupBdModifier(bdA, bdB) {
+  if (!BD_PAIR_MODIFIERS) return null;
+  const candidates = [`${bdA}+${bdB}`, `${bdB}+${bdA}`];
+  for (const key of candidates) {
+    if (BD_PAIR_MODIFIERS[key]) return BD_PAIR_MODIFIERS[key];
+  }
+  return null;
+}
+
+function renderPartnerCard(partner) {
+  // partner: { name, pair_code, primary_trigger, primary_core_question,
+  //            primary_mechanism, primary_breakdown }
+  const trig = TRIGGERS[partner.primary_trigger];
+  const cq = CORE_QUESTIONS[partner.primary_core_question];
+  const mech = MECHANISMS[partner.primary_mechanism];
+  const bd = BREAKDOWNS[partner.primary_breakdown];
+  const safeName = (partner.name || 'Your partner').split(/\s+/)[0]; // first name only
+  return `
+    <div class="partner-card">
+      <h3 class="partner-card-name">${safeName}</h3>
+      <div class="partner-card-code">${partner.pair_code}</div>
+      <div class="partner-row">
+        <div class="partner-row-label">Trigger</div>
+        <div class="partner-row-value">${trig ? trig.name : '—'}</div>
+      </div>
+      <div class="partner-row">
+        <div class="partner-row-label">Core Q</div>
+        <div class="partner-row-value">${cq ? cq.name : '—'}</div>
+      </div>
+      <div class="partner-row">
+        <div class="partner-row-label">Mechanism</div>
+        <div class="partner-row-value">${mech ? mech.name : '—'}</div>
+      </div>
+      <div class="partner-row">
+        <div class="partner-row-label">Breakdown</div>
+        <div class="partner-row-value">${bd ? bd.name : '—'}</div>
+      </div>
+    </div>
+  `;
+}
+
+function renderCommitmentCard(name, mechCode, commitmentText) {
+  const mech = MECHANISMS[mechCode];
+  const safeName = (name || 'You').split(/\s+/)[0];
+  return `
+    <div class="commitment-card">
+      <div class="commitment-card-name">For ${safeName}</div>
+      <div class="commitment-card-mech">As ${mech ? mech.name : '—'}</div>
+      <p>${commitmentText}</p>
+    </div>
+  `;
+}
+
+function renderSynthesis(me, partner) {
+  // me + partner each: { name, pair_code, primary_mechanism, primary_breakdown, ... }
+  showScreen('synthesis');
+  window.scrollTo({top: 0, behavior: 'instant'});
+
+  const myMech = me.primary_mechanism;
+  const partnerMech = partner.primary_mechanism;
+  const myBd = me.primary_breakdown;
+  const partnerBd = partner.primary_breakdown;
+
+  const mechPair = lookupMechPair(myMech, partnerMech);
+  const bdModifier = lookupBdModifier(myBd, partnerBd);
+
+  const myFirstName = (me.name || 'You').split(/\s+/)[0];
+  const partnerFirstName = (partner.name || 'Your partner').split(/\s+/)[0];
+
+  let pairSection = '';
+  let cautionExtra = '';
+  let commitmentsHTML = '';
+
+  if (mechPair) {
+    const d = mechPair.data;
+
+    // Build commitments. Same-mech pair has one entry; mixed-mech has two.
+    const commits = d.commitments || {};
+    const commitKeys = Object.keys(commits);
+    if (myMech === partnerMech) {
+      // Same-mech: one commitment shared by both partners
+      const shared = commits[myMech];
+      if (shared) {
+        commitmentsHTML = `
+          <div class="commitments-grid">
+            ${renderCommitmentCard(myFirstName, myMech, shared)}
+            ${renderCommitmentCard(partnerFirstName, partnerMech, shared)}
+          </div>
+        `;
+      }
+    } else {
+      const myCommit = commits[myMech] || '';
+      const partnerCommit = commits[partnerMech] || '';
+      commitmentsHTML = `
+        <div class="commitments-grid">
+          ${renderCommitmentCard(myFirstName, myMech, myCommit)}
+          ${renderCommitmentCard(partnerFirstName, partnerMech, partnerCommit)}
+        </div>
+      `;
+    }
+
+    pairSection = `
+      <div class="synthesis-section">
+        <div class="synthesis-section-label">Section 1 · Look Forward To</div>
+        <h3 class="synthesis-section-title">The strengths you bring as a pair</h3>
+        <p>${d.forwardTo}</p>
+      </div>
+
+      <div class="synthesis-section">
+        <div class="synthesis-section-label">Section 2 · Be Cautious Of</div>
+        <h3 class="synthesis-section-title">Where you will predictably clash</h3>
+        <p>${d.cautionOf}</p>
+        ${bdModifier ? `<p><b>One more thing about how you handle crisis:</b> ${bdModifier}</p>` : ''}
+      </div>
+
+      <div class="synthesis-section">
+        <div class="synthesis-section-label">Section 3 · Commitments</div>
+        <h3 class="synthesis-section-title">What each of you can commit to</h3>
+        <p>Marriage is built on mutual commitments, not mutual hopes. Each of you has been wired in a way that asks for a specific kind of love from the other — and a specific discipline of yourself. These are the commitments your wiring asks of you. Make them out loud. Pray over them together. Then live them.</p>
+        ${commitmentsHTML}
+      </div>
+    `;
+  } else {
+    pairSection = `<p style="text-align:center; color:var(--muted);">No synthesis fragment found for this pairing. Please contact us.</p>`;
+  }
+
+  const container = document.getElementById('synthesisContent');
+  container.innerHTML = `
+    <div class="synthesis-hero">
+      <div class="synthesis-eyebrow">Take 139 · Couples Synthesis</div>
+      <h1 class="synthesis-title">${myFirstName} &amp; ${partnerFirstName}</h1>
+      <p class="synthesis-subtitle">A counselor's reading of your two profiles together. What to anticipate, what to be cautious of, and what each of you can commit to.</p>
+    </div>
+
+    <div class="synthesis-overview">
+      ${renderPartnerCard(me)}
+      ${renderPartnerCard(partner)}
+    </div>
+
+    ${pairSection}
+
+    <div class="synthesis-actions">
+      <button class="btn btn-primary" onclick="window.print()">Print / Save as PDF</button>
+      <button class="btn btn-secondary" onclick="backToResults()">Back to my profile</button>
+    </div>
+  `;
+}
+
+function backToResults() {
+  showScreen('results');
+  window.scrollTo({top: 0, behavior: 'instant'});
 }
 
 // Override startOver
