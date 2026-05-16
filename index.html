@@ -1646,8 +1646,8 @@ const BREAKDOWNS = {
     gospelWord: 'The verdict is already in. Stop prosecuting. Justification means the performance ledger is closed — Christ\'s righteousness credited to your account.'
   },
   DISAP: {
-    name: 'The Disappearance',
-    short: 'a Disappearance',
+    name: 'The Ghost',
+    short: 'a Ghost',
     desc: 'I go somewhere you can\'t reach me — physically, emotionally, or both.',
     full: 'When the mechanism fails, you often exit the relationship space — sometimes physically (leaving the room, the house), sometimes emotionally (shutting down while remaining present). This is total shutdown. It can last hours or days. You may return without acknowledgment of what happened.',
     markers: [
@@ -1682,8 +1682,8 @@ const BREAKDOWNS = {
     gospelWord: 'You are seen. You don\'t have to force it. You are Adopted — the love you\'re fighting to receive has already been given. Bring your need from security, not from panic.'
   },
   GHOST: {
-    name: 'The Ghost',
-    short: 'a Ghost',
+    name: 'The Mask',
+    short: 'a Mask',
     desc: 'I act completely normal — as if nothing happened — and wait.',
     full: 'When the mechanism fails, you don\'t fight and don\'t flee. You freeze. You perform normalcy. You answer questions, go through routines, and appear fine — while internally carrying a significant unresolved wound. You are often waiting for the other person to notice, to ask, to fix it.',
     markers: [
@@ -1696,14 +1696,14 @@ const BREAKDOWNS = {
       'You\'re not performing coldness. You\'re actually hurting. The performance of normalcy is a cover for something you don\'t yet have words for.',
       'What you want is for someone to care enough to go looking for what\'s hidden. That this want is, in some sense, unfair doesn\'t make it any less real.'
     ],
-    spouseSees: 'You seem "fine" but something is clearly wrong. Flat affect behind normal words. Unusual quiet. Not initiating affection. When pressed — "I\'m fine." Your partner feels "haunted" — they know something happened but can\'t get to it.',
+    spouseSees: 'You seem "fine" but something is clearly wrong. Flat affect behind normal words. Unusual quiet. Not initiating affection. When pressed — "I\'m fine." Your partner feels locked out — they can see the mask, they know something is behind it, and they can\'t reach it.',
     gospelWord: 'Walking in the light is safer than you think. You are Justified and In Christ — being known won\'t destroy you. The covering is already on.'
   },
   VERD: {
     name: 'The Verdict',
     short: 'a Verdict',
     desc: 'I decide — internally — that I\'ve been failed, and I begin pulling away.',
-    full: 'When the mechanism fails, you don\'t explode, confront, or ghost — you decide. Internally, you render a verdict that the relationship has failed you. You begin emotionally withdrawing — slowly, invisibly — not as a punishing strategy but as a self-protective conclusion.',
+    full: 'When the mechanism fails, you don\'t explode, confront, or go silent — you decide. Internally, you render a verdict that the relationship has failed you. You begin emotionally withdrawing — slowly, invisibly — not as a punishing strategy but as a self-protective conclusion.',
     markers: [
       'You\'ve been here before — the moment when something shifts and you realize, quietly, that you\'ve stopped fighting for it. You haven\'t said anything. You just know.',
       'The verdict doesn\'t usually come from one thing. It comes from accumulation — from a hundred smaller moments that added up to a conclusion.',
@@ -1926,7 +1926,7 @@ const WRAPUP_QUESTIONS = {
         options: [
           {label: 'Something shuts off. It\'s not a choice. It\'s like a circuit breaker tripping. I go from fully present to completely internal in a moment.', value: 'a'},
           {label: 'I\'m overwhelmed and the only way to manage it is to remove myself. The distance isn\'t about them — it\'s about the noise in my head being too loud.', value: 'b'},
-          {label: 'I\'m angry and I don\'t trust what I\'d say if I stayed. The disappearance is actually me protecting them from the version of me that would come out.', value: 'c'},
+          {label: 'I\'m angry and I don\'t trust what I\'d say if I stayed. Going silent is actually me protecting them from the version of me that would come out.', value: 'c'},
           {label: 'I need to think. I can\'t process in real time with someone watching. I need to be alone with it before I can name it.', value: 'd'},
           {label: 'Part of it is a test. If I go, will they come looking? The answer tells me something I need to know.', value: 'e'},
           {label: 'I\'ve been here before — the shutdown is familiar. It\'s what my body does with pain it can\'t convert into words.', value: 'f'}
@@ -2059,9 +2059,9 @@ const PERSONALIZED_TEMPLATES = {
   },
   breakdowns: {
     COURT: "When you go into Attorney mode, it isn't because you love to argue — it's because [SELECTED_REASON]. What the case is really trying to accomplish is [TOP_RANKED]. Your partner experiences this as being cross-examined and convicted before they've had a chance to respond. What they may not see is that the prosecution is driven by something much more vulnerable than anger: a need to be vindicated, to have the record corrected, to hear someone say 'you were right and you were wronged.' That is a legitimate need. But the courtroom is not the way to get it. Because when you win, the verdict doesn't actually quiet the question underneath. It just buys temporary relief before the next case opens.",
-    DISAP: "When you disappear, it isn't about punishment — it's about [SELECTED_REASON]. What the shutdown is really protecting is [TOP_RANKED]. What your partner experiences in those moments is abandonment, even if that's not what you intend. What's actually happening inside you is something closer to a circuit breaker tripping — the emotional current got too high and the system shut down to prevent a worse outcome. The painful irony is that the person who needs you most when you disappear is the person your silence lands on hardest. Finding a way to signal 'I'm not gone, I just need two hours' is a different act than disappearing — and it's the one that keeps the connection alive while you regulate.",
+    DISAP: "When you go ghost, it isn't about punishment — it's about [SELECTED_REASON]. What the shutdown is really protecting is [TOP_RANKED]. What your partner experiences in those moments is abandonment, even if that's not what you intend. What's actually happening inside you is something closer to a circuit breaker tripping — the emotional current got too high and the system shut down to prevent a worse outcome. The painful irony is that the person who needs you most when you ghost is the person your silence lands on hardest. Finding a way to signal 'I'm not gone, I just need two hours' is a different act than ghosting — and it's the one that keeps the connection alive while you regulate.",
     FLOOD: "When the flood comes, it isn't an attack — it's [SELECTED_REASON]. What you're trying to communicate through the flood is [TOP_RANKED]. Your partner experiences it as being overwhelmed, targeted from multiple directions, unable to track what the conversation is actually about. What's actually happening is that you've been carrying something for a long time that finally found the door open. The problem isn't the feeling — the feeling is real and it deserved to come out. The problem is that it came out all at once, at full volume, without a shape, and your partner couldn't hold all of it. Learning to surface things in smaller doses — before the pressure builds to flood stage — is one of the most generous things you can do for this marriage.",
-    GHOST: "When you go ghost, it isn't passive aggression — it's [SELECTED_REASON]. What you're protecting in that silence is [TOP_RANKED]. What your partner experiences is haunting — they can feel something is wrong, they can't get to it, and they're not sure if they're imagining it. What's actually happening inside you is that the thing you're holding feels too raw, too risky, or too unformed to say out loud. The irony is that the silence designed to protect you is often the thing that does the most damage. It compounds the original wound with days of ambiguity and accumulated weight. The version of you that says 'something's wrong and I'm not ready to talk about it yet but I will be' — that's braver than the ghost, and it keeps the person you love from going crazy wondering.",
+    GHOST: "When you put on the mask, it isn't passive aggression — it's [SELECTED_REASON]. What you're protecting behind the mask is [TOP_RANKED]. What your partner experiences is a locked door — they can feel something is wrong, they can see the composed face, and they're not sure if they're imagining it. What's actually happening inside you is that the thing you're holding feels too raw, too risky, or too unformed to say out loud. The irony is that the mask designed to protect you is often the thing that does the most damage. It compounds the original wound with days of ambiguity and accumulated weight. The version of you that says 'something's wrong and I'm not ready to talk about it yet but I will be' — that's braver than the mask, and it keeps the person you love from going crazy wondering.",
     VERD: "When you render the verdict, it isn't cruelty — it's [SELECTED_REASON]. What the emotional withdrawal is really protecting is [TOP_RANKED]. Your partner experiences it as a slow, bewildering loss — warmth draining without explanation, effort declining without incident. What's actually happening is that you've been absorbing injuries quietly for longer than they know, and the verdict is what happens when the account runs out. The problem with the verdict is that it renders a sentence without a trial. Your partner never got to respond to the charges because the charges were never spoken out loud. The most important thing you can do for this marriage is to surface the case early — when there's still something to be done about it — rather than after you've already decided.",
     PLEA: "When you go into Plea mode, it isn't weakness — it's [SELECTED_REASON]. What the plea is really asking for is [TOP_RANKED]. Your partner experiences it as intensity that's hard to respond to — the apologies, the 'are we okay?', the inability to let the moment be unresolved. What's actually happening is that your attachment system has been activated and it is driving everything: heart rate, thoughts, behavior. The part of you that's running this show is not your rational mind — it's the part of you that, as a child, learned that relational distance was dangerous. Finding a way to soothe that system — to say 'I know we're going to be okay' to yourself before you can hear it from them — is some of the most important work you'll do in this marriage."
   }
@@ -2626,7 +2626,7 @@ function scoreFreeText(id, categories) {
   } else if (id === 'p4q4') {
     const patterns = {
       COURT: /\b(argu|evidence|case|prove|heard|acknowledg|fight|debate|right|point)\b/i,
-      DISAP: /\b(withdraw|quiet|alone|disappear|space|shut.?down|pull|away|silent)\b/i,
+      DISAP: /\b(withdraw|quiet|alone|disappear|space|shut.?down|pull|away|silent|ghost|unreachable|gone)\b/i,
       FLOOD: /\b(pour|everything|cry|tears|overwhelm|all.?at.?once|burst|couldn.?t.?stop)\b/i,
       GHOST: /\b(fine|normal|act|pretend|outside|inside|carry|perform|mask)\b/i,
       VERD: /\b(disconnect|losing|fade|change|pattern|decide|pull.?away|gradual|slow)\b/i,
