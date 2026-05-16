@@ -406,6 +406,25 @@ body {
   font-size: 0.92rem; line-height: 1.65; color: var(--text); margin-bottom: 0;
 }
 
+/* Close-call "two patterns honestly" callout */
+.close-call-note {
+  margin-top: 1.25rem; padding: 1rem 1.25rem;
+  background: rgba(200, 149, 108, 0.06);
+  border: 1px dashed rgba(200, 149, 108, 0.45);
+  border-radius: 8px;
+}
+.close-call-note .label {
+  font-family: var(--font-heading); font-size: 0.92rem; font-weight: 700;
+  letter-spacing: 0.04em; color: var(--accent); margin-bottom: 0.4rem;
+  text-transform: uppercase;
+}
+.close-call-note p {
+  font-size: 0.92rem; line-height: 1.65; color: var(--text); margin-bottom: 0;
+}
+.close-call-note p + p {
+  margin-top: 0.6rem;
+}
+
 /* Origin stories */
 .origin-stories { margin-top: 0.75rem; }
 .origin-story {
@@ -2423,6 +2442,65 @@ function goBack() {
 let wrapupQuestionList = [];
 let wrapupIndex = 0;
 
+// ── Close-call confirmation step ──────────────────────────────────────────
+// When a category's top-2 are within 15 percentage points of each other, we
+// ask the user which one feels more true. The answer is additive — the primary
+// (highest-scoring) result still leads, but the report names the runner-up
+// and reflects the user's stated experience of it.
+
+function buildConfirmQuestion(catType, primaryCat, secondaryCat) {
+  const lookups = {
+    trigger:    {dict: TRIGGERS,       categoryLabel: 'trigger',           noun: 'these triggers', verb: 'sets you off'},
+    mechanism:  {dict: MECHANISMS,     categoryLabel: 'protective pattern', noun: 'these patterns', verb: 'feels most like you'},
+    breakdown:  {dict: BREAKDOWNS,     categoryLabel: 'breakdown style',    noun: 'these breakdowns', verb: 'happens when the wheels come off'},
+  };
+  const cfg = lookups[catType];
+  const p = cfg.dict[primaryCat];
+  const s = cfg.dict[secondaryCat];
+
+  const lead = {
+    trigger:    `Two ${cfg.noun} came up almost equally for you. In real life, when conflict starts — which of these is the one that actually ${cfg.verb}?`,
+    mechanism:  `Two ${cfg.noun} came up almost equally for you. When you look at how you actually move through life day to day, which ${cfg.verb}?`,
+    breakdown:  `Two ${cfg.noun} came up almost equally for you. When the protection finally fails and you're at your worst — which of these is closer to what really ${cfg.verb}?`,
+  }[catType];
+
+  const footnote = 'In profiles like this, it\'s common to report one and actually live in another. Pick the one that, on honest reflection, feels most like you. We\'ll keep both in your results.';
+
+  return {
+    type: 'mc',
+    id: `confirm_${catType}`,
+    section: 'part5',
+    isConfirm: true,
+    primaryCat,
+    secondaryCat,
+    text: `${lead}\n\n${footnote}`,
+    options: [
+      {label: `${p.name} — ${p.desc}`, value: primaryCat},
+      {label: `${s.name} — ${s.desc}`, value: secondaryCat},
+      {label: 'Honestly, both fit — I can\'t pick one.', value: 'both'},
+    ],
+  };
+}
+
+function collectCloseCalls() {
+  // Returns an array of confirmation questions to insert at the end of the
+  // wrap-up flow, one per category whose top-2 are close.
+  const close = [];
+  if (prelimResults.trigger.closeCall) {
+    close.push(buildConfirmQuestion('trigger',
+      prelimResults.trigger.primary.cat, prelimResults.trigger.secondary.cat));
+  }
+  if (prelimResults.mechanism.closeCall) {
+    close.push(buildConfirmQuestion('mechanism',
+      prelimResults.mechanism.primary.cat, prelimResults.mechanism.secondary.cat));
+  }
+  if (prelimResults.breakdown.closeCall) {
+    close.push(buildConfirmQuestion('breakdown',
+      prelimResults.breakdown.primary.cat, prelimResults.breakdown.secondary.cat));
+  }
+  return close;
+}
+
 function startWrapup() {
   const scores = calculateScores();
   prelimResults = getResults(scores);
@@ -2440,6 +2518,24 @@ function startWrapup() {
   wrapupQuestionList.push({...WRAPUP_QUESTIONS.breakdowns[bd].mc, section:'part5', qnum:3, totalInSection:4, cat: bd, catType:'bd'});
   // Breakdown Rank
   wrapupQuestionList.push({...WRAPUP_QUESTIONS.breakdowns[bd].rank, section:'part5', qnum:4, totalInSection:4, cat: bd, catType:'bd'});
+
+  // ─ Close-call confirmation questions (one per close category) ─
+  const closeCalls = collectCloseCalls();
+  if (closeCalls.length > 0) {
+    wrapupQuestionList.push({
+      type: 'header',
+      partLabel: 'Part Five',
+      title: 'Two Patterns, Honestly',
+      desc: 'On a few dimensions, two patterns came up almost equally. In honest reflection, one usually feels more true than the other — even when both are real. The next ' + (closeCalls.length === 1 ? 'question helps' : 'questions help') + ' us hold both in your final results.',
+    });
+    closeCalls.forEach((q, i) => {
+      wrapupQuestionList.push({
+        ...q,
+        qnum: i + 1,
+        totalInSection: closeCalls.length,
+      });
+    });
+  }
 
   wrapupIndex = 0;
   showScreen('question');
@@ -2500,10 +2596,16 @@ function renderWrapupQuestion() {
     optionsHTML += '</div>';
   }
 
+  const labelText = q.isConfirm
+    ? `Part 5: Two Patterns, Honestly — Question ${q.qnum} of ${q.totalInSection}`
+    : `Part 5: Getting Specific — Question ${q.qnum} of ${q.totalInSection}`;
+  // Convert paragraph breaks (\n\n) into actual <br><br> so multi-line
+  // confirm-question text renders the way it's authored.
+  const renderedText = String(q.text).split('\n\n').map(p => `<p>${p}</p>`).join('');
   container.innerHTML = `
     <div class="question-card">
-      <div class="question-num">Part 5: Getting Specific — Question ${q.qnum} of ${q.totalInSection}</div>
-      <div class="question-text">${q.text}</div>
+      <div class="question-num">${labelText}</div>
+      <div class="question-text">${renderedText}</div>
       ${optionsHTML}
     </div>`;
 
@@ -2720,9 +2822,13 @@ function getResults(scores) {
       .sort((a,b) => b.score - a.score);
     const primary = sorted[0];
     const secondary = sorted[1];
-    const blended = primary.score > 0 && secondary.score > 0 &&
-      (primary.score - secondary.score) / primary.score < 0.15;
-    return { primary, secondary, sorted, blended, total };
+    // "Close call" = top-two are within 15 percentage points of each other.
+    // Used to trigger the confirmation step so the user can name which feels more true.
+    const closeCall = primary.pct > 0 && secondary.pct > 0 &&
+      (primary.pct - secondary.pct) <= 15;
+    // Keep legacy 'blended' flag for backward compatibility
+    const blended = closeCall;
+    return { primary, secondary, sorted, closeCall, blended, total };
   }
 
   return {
@@ -2797,6 +2903,36 @@ function fillTemplate(template, mechOrBd, catType) {
 
 // ==================== RESULTS RENDERING ====================
 
+// Build the additive "two patterns honestly" note for a category that
+// had a close call. Returns HTML to inject inside the detail card, or '' if
+// no close call occurred. The user's stated pick is reflected back to them.
+function renderCloseCallNote(catType, result, dict) {
+  if (!result || !result.closeCall) return '';
+  const primaryName = dict[result.primary.cat].name;
+  const secondaryName = dict[result.secondary.cat].name;
+  const userPick = wrapupAnswers[`confirm_${catType}`];
+
+  let stancePara;
+  if (userPick === result.primary.cat) {
+    stancePara = `When we asked you which one feels more true on honest reflection, you said <b>${primaryName}</b>. That confirms what the score showed. But ${secondaryName} ran almost as strong on the assessment, so it is worth holding in view — there is a real version of you that, under different circumstances or in a different season, would lead from there. Pay attention when that side of you surfaces.`;
+  } else if (userPick === result.secondary.cat) {
+    stancePara = `When we asked you which one feels more true on honest reflection, you said <b>${secondaryName}</b>. We are keeping ${primaryName} as your primary because that is where the assessment scored you highest, but your stated experience matters. It is common for someone to report one and actually live in another. Read both descriptions carefully — the truth is probably some blend of the two, with ${secondaryName} closer to the felt experience and ${primaryName} closer to what others observe in you.`;
+  } else if (userPick === 'both') {
+    stancePara = `When we asked you which one feels more true, you said honestly that both fit. That is a meaningful answer. Some people genuinely operate from two patterns depending on context — one in marriage, one in work; one with family, one with friends. Hold both <b>${primaryName}</b> and <b>${secondaryName}</b> as real, and notice over the coming weeks which one shows up when.`;
+  } else {
+    // No answer recorded (shouldn't normally happen, but defensive)
+    stancePara = `Two patterns came up almost equally: <b>${primaryName}</b> and <b>${secondaryName}</b>. We have led with ${primaryName} because it scored highest, but ${secondaryName} is also worth reading carefully. The truth is probably a blend.`;
+  }
+
+  return `
+    <div class="close-call-note">
+      <div class="label">Two Patterns, Honestly</div>
+      <p>${stancePara}</p>
+      <p style="margin-top:0.75rem;"><b>The runner-up: ${secondaryName}.</b> ${dict[result.secondary.cat].desc}</p>
+    </div>
+  `;
+}
+
 function showResults() {
   const scores = calculateScores();
   const results = getResults(scores);
@@ -2817,6 +2953,11 @@ function showResults() {
   // Build personalized content
   const mechTemplate = fillTemplate(PERSONALIZED_TEMPLATES.mechanisms[mech], mech, 'mech');
   const bdTemplate = fillTemplate(PERSONALIZED_TEMPLATES.breakdowns[bd], bd, 'bd');
+
+  // Build close-call additive notes (one per category, only if it was close)
+  const triggerCloseCall = renderCloseCallNote('trigger', results.trigger, TRIGGERS);
+  const mechCloseCall = renderCloseCallNote('mechanism', results.mechanism, MECHANISMS);
+  const bdCloseCall = renderCloseCallNote('breakdown', results.breakdown, BREAKDOWNS);
 
   const container = document.getElementById('resultsContent');
 
@@ -2855,6 +2996,7 @@ function showResults() {
           <p>${TRIGGERS[trig].examples}</p>
           <div class="label">Emotional Signature</div>
           <p>${TRIGGERS[trig].signature}</p>
+          ${triggerCloseCall}
           <div class="label">Score Breakdown</div>
           ${renderPctBars(results.trigger.sorted, TRIGGERS, 'name')}
         </div>
@@ -2895,6 +3037,7 @@ function showResults() {
             <div class="ps-title">How This Shows Up In Your Life Specifically</div>
             <p>${mechTemplate}</p>
           </div>
+          ${mechCloseCall}
           <div class="label" style="margin-top:1.25rem;">Score Breakdown</div>
           ${renderPctBars(results.mechanism.sorted, MECHANISMS, 'name')}
         </div>
@@ -2915,6 +3058,7 @@ function showResults() {
             <div class="ps-title">How This Shows Up In Your Life Specifically</div>
             <p>${bdTemplate}</p>
           </div>
+          ${bdCloseCall}
           <div class="label" style="margin-top:1.25rem;">Score Breakdown</div>
           ${renderPctBars(results.breakdown.sorted, BREAKDOWNS, 'name')}
         </div>
