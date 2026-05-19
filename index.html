@@ -763,6 +763,119 @@ h3 { font-variation-settings: 'opsz' 30; }
   text-decoration: underline; background: none; border: none;
 }
 
+/* ── ILLUSTRATIONS ── */
+.figure-img {
+  width: 100%; height: auto;
+  display: block;
+  border-radius: 6px;
+  /* Multiply blend lets the illustration's cream paper background
+     fade into whatever surface the figure is sitting on — page bg,
+     detail card surface, partner card, etc. */
+  mix-blend-mode: multiply;
+}
+/* On synthesis-overview cards and similar surfaces, illustrations also
+   pick up a tiny contrast boost so they don't look washed out. */
+.partner-card .figure-img,
+.detail-card .figure-img {
+  filter: contrast(1.06);
+}
+.figure-inline {
+  float: right;
+  width: 200px;
+  margin: 0 0 1rem 1.5rem;
+  shape-outside: margin-box;
+}
+.figure-inline .figure-img {
+  width: 100%; height: auto;
+  filter: contrast(1.04);
+}
+@media (max-width: 640px) {
+  .figure-inline {
+    float: none;
+    width: 100%;
+    max-width: 280px;
+    margin: 0 auto 1.5rem;
+    display: block;
+  }
+}
+.figure-inline-sm {
+  float: right;
+  width: 110px;
+  margin: 0 0 0.5rem 1rem;
+}
+.figure-inline-sm .figure-img {
+  width: 100%; height: auto;
+}
+@media (max-width: 560px) {
+  .figure-inline-sm { width: 90px; }
+}
+
+/* ── REVEAL SCREEN (between Part 5 and full results) ── */
+.reveal-screen { padding: 0; }
+.reveal-stage {
+  min-height: 88vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 3rem 1.5rem 4rem;
+  animation: revealFadeIn 1.2s ease forwards;
+}
+.reveal-eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.7rem; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--accent);
+  font-weight: 600; margin-bottom: 1.25rem;
+  opacity: 0;
+  animation: revealFadeUp 0.9s 0.2s ease forwards;
+}
+.reveal-figure-wrap {
+  width: 100%; max-width: 380px;
+  margin: 0 auto 2rem;
+  opacity: 0;
+  animation: revealFadeUp 1.1s 0.6s ease forwards;
+}
+.reveal-figure-wrap .figure-img {
+  width: 100%; height: auto;
+  filter: contrast(1.04);
+}
+.reveal-name {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 5vw, 3.75rem);
+  font-weight: 600; color: var(--text);
+  font-variation-settings: 'opsz' 120;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin: 0 0 0.85rem 0;
+  opacity: 0;
+  animation: revealFadeUp 1s 1.4s ease forwards;
+}
+.reveal-tagline {
+  font-family: var(--font-heading);
+  font-style: italic; font-size: 1.15rem;
+  color: var(--muted); max-width: 30rem;
+  margin: 0 auto 2.5rem; line-height: 1.55;
+  font-variation-settings: 'opsz' 14;
+  opacity: 0;
+  animation: revealFadeUp 1s 1.8s ease forwards;
+}
+.reveal-cta {
+  opacity: 0;
+  animation: revealFadeUp 1s 2.4s ease forwards;
+}
+@keyframes revealFadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+@keyframes revealFadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-stage, .reveal-eyebrow, .reveal-figure-wrap,
+  .reveal-name, .reveal-tagline, .reveal-cta {
+    animation-duration: 0.01s !important; opacity: 1 !important;
+  }
+}
+
 /* ── RESPONSIVE ── */
 @media (max-width: 640px) {
   .how-cards { grid-template-columns: 1fr; }
@@ -1018,6 +1131,9 @@ h3 { font-variation-settings: 'opsz' 30; }
         <button class="btn btn-secondary" id="backBtn" onclick="goBack()">Back</button>
         <button class="btn btn-primary" id="nextBtn" onclick="goNext()">Next</button>
       </div>
+    </div>
+    <div class="screen reveal-screen" id="screen-reveal">
+      <div id="revealContent"></div>
     </div>
     <div class="screen results-screen" id="screen-results">
       <div id="resultsContent"></div>
@@ -3119,7 +3235,8 @@ function goNextWrapup() {
   }
 
   if (wrapupIndex >= wrapupQuestionList.length - 1) {
-    showResults();
+    // v3: show the figure-reveal screen first, then go to full results
+    showRevealThenResults();
     return;
   }
   wrapupIndex++;
@@ -3407,6 +3524,64 @@ function renderCloseCallNote(catType, result, dict) {
   `;
 }
 
+// ==================== ILLUSTRATION REVEAL ====================
+//
+// After Part 5 of the assessment, before the user sees the full results page,
+// we show a single screen with their Mechanism figure and name. This is the
+// emotional climax of the assessment — the moment of being named.
+
+// Short tagline that lives under the figure on the reveal screen. Keep it
+// to a single line; the full description lives on the next screen.
+const MECHANISM_TAGLINES = {
+  ARCH:  "The one who builds the structure that holds it all together.",
+  ISLE:  "The one who finds themselves by being alone with themselves.",
+  AMB:   "The one who tends to everyone, even when they're hurting too.",
+  VAULT: "The one whose interiority is the most well-kept room they own.",
+  ADPT:  "The one who becomes whatever the room asks of them.",
+  CAMP:  "The one whose life is always halfway into the next thing.",
+};
+
+// Map a mechanism code to its illustration file path.
+function figurePath(code) {
+  if (!code) return '';
+  return `images/figures/${code}.jpg`;
+}
+
+// Builds an <img> element string that gracefully hides itself if the
+// illustration file is missing. Use this everywhere we render a figure.
+function figureImg(code, alt) {
+  if (!code) return '';
+  const safeAlt = (alt || '').replace(/"/g, '&quot;');
+  return `<img class="figure-img" src="${figurePath(code)}" alt="${safeAlt}" onerror="this.parentElement.style.display='none';" />`;
+}
+
+function showRevealThenResults() {
+  // Compute the user's mechanism from the same scoring path showResults uses.
+  const scores = calculateScores();
+  const results = getResults(scores);
+  const mech = results.mechanism.primary.cat;
+  const mechName = (MECHANISMS[mech] && MECHANISMS[mech].name) || 'Your pattern';
+  const tagline = MECHANISM_TAGLINES[mech] || '';
+  const figureSrc = figurePath(mech);
+
+  showScreen('reveal');
+  currentScreen = 'reveal';
+  window.scrollTo({top: 0, behavior: 'instant'});
+
+  const container = document.getElementById('revealContent');
+  container.innerHTML = `
+    <div class="reveal-stage">
+      <div class="reveal-eyebrow">You are</div>
+      <div class="reveal-figure-wrap">
+        ${figureImg(mech, mechName)}
+      </div>
+      <h1 class="reveal-name">${mechName}</h1>
+      ${tagline ? `<p class="reveal-tagline">${tagline}</p>` : ''}
+      <button class="btn btn-primary reveal-cta" onclick="showResults()">See your full profile</button>
+    </div>
+  `;
+}
+
 function showResults() {
   const scores = calculateScores();
   const results = getResults(scores);
@@ -3500,6 +3675,7 @@ function showResults() {
           <span class="detail-arrow">▾</span>
         </div>
         <div class="detail-body">
+          <div class="figure-inline">${figureImg(mech, MECHANISMS[mech].name)}</div>
           <p>${MECHANISMS[mech].full}</p>
           <div class="label">What Your Partner Will Typically See</div>
           <p>${MECHANISMS[mech].spouseSees}</p>
@@ -3523,6 +3699,7 @@ function showResults() {
           <span class="detail-arrow">▾</span>
         </div>
         <div class="detail-body">
+          <div class="figure-inline">${figureImg(bd, BREAKDOWNS[bd].name)}</div>
           <p>${BREAKDOWNS[bd].full}</p>
           <div class="label">What Your Partner Typically Sees</div>
           <p>${BREAKDOWNS[bd].spouseSees}</p>
@@ -4095,6 +4272,7 @@ function renderPartnerCard(partner) {
   const safeName = (partner.name || 'Your partner').split(/\s+/)[0]; // first name only
   return `
     <div class="partner-card">
+      <div class="figure-inline-sm">${figureImg(partner.primary_mechanism, mech ? mech.name : '')}</div>
       <h3 class="partner-card-name">${safeName}</h3>
       <div class="partner-card-code">${partner.pair_code}</div>
       <div class="partner-row">
