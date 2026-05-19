@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Churches &amp; Counselors — Take 139</title>
+<meta name="description" content="Bring Take 139 to your church, premarital ministry, or counseling practice.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f5f1e8;
+  --surface: #efe9dc;
+  --surface-2: #e8e1d0;
+  --border: #d8cfba;
+  --hairline: rgba(29, 29, 27, 0.12);
+  --text: #1d1d1b;
+  --muted: #5d564b;
+  --faint: #8b8475;
+  --accent: #8a4a2c;
+  --accent-hover: #6f3a23;
+  --font-heading: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image:
+    radial-gradient(rgba(0,0,0,0.012) 1px, transparent 1px),
+    radial-gradient(rgba(0,0,0,0.010) 1px, transparent 1px);
+  background-size: 24px 24px, 36px 36px;
+  background-position: 0 0, 12px 18px;
+  background-attachment: fixed;
+}
+
+h1, h2, h3, h4 { font-family: var(--font-heading); }
+h1 { font-variation-settings: 'opsz' 120; letter-spacing: -0.015em; }
+h2 { font-variation-settings: 'opsz' 80;  letter-spacing: -0.012em; }
+h3 { font-variation-settings: 'opsz' 30; }
+
+/* ── TOP NAV (shared) ── */
+.topnav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(245, 241, 232, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--hairline);
+}
+.topnav-inner {
+  max-width: 1100px; margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 2rem;
+}
+.topnav-brand {
+  font-family: var(--font-heading); font-size: 1.25rem; font-weight: 600;
+  color: var(--text); text-decoration: none;
+  letter-spacing: -0.01em;
+}
+.topnav-links {
+  display: flex; align-items: center; gap: 2rem;
+  list-style: none;
+}
+.topnav-links a {
+  font-family: var(--font-body); font-size: 0.92rem; font-weight: 500;
+  color: var(--muted); text-decoration: none;
+  transition: color 0.2s;
+}
+.topnav-links a:hover { color: var(--accent); }
+.topnav-links a.active { color: var(--text); }
+.topnav-links a.cta {
+  color: var(--bg); background: var(--text);
+  padding: 0.55rem 1.2rem; border-radius: 999px;
+}
+.topnav-links a.cta:hover { background: #2a2a26; color: var(--bg); }
+@media (max-width: 700px) {
+  .topnav-inner { padding: 0.85rem 1rem; gap: 0.5rem; }
+  .topnav-links { gap: 1rem; }
+  .topnav-links a { font-size: 0.85rem; }
+  .topnav-links a.cta { padding: 0.45rem 1rem; }
+  .topnav-links .hide-mobile { display: none; }
+}
+
+/* ── PAGE ── */
+.page {
+  max-width: 760px; margin: 0 auto;
+  padding: 4rem 1.5rem 6rem;
+}
+.page-eyebrow {
+  font-family: var(--font-body); font-size: 0.7rem;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--accent); font-weight: 600; margin-bottom: 1rem;
+}
+.page-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 5vw, 3.75rem); font-weight: 600;
+  line-height: 1.0; color: var(--text);
+  font-variation-settings: 'opsz' 144; letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+.page-title .marked { position: relative; display: inline-block; }
+.page-title .marked::after {
+  content: '';
+  position: absolute; left: -4px; right: -4px; bottom: -8px; height: 14px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 14' preserveAspectRatio='none'><path d='M2 9 Q 55 2 110 8 T 218 7' fill='none' stroke='%238a4a2c' stroke-width='2.5' stroke-linecap='round'/></svg>");
+  background-repeat: no-repeat; background-size: 100% 100%;
+}
+.page-lede {
+  font-family: var(--font-heading); font-size: 1.25rem; font-style: italic;
+  color: var(--muted); line-height: 1.55; max-width: 36rem;
+  margin-bottom: 3rem;
+  font-variation-settings: 'opsz' 14;
+}
+
+section + section { margin-top: 3.5rem; }
+.section-eyebrow {
+  font-family: var(--font-body); font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.75rem;
+}
+section h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.85rem, 3.5vw, 2.5rem); font-weight: 600;
+  color: var(--text); line-height: 1.15;
+  font-variation-settings: 'opsz' 100;
+  margin-bottom: 1.25rem;
+}
+section h3 {
+  font-family: var(--font-heading); font-size: 1.35rem; font-weight: 600;
+  color: var(--text); margin-top: 2rem; margin-bottom: 0.75rem;
+  font-variation-settings: 'opsz' 30;
+}
+section p {
+  color: var(--text); font-size: 1.02rem; line-height: 1.75;
+  margin-bottom: 1.1rem;
+}
+section p em {
+  font-family: var(--font-heading); font-style: italic;
+}
+section ul, section ol {
+  color: var(--text); font-size: 1.02rem; line-height: 1.75;
+  margin: 0 0 1.5rem 1.5rem;
+}
+section ul li, section ol li { margin-bottom: 0.4rem; }
+
+/* ── INQUIRY FORM ── */
+.inquiry-form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 2.25rem 1.75rem;
+  margin-top: 2rem;
+}
+.inquiry-form .form-label {
+  display: block; font-size: 0.78rem; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.1em;
+  font-weight: 600; margin-bottom: 0.4rem;
+}
+.inquiry-form .form-row { margin-bottom: 1.25rem; }
+.inquiry-form input,
+.inquiry-form select,
+.inquiry-form textarea {
+  width: 100%; padding: 0.85rem 1rem;
+  background: var(--bg); border: 1.5px solid var(--border);
+  border-radius: 6px;
+  font-family: var(--font-body); font-size: 1rem; color: var(--text);
+  outline: none; transition: border-color 0.2s;
+}
+.inquiry-form input:focus,
+.inquiry-form select:focus,
+.inquiry-form textarea:focus { border-color: var(--accent); }
+.inquiry-form textarea { resize: vertical; min-height: 100px; }
+.inquiry-form .form-help {
+  font-size: 0.82rem; color: var(--faint);
+  font-style: italic; margin-top: 0.3rem;
+}
+.inquiry-status {
+  margin-top: 1rem; font-size: 0.9rem; min-height: 1.2em;
+}
+.inquiry-status.ok  { color: #436b32; }
+.inquiry-status.err { color: #a04030; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0.95rem 2rem; border-radius: 999px; border: none;
+  font-family: var(--font-body); font-size: 0.98rem; font-weight: 500;
+  cursor: pointer; transition: all 0.2s ease; text-decoration: none;
+}
+.btn-primary { background: var(--text); color: var(--bg); }
+.btn-primary:hover { background: #2a2a26; }
+.btn:disabled { opacity: 0.6; cursor: wait; }
+
+.divider {
+  width: 48px; height: 0.5px; background: var(--text);
+  margin: 4rem auto;
+}
+
+/* ── FOOTER ── */
+.footer {
+  border-top: 1px solid var(--hairline);
+  margin-top: 6rem; padding: 2.5rem 1.5rem;
+  text-align: center; color: var(--faint);
+  font-size: 0.85rem;
+}
+.footer a { color: var(--muted); text-decoration: underline; }
+.footer a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="topnav-brand">Take 139</a>
+    <ul class="topnav-links">
+      <li><a href="how-it-works.html">How It Works</a></li>
+      <li><a href="imago/" class="hide-mobile">IMAGO</a></li>
+      <li><a href="for-churches.html" class="active">For Churches</a></li>
+      <li><a href="sign-in.html" class="cta">Sign In</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="page">
+
+  <div class="page-eyebrow">For Churches &amp; Counselors</div>
+  <h1 class="page-title">Bring <span class="marked">Take 139</span> to your people</h1>
+  <p class="page-lede">If you serve a church, lead a premarital ministry, or work with couples in a counseling practice, Take 139 can be used in your context — either as a self-directed assessment your couples take on their own, or as part of a longer engagement with our team.</p>
+
+  <section>
+    <div class="section-eyebrow">Section One</div>
+    <h2>What we offer</h2>
+
+    <h3>For premarital ministries and church leaders</h3>
+    <p>Most churches' premarital materials cover the practical topics — communication, finances, expectations, sex — without giving the couple a serious vocabulary for the patterns of conflict already beginning to live between them. Take 139 fills that gap. Couples take the assessment privately, receive their joined profile, and arrive at their next meeting with the pastor or premarital mentor already in possession of the language they need.</p>
+
+    <h3>For counselors and therapists</h3>
+    <p>Take 139 sits well as the diagnostic conversation early in a counseling engagement. The framework — triggers, core questions, mechanisms, breakdowns — gives the counselor a shared vocabulary with the client that they did not have to teach in session. Several counselors are already using it this way.</p>
+
+    <h3>For conferences, retreats, and longer engagements</h3>
+    <p>For churches and organizations that want more than the assessment itself, our team is available to teach the framework, train pastoral staff to use it, lead premarital classes, or speak at marriage conferences and retreats. The depth of the engagement is something we work out together.</p>
+  </section>
+
+  <section>
+    <div class="section-eyebrow">Section Two</div>
+    <h2>Get in touch</h2>
+    <p>If you would like to talk about bringing Take 139 to your church, conference, or counseling practice — or if you are simply not sure what would be useful and want to begin a conversation — fill in the form below and we will be in touch.</p>
+
+    <form class="inquiry-form" id="inquiryForm" onsubmit="submitInquiry(event)">
+      <div class="form-row">
+        <label class="form-label" for="iqName">Your name</label>
+        <input type="text" id="iqName" name="name" required>
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="iqEmail">Your email</label>
+        <input type="email" id="iqEmail" name="email" required>
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="iqRole">Your role</label>
+        <input type="text" id="iqRole" name="role" placeholder="Pastor, counselor, ministry leader, etc.">
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="iqOrg">Your church or organization</label>
+        <input type="text" id="iqOrg" name="organization">
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="iqType">What kind of engagement are you considering?</label>
+        <select id="iqType" name="inquiry_type">
+          <option value="">— Choose one —</option>
+          <option>Bringing Take 139 to a premarital ministry</option>
+          <option>Using Take 139 in counseling practice</option>
+          <option>Speaking / conference / retreat</option>
+          <option>Training pastoral staff on the framework</option>
+          <option>Long-term partnership</option>
+          <option>Not sure yet — exploring</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="iqMessage">Tell us more</label>
+        <textarea id="iqMessage" name="message" placeholder="Who do you serve? What are you hoping for? What would be most useful?"></textarea>
+        <div class="form-help">Anything helps — even a paragraph or two.</div>
+      </div>
+      <button type="submit" class="btn btn-primary" id="iqBtn">Send inquiry</button>
+      <div class="inquiry-status" id="iqStatus"></div>
+    </form>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>Take 139 &middot; <em>Search me, O God, and know my heart.</em> &middot; Created by Dr. Christopher Hilken</p>
+  <p style="margin-top:0.4rem;">
+    <a href="how-it-works.html">How It Works</a> &middot;
+    <a href="imago/">IMAGO</a> &middot;
+    <a href="for-churches.html">For Churches</a> &middot;
+    <a href="sign-in.html">Sign In</a>
+  </p>
+</footer>
+
+<script>
+const BACKEND_URL = 'https://take139-backend-production.up.railway.app';
+
+async function submitInquiry(event) {
+  event.preventDefault();
+  const btn = document.getElementById('iqBtn');
+  const status = document.getElementById('iqStatus');
+  status.textContent = '';
+  status.className = 'inquiry-status';
+
+  const payload = {
+    name:          document.getElementById('iqName').value.trim(),
+    email:         document.getElementById('iqEmail').value.trim(),
+    role:          document.getElementById('iqRole').value.trim(),
+    organization:  document.getElementById('iqOrg').value.trim(),
+    inquiry_type:  document.getElementById('iqType').value,
+    message:       document.getElementById('iqMessage').value.trim(),
+  };
+
+  if (!payload.name || !payload.email) {
+    status.textContent = 'Name and email are required.';
+    status.className = 'inquiry-status err';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  try {
+    const res = await fetch(BACKEND_URL + '/consultant-inquiry', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      status.textContent = err.detail || 'Could not submit. Try again in a moment.';
+      status.className = 'inquiry-status err';
+      return;
+    }
+    status.textContent = 'Sent. We will be in touch soon. Thank you.';
+    status.className = 'inquiry-status ok';
+    document.getElementById('inquiryForm').reset();
+  } catch (err) {
+    console.error(err);
+    status.textContent = 'Connection error. Please try again.';
+    status.className = 'inquiry-status err';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Send inquiry';
+  }
+}
+</script>
+
+</body>
+</html>

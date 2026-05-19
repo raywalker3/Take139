@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How It Works — Take 139</title>
+<meta name="description" content="What Take 139 is, how to use it, and the scholarship behind it. Created by Dr. Christopher Hilken.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f5f1e8;
+  --surface: #efe9dc;
+  --surface-2: #e8e1d0;
+  --border: #d8cfba;
+  --hairline: rgba(29, 29, 27, 0.12);
+  --text: #1d1d1b;
+  --muted: #5d564b;
+  --faint: #8b8475;
+  --accent: #8a4a2c;
+  --accent-hover: #6f3a23;
+  --font-heading: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image:
+    radial-gradient(rgba(0,0,0,0.012) 1px, transparent 1px),
+    radial-gradient(rgba(0,0,0,0.010) 1px, transparent 1px);
+  background-size: 24px 24px, 36px 36px;
+  background-position: 0 0, 12px 18px;
+  background-attachment: fixed;
+}
+
+h1, h2, h3, h4 { font-family: var(--font-heading); }
+h1 { font-variation-settings: 'opsz' 120; letter-spacing: -0.015em; }
+h2 { font-variation-settings: 'opsz' 80;  letter-spacing: -0.012em; }
+h3 { font-variation-settings: 'opsz' 30; }
+
+/* ── TOP NAV ── */
+.topnav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(245, 241, 232, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--hairline);
+}
+.topnav-inner {
+  max-width: 1100px; margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 2rem;
+}
+.topnav-brand {
+  font-family: var(--font-heading); font-size: 1.25rem; font-weight: 600;
+  color: var(--text); text-decoration: none;
+  letter-spacing: -0.01em;
+}
+.topnav-links {
+  display: flex; align-items: center; gap: 2rem;
+  list-style: none;
+}
+.topnav-links a {
+  font-family: var(--font-body); font-size: 0.92rem; font-weight: 500;
+  color: var(--muted); text-decoration: none;
+  transition: color 0.2s;
+}
+.topnav-links a:hover { color: var(--accent); }
+.topnav-links a.active { color: var(--text); }
+.topnav-links a.cta {
+  color: var(--bg); background: var(--text);
+  padding: 0.55rem 1.2rem; border-radius: 999px;
+  transition: background 0.2s;
+}
+.topnav-links a.cta:hover { background: #2a2a26; color: var(--bg); }
+@media (max-width: 700px) {
+  .topnav-inner { padding: 0.85rem 1rem; gap: 0.5rem; }
+  .topnav-links { gap: 1rem; }
+  .topnav-links a { font-size: 0.85rem; }
+  .topnav-links a.cta { padding: 0.45rem 1rem; }
+  /* Hide one link on very narrow screens to save room */
+  .topnav-links .hide-mobile { display: none; }
+}
+
+/* ── PAGE LAYOUT ── */
+.page {
+  max-width: 760px; margin: 0 auto;
+  padding: 4rem 1.5rem 6rem;
+}
+.page-eyebrow {
+  font-family: var(--font-body); font-size: 0.7rem;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--accent); font-weight: 600;
+  margin-bottom: 1rem;
+}
+.page-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 5vw, 3.75rem); font-weight: 600;
+  line-height: 1.0; color: var(--text);
+  font-variation-settings: 'opsz' 144; letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+.page-title .marked { position: relative; display: inline-block; }
+.page-title .marked::after {
+  content: '';
+  position: absolute; left: -4px; right: -4px; bottom: -8px; height: 14px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 14' preserveAspectRatio='none'><path d='M2 9 Q 55 2 110 8 T 218 7' fill='none' stroke='%238a4a2c' stroke-width='2.5' stroke-linecap='round'/></svg>");
+  background-repeat: no-repeat; background-size: 100% 100%;
+  pointer-events: none;
+}
+.page-lede {
+  font-family: var(--font-heading); font-size: 1.25rem; font-style: italic;
+  color: var(--muted); line-height: 1.55; max-width: 36rem;
+  margin-bottom: 3rem;
+  font-variation-settings: 'opsz' 14;
+}
+
+section + section { margin-top: 3.5rem; }
+.section-eyebrow {
+  font-family: var(--font-body); font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.75rem;
+}
+section h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.85rem, 3.5vw, 2.5rem); font-weight: 600;
+  color: var(--text); line-height: 1.15;
+  font-variation-settings: 'opsz' 100;
+  margin-bottom: 1.25rem;
+}
+section h3 {
+  font-family: var(--font-heading); font-size: 1.35rem; font-weight: 600;
+  color: var(--text); margin-top: 2rem; margin-bottom: 0.75rem;
+  font-variation-settings: 'opsz' 30;
+}
+section p {
+  color: var(--text); font-size: 1.02rem; line-height: 1.75;
+  margin-bottom: 1.1rem;
+}
+section p em {
+  font-family: var(--font-heading); font-style: italic;
+  color: var(--text);
+}
+section ul, section ol {
+  color: var(--text); font-size: 1.02rem; line-height: 1.75;
+  margin: 0 0 1.5rem 1.5rem;
+}
+section ul li, section ol li { margin-bottom: 0.4rem; }
+
+.callout {
+  margin: 2rem 0; padding: 1.5rem 1.75rem;
+  background: var(--surface);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+}
+.callout p:last-child { margin-bottom: 0; }
+.callout .callout-label {
+  font-size: 0.7rem; letter-spacing: 0.28em;
+  text-transform: uppercase; color: var(--accent);
+  font-weight: 700; margin-bottom: 0.5rem;
+}
+
+.divider {
+  width: 48px; height: 0.5px;
+  background: var(--text);
+  margin: 4rem auto;
+}
+
+.cta-row {
+  display: flex; gap: 0.75rem; flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0.85rem 1.85rem; border-radius: 999px; border: none;
+  font-family: var(--font-body); font-size: 0.95rem; font-weight: 500;
+  cursor: pointer; transition: all 0.2s ease;
+  text-decoration: none;
+}
+.btn-primary { background: var(--text); color: var(--bg); }
+.btn-primary:hover { background: #2a2a26; }
+.btn-secondary {
+  background: transparent; color: var(--text);
+  border: 1.5px solid var(--text);
+}
+.btn-secondary:hover { background: var(--text); color: var(--bg); }
+
+/* ── BIBLIOGRAPHY ── */
+.bib {
+  list-style: none; margin-left: 0;
+}
+.bib li {
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--hairline);
+  font-size: 0.95rem; line-height: 1.6;
+}
+.bib li:last-child { border-bottom: 1px solid var(--hairline); }
+.bib-author { font-weight: 600; color: var(--text); }
+.bib-work {
+  font-family: var(--font-heading); font-style: italic;
+  color: var(--text); font-variation-settings: 'opsz' 14;
+}
+.bib-note {
+  display: block; color: var(--muted); font-size: 0.88rem; margin-top: 0.2rem;
+}
+
+/* ── FOOTER ── */
+.footer {
+  border-top: 1px solid var(--hairline);
+  margin-top: 6rem; padding: 2.5rem 1.5rem;
+  text-align: center; color: var(--faint);
+  font-size: 0.85rem;
+}
+.footer a { color: var(--muted); text-decoration: underline; }
+.footer a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<!-- ════════════ TOP NAVIGATION ════════════ -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="topnav-brand">Take 139</a>
+    <ul class="topnav-links">
+      <li><a href="how-it-works.html" class="active">How It Works</a></li>
+      <li><a href="imago/" class="hide-mobile">IMAGO</a></li>
+      <li><a href="for-churches.html">For Churches</a></li>
+      <li><a href="sign-in.html" class="cta">Sign In</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="page">
+
+  <div class="page-eyebrow">About the Assessment</div>
+  <h1 class="page-title">How <span class="marked">it works</span></h1>
+  <p class="page-lede">Take 139 is a premarital diagnostic for the stories underneath your conflict. This is the orientation page — what the assessment measures, how a couple uses it together, and the scholarship the framework sits on.</p>
+
+  <!-- ════════════ WHAT IT IS ════════════ -->
+  <section>
+    <div class="section-eyebrow">Section One</div>
+    <h2>What Take 139 is — and what it isn't</h2>
+    <p>Take 139 is a four-part diagnostic that names the patterns underneath the conflict in your relationship. The four parts move from the surface to the depth — from what you feel in the moment, to the question your soul has been asking since long before this relationship, to how you protect yourself from that question, to what happens when the protection finally fails.</p>
+    <p>On the surface, an assessment like this may look like a personality test. In reality, it is closer to what happens in the first few sessions of pastoral counseling — a way of beginning to name what you carry, so that conversations with the person you love can have more honesty and more grace in them.</p>
+    <p>The name comes from Psalm 139 — <em>"Search me, O God, and know my heart; try me, and know my thoughts; and see if there be any wicked way in me, and lead me in the way everlasting."</em> The framing matters. Take 139 is not a diagnostic that lets you know your spouse better in order to win arguments with them. It is a diagnostic that lets the Lord, through honest self-knowledge, do the slow work of making you a kinder person to be married to.</p>
+
+    <div class="callout">
+      <div class="callout-label">What this is not</div>
+      <p>This is not a clinical diagnosis. It is not counseling. It is not a substitute for working with a licensed therapist or pastoral counselor if you are facing serious difficulties in your marriage. What it is, is the kind of diagnostic conversation that a couple might bring <em>to</em> a counselor — already understanding more about their patterns than most couples ever do.</p>
+    </div>
+  </section>
+
+  <!-- ════════════ THE FOUR PARTS ════════════ -->
+  <section>
+    <div class="section-eyebrow">Section Two</div>
+    <h2>The four parts of the framework</h2>
+    <p>The assessment moves through four layers of you — each one a layer deeper than the last. You are not just one of these parts. You are the whole sequence. Knowing the sequence is what makes the diagnostic useful.</p>
+
+    <h3>Part One — Your Triggers</h3>
+    <p>The six triggers are the felt entry points of conflict. They name the specific kinds of pain you feel faster and deeper than others — disrespect, disconnection, injustice, control, shame, and significance. Most people have one or two that activate hardest. The trigger is the lit match, not the fire underneath.</p>
+
+    <h3>Part Two — Your Core Question</h3>
+    <p>Underneath every trigger is a question your soul has been asking since long before this relationship. The six core questions: <em>Am I competent? Am I lovable? Am I protected? Am I free? Am I acceptable? Am I significant?</em> When your trigger fires, this is the question that lights up underneath it. Most people have spent their whole life trying to answer this question — through achievement, through being good, through controlling outcomes, through being needed. Marriage is the place where the question becomes loudest, because marriage is the place where the answer matters most.</p>
+
+    <h3>Part Three — Your Mechanism</h3>
+    <p>The mechanism is what you built to protect yourself from your core question being answered the wrong way. The six mechanisms: <em>The Architect, The Island, The Ambassador, The Vault, The Adapter, The Performance.</em> These are not personality types. They are protective patterns — usually developed long before you were old enough to choose them. On a good day, your mechanism is a gift to the people around you. On a hard day, it is the wall between you and the love that's trying to reach you.</p>
+
+    <h3>Part Four — Your Breakdown</h3>
+    <p>When the mechanism fails — when the pressure is high enough that the system cannot keep your core question from being touched — what happens then? The six breakdowns: <em>The Attorney, The Ghost, The Flood, The Mask, The Quiet Exit, The Plea.</em> These are crisis modes, not character flaws. They are the patterns that emerge when you can no longer hold the protection. Naming them is the first step toward not being run by them.</p>
+  </section>
+
+  <!-- ════════════ HOW COUPLES USE IT ════════════ -->
+  <section>
+    <div class="section-eyebrow">Section Three</div>
+    <h2>How couples use Take 139 together</h2>
+    <p>Take 139 was built for two people. Either person can take it alone and get real value — your own profile, an understanding of your wiring, language for what you carry. But the deeper work happens when both people in the relationship take it and connect their profiles.</p>
+
+    <h3>The flow for couples</h3>
+    <ol>
+      <li>Each person takes the assessment separately. About 25 minutes per person.</li>
+      <li>At the end of each assessment, you receive a pair code — something like <em>ANCHOR-4829</em>.</li>
+      <li>One of you enters the other's pair code on the results page and clicks Connect.</li>
+      <li>A couples-synthesis page generates — a counselor's reading of your two profiles together. What the strengths of your pairing are, where the predictable friction will live, and the specific commitments each of you can make to honor what the other carries.</li>
+    </ol>
+
+    <div class="callout">
+      <div class="callout-label">Privacy</div>
+      <p>When two profiles connect, what gets shared is the scored summary — your trigger, core question, mechanism, and breakdown — and the synthesis content generated from that combination. Your written answers to the open-ended reflection questions are never shared with your partner. Pair codes expire after 30 days for privacy. Your data does not get sold or shared with anyone else.</p>
+    </div>
+  </section>
+
+  <!-- ════════════ TWO PDFS YOU RECEIVE ════════════ -->
+  <section>
+    <div class="section-eyebrow">Section Four</div>
+    <h2>What you receive when you finish</h2>
+    <p>When you complete the assessment and enter your email, two PDFs are sent to you within a few minutes.</p>
+
+    <h3>The Brief</h3>
+    <p>A one-page summary of your profile — your trigger, core question, mechanism, and breakdown, with a sentence or two of the most important thing to remember about each. Designed to be printed and kept somewhere you can see it. The kind of thing you would tape inside the door of a kitchen cabinet so that, in the middle of a hard conversation, you can pause and remember what you actually carry.</p>
+
+    <h3>The Walkthrough</h3>
+    <p>A longer document that reads less like a report and more like the first session with a Christian counselor. It walks you through your profile slowly, asks the questions a counselor would ask in real time, gives you reflection prompts to sit with, and provides specific tools for the patterns you've just been named in. The walkthrough is meant to be returned to — read once, then again three months later, then again when something hard surfaces.</p>
+    <p>Both PDFs land in the inbox you used. If you don't see them, check your spam folder first. If they are not there either, write to us.</p>
+  </section>
+
+  <!-- ════════════ THE IMAGO PROFILE ════════════ -->
+  <section>
+    <div class="section-eyebrow">Section Five</div>
+    <h2>The IMAGO profile</h2>
+    <p>IMAGO is a separate, deeper assessment that sits alongside Take 139. Where Take 139 is about how you fight — how conflict actually moves through your nervous system — IMAGO is about how you are <em>wired</em> at the most foundational level. It maps the five domains of personality (Imagination, Mastery, Animation, Grace-bearing, and Ortho-emotion) and from those produces your Soul Shape, your Letter Type, and your Archetype.</p>
+    <p>The two assessments are designed to work together. Take 139 will tell you what to do with your conflict. IMAGO will tell you about the soul doing the fighting.</p>
+    <div class="cta-row">
+      <a href="imago/" class="btn btn-secondary">Take the IMAGO Profile</a>
+    </div>
+  </section>
+
+  <!-- ════════════ SCHOLARSHIP ════════════ -->
+  <section>
+    <div class="section-eyebrow">Section Six</div>
+    <h2>The scholarship behind it</h2>
+    <p>Take 139 is a synthesis. It draws from contemporary psychology, attachment theory, and the empirical personality research of the last forty years — and it sits all of that inside a serious Reformed-Baptist theological framing. The intent is that nothing in the assessment is unmoored from either rigorous social science or biblical orthodoxy.</p>
+    <p>What follows is a partial bibliography for the reader who wants to go deeper into the research that informed this work. The framework itself is mine, but I am standing on the shoulders of the researchers below.</p>
+
+    <ul class="bib">
+      <li>
+        <span class="bib-author">Colin G. DeYoung, Lena C. Quilty, Jordan B. Peterson</span> — <span class="bib-work">"Between facets and domains: 10 aspects of the Big Five."</span>
+        <span class="bib-note">Journal of Personality and Social Psychology (2007). The foundational paper for the ten-aspect Big Five framework that the IMAGO profile draws on.</span>
+      </li>
+      <li>
+        <span class="bib-author">John M. Gottman & Nan Silver</span> — <span class="bib-work">The Seven Principles for Making Marriage Work.</span>
+        <span class="bib-note">Gottman's research on pursue/withdraw dynamics and the Four Horsemen of marital decline directly informs the Take 139 breakdowns — especially the Attorney/Ghost and Flood/Quiet Exit pairings.</span>
+      </li>
+      <li>
+        <span class="bib-author">Sue Johnson</span> — <span class="bib-work">Hold Me Tight: Seven Conversations for a Lifetime of Love.</span>
+        <span class="bib-note">Emotionally Focused Therapy (EFT) and the attachment-theory framing of conflict cycles. The Plea profile is most directly informed by EFT's understanding of activated attachment systems.</span>
+      </li>
+      <li>
+        <span class="bib-author">Bren&eacute; Brown</span> — <span class="bib-work">Daring Greatly</span> and <span class="bib-work">Atlas of the Heart.</span>
+        <span class="bib-note">Brown's distinction between shame and guilt, and her work on vulnerability, shapes the framing of the Shame-Sensitive trigger and the Mask breakdown.</span>
+      </li>
+      <li>
+        <span class="bib-author">Henry Cloud & John Townsend</span> — <span class="bib-work">Boundaries: When to Say Yes, How to Say No to Take Control of Your Life.</span>
+        <span class="bib-note">Cloud and Townsend's work on protective patterns from a Christian framework directly informs the Mechanism layer of the assessment, especially The Ambassador and The Adapter.</span>
+      </li>
+      <li>
+        <span class="bib-author">Curt Thompson</span> — <span class="bib-work">Anatomy of the Soul</span> and <span class="bib-work">The Soul of Shame.</span>
+        <span class="bib-note">Thompson's integration of neuroscience and Christian theology is a quiet thread throughout the assessment, especially in how the framework treats the body's role in carrying the wound.</span>
+      </li>
+      <li>
+        <span class="bib-author">Diane Langberg</span> — <span class="bib-work">Suffering and the Heart of God.</span>
+        <span class="bib-note">Langberg's work on trauma-informed Christian pastoral care influenced the assessment's commitment to honoring the dignity of the reader, especially in how the Breakdown profiles are framed.</span>
+      </li>
+      <li>
+        <span class="bib-author">Tim Keller</span> — <span class="bib-work">The Meaning of Marriage.</span>
+        <span class="bib-note">Keller's framing of marriage as a means of sanctification — not just a means of personal happiness — sits underneath every theological move the assessment makes.</span>
+      </li>
+      <li>
+        <span class="bib-author">David Powlison</span> — <span class="bib-work">Seeing with New Eyes: Counseling and the Human Condition Through the Lens of Scripture.</span>
+        <span class="bib-note">Powlison's biblical counseling framework provides the language for what the assessment calls Core Questions — the deeper desires that drive surface behavior.</span>
+      </li>
+      <li>
+        <span class="bib-author">Ed Welch</span> — <span class="bib-work">When People Are Big and God Is Small.</span>
+        <span class="bib-note">Welch's work on the fear of people informs the treatment of relational triggers and the development of the Performance and Mask profiles.</span>
+      </li>
+    </ul>
+
+    <p style="margin-top:1.5rem;">If you are a counselor, pastor, or church leader using Take 139 with the people you serve, that bibliography is also a reasonable reading list for understanding the framework at the depth required to teach it.</p>
+  </section>
+
+  <!-- ════════════ ABOUT THE CREATOR ════════════ -->
+  <section>
+    <div class="section-eyebrow">Section Seven</div>
+    <h2>About the creator</h2>
+    <p>Take 139 was built by Dr. Christopher Hilken — pastor, theologian, husband, and father of five. Chris serves at College Avenue Church in San Diego, where the work of premarital and marital counseling forms a meaningful part of his pastoral ministry. He also teaches theology and travels as a conference speaker.</p>
+    <p>The assessment began as a series of conversations Chris was having with engaged couples in his church — couples who were genuinely committed to each other and yet had no shared vocabulary for the patterns of conflict that were already beginning to surface between them. Over time, those conversations became a framework. The framework became a process. The process became Take 139.</p>
+    <p>What you are taking is the synthesis of years of pastoral observation, theological reflection, and a deep engagement with the contemporary research that informs how counselors and psychologists understand conflict, attachment, and personality. It is offered in the spirit of Psalm 139 — that we might be searched and known, so that the slow work of becoming the person God made us to be can continue.</p>
+
+    <div class="callout">
+      <div class="callout-label">A note from Chris</div>
+      <p><em>(This section will be expanded in Chris's own voice — his story, the road that led to this work, and the people he had in mind while building it.)</em></p>
+    </div>
+  </section>
+
+  <!-- ════════════ TAKE IT ════════════ -->
+  <section>
+    <h2>Ready to begin?</h2>
+    <p>If you have not yet taken the assessment, it takes about 25 minutes. When you finish, you'll receive the two PDFs in your inbox and the option to connect with your partner if they have also taken it.</p>
+    <div class="cta-row">
+      <a href="index.html" class="btn btn-primary">Take the Assessment</a>
+      <a href="for-churches.html" class="btn btn-secondary">For Churches &amp; Counselors</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>Take 139 &middot; <em>Search me, O God, and know my heart.</em> &middot; Created by Dr. Christopher Hilken</p>
+  <p style="margin-top:0.4rem;">
+    <a href="how-it-works.html">How It Works</a> &middot;
+    <a href="imago/">IMAGO</a> &middot;
+    <a href="for-churches.html">For Churches</a> &middot;
+    <a href="sign-in.html">Sign In</a>
+  </p>
+</footer>
+
+</body>
+</html>

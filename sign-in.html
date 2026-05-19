@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign In — Take 139</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f5f1e8;
+  --surface: #efe9dc;
+  --border: #d8cfba;
+  --hairline: rgba(29, 29, 27, 0.12);
+  --text: #1d1d1b;
+  --muted: #5d564b;
+  --faint: #8b8475;
+  --accent: #8a4a2c;
+  --font-heading: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+html { font-size: 16px; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg); color: var(--text);
+  line-height: 1.6; min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(rgba(0,0,0,0.012) 1px, transparent 1px),
+    radial-gradient(rgba(0,0,0,0.010) 1px, transparent 1px);
+  background-size: 24px 24px, 36px 36px;
+  background-attachment: fixed;
+}
+
+/* ── NAV ── */
+.topnav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(245, 241, 232, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--hairline);
+}
+.topnav-inner {
+  max-width: 1100px; margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.topnav-brand {
+  font-family: var(--font-heading); font-size: 1.25rem; font-weight: 600;
+  color: var(--text); text-decoration: none;
+}
+.topnav-links {
+  display: flex; align-items: center; gap: 2rem;
+  list-style: none;
+}
+.topnav-links a {
+  font-family: var(--font-body); font-size: 0.92rem; font-weight: 500;
+  color: var(--muted); text-decoration: none;
+}
+.topnav-links a.active { color: var(--text); }
+.topnav-links a:hover { color: var(--accent); }
+.topnav-links a.cta {
+  color: var(--bg); background: var(--text);
+  padding: 0.55rem 1.2rem; border-radius: 999px;
+}
+.topnav-links a.cta:hover { background: #2a2a26; color: var(--bg); }
+@media (max-width: 700px) {
+  .topnav-links { gap: 1rem; font-size: 0.85rem; }
+  .topnav-links a { font-size: 0.85rem; }
+  .topnav-links .hide-mobile { display: none; }
+}
+
+/* ── COMING SOON CARD ── */
+.coming-soon-wrap {
+  min-height: 70vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 4rem 1.5rem;
+}
+.coming-soon {
+  max-width: 540px; text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 12px 12px 0;
+  padding: 3rem 2.5rem;
+}
+.coming-soon .eyebrow {
+  font-family: var(--font-body); font-size: 0.7rem;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--accent); font-weight: 600; margin-bottom: 1rem;
+}
+.coming-soon h1 {
+  font-family: var(--font-heading);
+  font-size: 2.5rem; font-weight: 600;
+  font-variation-settings: 'opsz' 120;
+  letter-spacing: -0.015em; line-height: 1.0;
+  color: var(--text); margin-bottom: 1.25rem;
+}
+.coming-soon p {
+  color: var(--muted); font-size: 1rem; line-height: 1.65;
+  margin-bottom: 1.25rem;
+}
+.coming-soon .btn {
+  display: inline-block;
+  padding: 0.85rem 1.85rem; border-radius: 999px;
+  background: var(--text); color: var(--bg);
+  font-family: var(--font-body); font-size: 0.95rem; font-weight: 500;
+  text-decoration: none; transition: background 0.2s;
+  margin-top: 0.5rem;
+}
+.coming-soon .btn:hover { background: #2a2a26; }
+
+.footer {
+  border-top: 1px solid var(--hairline);
+  padding: 2.5rem 1.5rem; text-align: center;
+  color: var(--faint); font-size: 0.85rem;
+}
+.footer a { color: var(--muted); text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="topnav-brand">Take 139</a>
+    <ul class="topnav-links">
+      <li><a href="how-it-works.html">How It Works</a></li>
+      <li><a href="imago/" class="hide-mobile">IMAGO</a></li>
+      <li><a href="for-churches.html">For Churches</a></li>
+      <li><a href="sign-in.html" class="cta active">Sign In</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="coming-soon-wrap">
+  <div class="coming-soon">
+    <div class="eyebrow">Coming Soon</div>
+    <h1>Saved profiles &amp; a return path</h1>
+    <p>The Sign In feature is being built. Soon you will be able to create an account, save your Take 139 and IMAGO profiles, return to them whenever you need them, and view past assessments alongside your partner's.</p>
+    <p>For now, your profile is sent to the email you used at the time of the assessment. Keep the PDF safe — it is the record.</p>
+    <a class="btn" href="how-it-works.html">In the meantime, read how it works</a>
+  </div>
+</main>
+
+<footer class="footer">
+  <p>Take 139 &middot; <em>Search me, O God, and know my heart.</em> &middot; Created by Dr. Christopher Hilken</p>
+  <p style="margin-top:0.4rem;">
+    <a href="how-it-works.html">How It Works</a> &middot;
+    <a href="imago/">IMAGO</a> &middot;
+    <a href="for-churches.html">For Churches</a>
+  </p>
+</footer>
+
+</body>
+</html>
