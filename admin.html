@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Take 139 · Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f5f1e8;
+    --ink: #1d1d1b;
+    --accent: #8a4a2c;
+    --accent-2: #4f6b5e;
+    --muted: #6b6862;
+    --rule: #cfc6b4;
+    --highlight: #ece4d3;
+    --success: #436b32;
+    --error: #a04030;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .page { max-width: 1100px; margin: 0 auto; padding: 32px 28px 80px; }
+  header.brand {
+    display: flex; align-items: baseline; justify-content: space-between;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 14px; margin-bottom: 28px;
+  }
+  .brand h1 {
+    font-family: 'Fraunces', serif; font-weight: 600;
+    font-size: 28px; margin: 0; letter-spacing: -0.01em;
+  }
+  .brand .eyebrow {
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); font-weight: 500;
+  }
+  .brand .right {
+    font-size: 12px; color: var(--muted);
+  }
+  .brand .right button {
+    background: none; border: none; color: var(--accent);
+    cursor: pointer; font: inherit; padding: 4px 0; text-decoration: underline;
+  }
+
+  /* Login screen */
+  .login {
+    max-width: 420px; margin: 80px auto;
+    background: white; border: 1px solid var(--rule);
+    border-radius: 4px; padding: 36px 32px;
+  }
+  .login h2 {
+    font-family: 'Fraunces', serif; font-weight: 600;
+    font-size: 24px; margin: 0 0 6px;
+  }
+  .login p { color: var(--muted); margin: 0 0 22px; font-size: 14px; }
+  .login label {
+    display: block; font-size: 11px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--accent); margin-bottom: 6px;
+  }
+  .login input[type=password], .login input[type=text] {
+    width: 100%; padding: 10px 12px;
+    border: 1px solid var(--rule); background: var(--paper);
+    font: inherit; color: var(--ink);
+    border-radius: 3px; margin-bottom: 18px;
+  }
+  .login input:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+  .btn-primary {
+    background: var(--ink); color: var(--paper);
+    border: none; padding: 11px 22px;
+    font-family: 'Inter', sans-serif; font-weight: 500;
+    font-size: 14px; letter-spacing: 0.02em;
+    border-radius: 999px; cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-ghost {
+    background: none; color: var(--ink);
+    border: 1px solid var(--rule); padding: 8px 16px;
+    font: inherit; font-size: 13px; border-radius: 999px; cursor: pointer;
+  }
+  .btn-ghost:hover { border-color: var(--ink); }
+  .btn-danger {
+    background: none; color: var(--error);
+    border: 1px solid var(--error); padding: 6px 12px;
+    font: inherit; font-size: 12px; border-radius: 999px; cursor: pointer;
+  }
+  .btn-danger:hover { background: var(--error); color: white; }
+
+  /* Stats grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px; margin-bottom: 32px;
+  }
+  .stat-card {
+    background: white; border: 1px solid var(--rule);
+    border-radius: 4px; padding: 16px 18px;
+  }
+  .stat-card .label {
+    font-size: 10px; font-weight: 500; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
+  }
+  .stat-card .value {
+    font-family: 'Fraunces', serif; font-weight: 600;
+    font-size: 26px; line-height: 1.1;
+  }
+  .stat-card .sub {
+    font-size: 12px; color: var(--muted); margin-top: 4px;
+  }
+
+  /* Code kind cards (single/couple/connect) */
+  .kind-row {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    margin-bottom: 32px;
+  }
+  .kind-card {
+    background: white; border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px; padding: 18px 20px;
+  }
+  .kind-card.couple { border-left-color: var(--accent-2); }
+  .kind-card.connect { border-left-color: #b58a3a; }
+  .kind-card h3 {
+    font-family: 'Fraunces', serif; font-weight: 600;
+    font-size: 18px; margin: 0 0 4px;
+  }
+  .kind-card .price {
+    font-size: 13px; color: var(--accent); font-weight: 500; margin-bottom: 4px;
+  }
+  .kind-card.couple .price { color: var(--accent-2); }
+  .kind-card.connect .price { color: #b58a3a; }
+  .kind-card .desc {
+    font-size: 12px; color: var(--muted); margin-bottom: 12px;
+  }
+  .kind-card .stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px;
+    font-size: 12px;
+  }
+  .kind-card .stats .k { color: var(--muted); }
+  .kind-card .stats .v { font-weight: 600; text-align: right; }
+
+  /* Section headers */
+  .section-h {
+    font-family: 'Fraunces', serif; font-weight: 600;
+    font-size: 20px; margin: 36px 0 14px;
+    padding-bottom: 8px; border-bottom: 1px solid var(--rule);
+  }
+
+  /* Generate form */
+  .gen-form {
+    background: white; border: 1px solid var(--rule);
+    border-radius: 4px; padding: 22px 24px; margin-bottom: 32px;
+  }
+  .gen-form .row {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px; margin-bottom: 14px;
+  }
+  .gen-form label {
+    display: block; font-size: 10px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--accent); margin-bottom: 4px;
+  }
+  .gen-form input, .gen-form select, .gen-form textarea {
+    width: 100%; padding: 8px 10px;
+    border: 1px solid var(--rule); background: var(--paper);
+    font: inherit; color: var(--ink); font-size: 13px;
+    border-radius: 3px;
+  }
+  .gen-form textarea { resize: vertical; min-height: 50px; }
+  .gen-form input:focus, .gen-form select:focus, .gen-form textarea:focus {
+    outline: 2px solid var(--accent); outline-offset: -1px;
+  }
+  .gen-form .actions {
+    display: flex; align-items: center; gap: 14px; margin-top: 10px;
+  }
+  .gen-form .actions .hint {
+    font-size: 12px; color: var(--muted); font-style: italic;
+  }
+
+  /* Created codes panel */
+  .created-panel {
+    background: #f9f5e8;
+    border: 1px solid #d4c39a;
+    border-radius: 4px;
+    padding: 18px 20px; margin-bottom: 24px;
+  }
+  .created-panel h4 {
+    font-family: 'Fraunces', serif; font-weight: 600;
+    font-size: 15px; margin: 0 0 10px;
+  }
+  .created-panel .codes-list {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 13px;
+    background: white;
+    border: 1px solid var(--rule); border-radius: 3px;
+    padding: 12px 14px;
+    white-space: pre;
+    max-height: 280px; overflow-y: auto;
+  }
+  .created-panel .meta {
+    font-size: 12px; color: var(--muted); margin: 8px 0 12px;
+  }
+
+  /* Code list table */
+  .filter-bar {
+    display: flex; gap: 10px; flex-wrap: wrap;
+    margin-bottom: 14px; align-items: center;
+  }
+  .filter-bar select, .filter-bar input {
+    padding: 6px 10px; border: 1px solid var(--rule);
+    background: white; font: inherit; font-size: 12px;
+    border-radius: 999px;
+  }
+  .codes-table {
+    width: 100%; border-collapse: collapse;
+    background: white; border: 1px solid var(--rule);
+    border-radius: 4px; overflow: hidden;
+    font-size: 12.5px;
+  }
+  .codes-table th {
+    background: var(--highlight);
+    text-align: left; padding: 10px 12px;
+    font-weight: 500; font-size: 10.5px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); border-bottom: 1px solid var(--rule);
+  }
+  .codes-table td {
+    padding: 10px 12px; border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+  }
+  .codes-table tr:last-child td { border-bottom: none; }
+  .codes-table .code-str {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-weight: 600;
+  }
+  .pill {
+    display: inline-block; font-size: 10px; font-weight: 600;
+    padding: 2px 8px; border-radius: 999px;
+    letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  .pill-active { background: #e8f0e0; color: var(--success); }
+  .pill-redeemed { background: var(--highlight); color: var(--muted); }
+  .pill-expired { background: #f3ebde; color: #8a6a3a; }
+  .pill-revoked { background: #f5e2dd; color: var(--error); }
+  .pill-single { background: #f3e6dd; color: var(--accent); }
+  .pill-couple { background: #e0e8e3; color: var(--accent-2); }
+  .pill-connect { background: #f6ecd5; color: #8a6a3a; }
+  .pill-stripe { background: #e8e0f0; color: #5a3a8a; }
+  .pill-admin { background: #e8e8e8; color: #555; }
+  .pill-comp { background: #fef5e0; color: #8a6a1a; }
+
+  .empty-state {
+    text-align: center; padding: 48px 20px;
+    color: var(--muted); font-style: italic;
+  }
+  .toast {
+    position: fixed; bottom: 22px; left: 50%;
+    transform: translateX(-50%);
+    background: var(--ink); color: var(--paper);
+    padding: 12px 22px; border-radius: 999px;
+    font-size: 13px; font-weight: 500;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    z-index: 1000;
+  }
+  .toast.error { background: var(--error); }
+  .toast.success { background: var(--success); }
+  .hidden { display: none !important; }
+
+  .pair-row { color: var(--muted); font-size: 11px; }
+  .copy-btn {
+    background: none; border: none; cursor: pointer;
+    color: var(--muted); font-size: 11px; padding: 2px 6px;
+    border-radius: 3px;
+  }
+  .copy-btn:hover { color: var(--accent); background: var(--highlight); }
+</style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- LOGIN VIEW -->
+    <div id="login-view" class="login">
+      <h2>Admin sign in</h2>
+      <p>Internal tool. For Chris only.</p>
+      <form id="login-form">
+        <label for="pw">Password</label>
+        <input type="password" id="pw" name="pw" autocomplete="current-password" required autofocus />
+        <button type="submit" class="btn-primary">Sign in</button>
+      </form>
+      <p id="login-error" style="color: var(--error); margin-top: 14px; display: none;"></p>
+    </div>
+
+    <!-- MAIN VIEW -->
+    <div id="main-view" class="hidden">
+      <header class="brand">
+        <div>
+          <div class="eyebrow">Take 139 · Admin</div>
+          <h1>Access codes</h1>
+        </div>
+        <div class="right">
+          Signed in &middot; <button id="logout-btn">Sign out</button>
+        </div>
+      </header>
+
+      <!-- Stats overview -->
+      <div class="section-h">Overview</div>
+      <div class="stats-grid" id="stats-grid">
+        <!-- filled by JS -->
+      </div>
+
+      <!-- Per-kind summary -->
+      <div class="kind-row" id="kind-row">
+        <!-- filled by JS -->
+      </div>
+
+      <!-- Generate codes -->
+      <div class="section-h">Generate new codes</div>
+      <div class="gen-form">
+        <div class="row">
+          <div>
+            <label>Kind</label>
+            <select id="gen-kind">
+              <option value="single">Single ($20)</option>
+              <option value="couple">Couple ($40, generates A+B pair)</option>
+              <option value="connect">Connect ($10)</option>
+            </select>
+          </div>
+          <div>
+            <label>Quantity</label>
+            <input type="number" id="gen-quantity" value="1" min="1" max="500" />
+          </div>
+          <div>
+            <label>Source</label>
+            <select id="gen-source">
+              <option value="admin">Admin (hand-issued, full price)</option>
+              <option value="comp">Comp (free, $0 — church/conference/gift)</option>
+            </select>
+          </div>
+          <div>
+            <label>Expires in (days, optional)</label>
+            <input type="number" id="gen-expires" placeholder="never" min="1" max="3650" />
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label>Batch label (optional)</label>
+            <input type="text" id="gen-batch" placeholder="e.g. college-ave-spring-2026" />
+          </div>
+          <div style="grid-column: span 2;">
+            <label>Notes (optional)</label>
+            <textarea id="gen-notes" placeholder="e.g. Sermon series giveaway, Smith family gift"></textarea>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn-primary" id="gen-btn">Generate</button>
+          <span class="hint">Couple kind produces 2 codes per unit. Total cap: 500 codes per request.</span>
+        </div>
+      </div>
+
+      <!-- Just-created codes panel -->
+      <div id="just-created" class="created-panel hidden">
+        <h4 id="jc-title">Just generated</h4>
+        <div class="meta" id="jc-meta"></div>
+        <div class="codes-list" id="jc-codes"></div>
+        <div style="margin-top: 12px; display: flex; gap: 8px;">
+          <button class="btn-ghost" id="jc-copy">Copy all</button>
+          <button class="btn-ghost" id="jc-download">Download as .txt</button>
+          <button class="btn-ghost" id="jc-dismiss">Dismiss</button>
+        </div>
+      </div>
+
+      <!-- Code list -->
+      <div class="section-h" style="margin-top: 28px;">All codes</div>
+      <div class="filter-bar">
+        <select id="filter-kind">
+          <option value="">All kinds</option>
+          <option value="single">Single only</option>
+          <option value="couple">Couple only</option>
+          <option value="connect">Connect only</option>
+        </select>
+        <select id="filter-status">
+          <option value="">All statuses</option>
+          <option value="active">Active</option>
+          <option value="redeemed">Redeemed</option>
+          <option value="expired">Expired</option>
+          <option value="revoked">Revoked</option>
+        </select>
+        <select id="filter-source">
+          <option value="">All sources</option>
+          <option value="admin">Admin</option>
+          <option value="stripe">Stripe</option>
+          <option value="comp">Comp</option>
+        </select>
+        <input type="text" id="filter-batch" placeholder="Batch label" />
+        <button class="btn-ghost" id="refresh-btn">Refresh</button>
+      </div>
+
+      <div id="codes-table-wrap">
+        <table class="codes-table" id="codes-table">
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Kind</th>
+              <th>Status</th>
+              <th>Source</th>
+              <th>Price</th>
+              <th>Created</th>
+              <th>Batch / Notes</th>
+              <th>Redeemed by</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="codes-tbody">
+            <!-- filled by JS -->
+          </tbody>
+        </table>
+        <div id="codes-empty" class="empty-state hidden">No codes match the current filters.</div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+  </div>
+
+<script>
+  // ───────────────────────────────────────────────────────────────────────
+  // Config
+  // ───────────────────────────────────────────────────────────────────────
+  const BACKEND = "https://take139-backend-production.up.railway.app";
+  const TOKEN_KEY = "take139_admin_token";
+
+  // ───────────────────────────────────────────────────────────────────────
+  // State
+  // ───────────────────────────────────────────────────────────────────────
+  let token = localStorage.getItem(TOKEN_KEY) || "";
+
+  // ───────────────────────────────────────────────────────────────────────
+  // Helpers
+  // ───────────────────────────────────────────────────────────────────────
+  function toast(msg, kind) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast ' + (kind || '');
+    t.classList.remove('hidden');
+    setTimeout(() => t.classList.add('hidden'), 3200);
+  }
+
+  async function api(method, path, body) {
+    const opts = {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+    };
+    if (token) opts.headers['Authorization'] = 'Bearer ' + token;
+    if (body !== undefined) opts.body = JSON.stringify(body);
+    const r = await fetch(BACKEND + path, opts);
+    if (r.status === 401) {
+      token = "";
+      localStorage.removeItem(TOKEN_KEY);
+      showLogin();
+      throw new Error("Auth expired");
+    }
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) {
+      throw new Error(data.detail || ('HTTP ' + r.status));
+    }
+    return data;
+  }
+
+  function fmtCents(c) {
+    if (c == null) return '—';
+    if (c === 0) return 'Free';
+    return '$' + (c / 100).toFixed(c % 100 === 0 ? 0 : 2);
+  }
+  function fmtDate(iso) {
+    if (!iso) return '—';
+    const d = new Date(iso);
+    return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+  }
+  function escapeHtml(s) {
+    if (s == null) return '';
+    return String(s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  // ───────────────────────────────────────────────────────────────────────
+  // Login flow
+  // ───────────────────────────────────────────────────────────────────────
+  function showLogin() {
+    document.getElementById('main-view').classList.add('hidden');
+    document.getElementById('login-view').classList.remove('hidden');
+    document.getElementById('login-error').style.display = 'none';
+    setTimeout(() => document.getElementById('pw').focus(), 50);
+  }
+  function showMain() {
+    document.getElementById('login-view').classList.add('hidden');
+    document.getElementById('main-view').classList.remove('hidden');
+    refreshAll();
+  }
+
+  document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const pw = document.getElementById('pw').value;
+    const errEl = document.getElementById('login-error');
+    errEl.style.display = 'none';
+    try {
+      const r = await fetch(BACKEND + '/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pw }),
+      });
+      const data = await r.json();
+      if (!r.ok) {
+        errEl.textContent = data.detail || 'Sign in failed';
+        errEl.style.display = 'block';
+        return;
+      }
+      token = data.token;
+      localStorage.setItem(TOKEN_KEY, token);
+      document.getElementById('pw').value = '';
+      showMain();
+    } catch (err) {
+      errEl.textContent = 'Network error — is the backend up?';
+      errEl.style.display = 'block';
+    }
+  });
+
+  document.getElementById('logout-btn').addEventListener('click', () => {
+    token = "";
+    localStorage.removeItem(TOKEN_KEY);
+    showLogin();
+  });
+
+  // ───────────────────────────────────────────────────────────────────────
+  // Stats
+  // ───────────────────────────────────────────────────────────────────────
+  async function loadStats() {
+    const s = await api('GET', '/admin/stats');
+    const grid = document.getElementById('stats-grid');
+    grid.innerHTML = `
+      <div class="stat-card">
+        <div class="label">Assessments (Take 139)</div>
+        <div class="value">${s.submissions.take139_total}</div>
+        <div class="sub">submissions total</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Couples paired</div>
+        <div class="value">${s.submissions.couples_paired}</div>
+        <div class="sub">connections made</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Revenue (paid)</div>
+        <div class="value">${fmtCents(
+          (s.revenue_cents.single_paid||0) +
+          (s.revenue_cents.couple_paid||0) +
+          (s.revenue_cents.connect_paid||0)
+        )}</div>
+        <div class="sub">from redeemed Stripe codes</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Active codes</div>
+        <div class="value">${
+          (s.codes.single.active||0) +
+          (s.codes.couple.active||0) +
+          (s.codes.connect.active||0)
+        }</div>
+        <div class="sub">unused, ready to issue</div>
+      </div>
+    `;
+
+    const kindRow = document.getElementById('kind-row');
+    const card = (kind, klass, name, price, desc) => `
+      <div class="kind-card ${klass}">
+        <h3>${name}</h3>
+        <div class="price">${price}</div>
+        <div class="desc">${desc}</div>
+        <div class="stats">
+          <div class="k">Active</div><div class="v">${s.codes[kind].active}</div>
+          <div class="k">Redeemed</div><div class="v">${s.codes[kind].redeemed}</div>
+          <div class="k">Expired</div><div class="v">${s.codes[kind].expired}</div>
+          <div class="k">Revoked</div><div class="v">${s.codes[kind].revoked}</div>
+        </div>
+      </div>
+    `;
+    kindRow.innerHTML =
+      card('single', '', 'Single', '$20', 'Assessment + personal walkthrough') +
+      card('couple', 'couple', 'Couple', '$40', 'Two codes (A + B) + couples walkthrough') +
+      card('connect', 'connect', 'Connect', '$10', 'Add-on to bond two existing buyers');
+  }
+
+  // ───────────────────────────────────────────────────────────────────────
+  // Generate codes
+  // ───────────────────────────────────────────────────────────────────────
+  document.getElementById('gen-btn').addEventListener('click', async () => {
+    const btn = document.getElementById('gen-btn');
+    btn.disabled = true;
+    try {
+      const payload = {
+        kind: document.getElementById('gen-kind').value,
+        quantity: parseInt(document.getElementById('gen-quantity').value, 10) || 1,
+        source: document.getElementById('gen-source').value,
+        batch_label: document.getElementById('gen-batch').value.trim() || null,
+        notes: document.getElementById('gen-notes').value.trim() || null,
+        expires_in_days: (() => {
+          const v = document.getElementById('gen-expires').value;
+          return v ? parseInt(v, 10) : null;
+        })(),
+      };
+      const r = await api('POST', '/admin/codes', payload);
+      toast(`Created ${r.created_count} code${r.created_count === 1 ? '' : 's'}`, 'success');
+      showCreated(r.codes, payload);
+      // Reset notes/batch optionally — keep kind/source/quantity for repeat use
+      document.getElementById('gen-notes').value = '';
+      await refreshAll();
+    } catch (err) {
+      toast(err.message || 'Generation failed', 'error');
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  function showCreated(codes, payload) {
+    const panel = document.getElementById('just-created');
+    document.getElementById('jc-title').textContent =
+      `Just generated · ${codes.length} ${payload.kind} code${codes.length === 1 ? '' : 's'}`;
+
+    const metaParts = [];
+    if (payload.source === 'comp') metaParts.push('Comp (free)');
+    else metaParts.push('Admin-issued');
+    if (payload.batch_label) metaParts.push('batch: ' + payload.batch_label);
+    if (payload.expires_in_days) metaParts.push(`expires in ${payload.expires_in_days}d`);
+    document.getElementById('jc-meta').textContent = metaParts.join(' · ');
+
+    // Format: if couple kind, group A+B pairs visually
+    let text = '';
+    if (payload.kind === 'couple') {
+      for (let i = 0; i < codes.length; i += 2) {
+        const a = codes[i], b = codes[i + 1];
+        text += `Pair ${(i/2) + 1}\n  Spouse A:  ${a.code}\n  Spouse B:  ${b.code}\n\n`;
+      }
+    } else {
+      codes.forEach((c, i) => {
+        text += `${(i + 1).toString().padStart(3)}. ${c.code}\n`;
+      });
+    }
+    document.getElementById('jc-codes').textContent = text.trim();
+    panel.classList.remove('hidden');
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  document.getElementById('jc-copy').addEventListener('click', () => {
+    const t = document.getElementById('jc-codes').textContent;
+    navigator.clipboard.writeText(t).then(
+      () => toast('Copied to clipboard', 'success'),
+      () => toast('Copy failed', 'error')
+    );
+  });
+  document.getElementById('jc-download').addEventListener('click', () => {
+    const t = document.getElementById('jc-codes').textContent;
+    const stamp = new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-');
+    const blob = new Blob([t], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `take139-codes-${stamp}.txt`;
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+  document.getElementById('jc-dismiss').addEventListener('click', () => {
+    document.getElementById('just-created').classList.add('hidden');
+  });
+
+  // ───────────────────────────────────────────────────────────────────────
+  // Codes table
+  // ───────────────────────────────────────────────────────────────────────
+  async function loadCodes() {
+    const params = new URLSearchParams();
+    const k = document.getElementById('filter-kind').value;
+    const s = document.getElementById('filter-status').value;
+    const src = document.getElementById('filter-source').value;
+    const b = document.getElementById('filter-batch').value.trim();
+    if (k) params.append('kind', k);
+    if (s) params.append('status_filter', s);
+    if (src) params.append('source', src);
+    if (b) params.append('batch_label', b);
+    params.append('limit', '500');
+
+    const data = await api('GET', '/admin/codes?' + params.toString());
+    const tbody = document.getElementById('codes-tbody');
+    const empty = document.getElementById('codes-empty');
+    const table = document.getElementById('codes-table');
+
+    if (!data.codes || data.codes.length === 0) {
+      tbody.innerHTML = '';
+      table.classList.add('hidden');
+      empty.classList.remove('hidden');
+      return;
+    }
+    table.classList.remove('hidden');
+    empty.classList.add('hidden');
+
+    tbody.innerHTML = data.codes.map(c => {
+      const batchNotes = [
+        c.batch_label ? `<div>${escapeHtml(c.batch_label)}</div>` : '',
+        c.notes ? `<div class="pair-row">${escapeHtml(c.notes).slice(0, 120)}</div>` : '',
+      ].join('');
+
+      const redeemedBy = c.redeemed_by_email
+        ? `<div>${escapeHtml(c.redeemed_by_email)}</div><div class="pair-row">${escapeHtml(c.redeemed_by_submission_pair_code || '')}</div>`
+        : '—';
+
+      const actions = (c.status === 'active' || c.status === 'redeemed')
+        ? `<button class="btn-danger" data-revoke="${escapeHtml(c.code)}">Revoke</button>`
+        : '';
+
+      const siblingInfo = c.sibling_code
+        ? `<div class="pair-row">↔ ${escapeHtml(c.sibling_code)}</div>`
+        : '';
+
+      return `
+        <tr>
+          <td>
+            <span class="code-str">${escapeHtml(c.code)}</span>
+            <button class="copy-btn" data-copy="${escapeHtml(c.code)}">copy</button>
+            ${siblingInfo}
+          </td>
+          <td><span class="pill pill-${c.kind}">${c.kind}</span></td>
+          <td><span class="pill pill-${c.status}">${c.status}</span></td>
+          <td><span class="pill pill-${c.source}">${c.source}</span></td>
+          <td>${fmtCents(c.price_cents)}</td>
+          <td>${fmtDate(c.created_at)}</td>
+          <td>${batchNotes || '—'}</td>
+          <td>${redeemedBy}</td>
+          <td>${actions}</td>
+        </tr>
+      `;
+    }).join('');
+
+    // Wire up revoke buttons
+    tbody.querySelectorAll('[data-revoke]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const code = btn.getAttribute('data-revoke');
+        const reason = prompt(`Revoke ${code}? Reason (optional):`);
+        if (reason === null) return; // cancelled
+        try {
+          await api('POST', `/admin/codes/${encodeURIComponent(code)}/revoke`, { reason: reason || null });
+          toast(`Revoked ${code}`, 'success');
+          await refreshAll();
+        } catch (err) {
+          toast(err.message, 'error');
+        }
+      });
+    });
+    // Copy buttons
+    tbody.querySelectorAll('[data-copy]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const c = btn.getAttribute('data-copy');
+        navigator.clipboard.writeText(c).then(() => toast('Copied ' + c, 'success'));
+      });
+    });
+  }
+
+  document.getElementById('refresh-btn').addEventListener('click', refreshAll);
+  ['filter-kind', 'filter-status', 'filter-source'].forEach(id =>
+    document.getElementById(id).addEventListener('change', loadCodes));
+  let batchTimeout;
+  document.getElementById('filter-batch').addEventListener('input', () => {
+    clearTimeout(batchTimeout);
+    batchTimeout = setTimeout(loadCodes, 300);
+  });
+
+  async function refreshAll() {
+    try {
+      await Promise.all([loadStats(), loadCodes()]);
+    } catch (err) {
+      if (err.message !== 'Auth expired') {
+        toast(err.message || 'Failed to load', 'error');
+      }
+    }
+  }
+
+  // ───────────────────────────────────────────────────────────────────────
+  // Boot
+  // ───────────────────────────────────────────────────────────────────────
+  (async () => {
+    if (!token) {
+      showLogin();
+      return;
+    }
+    // Validate token quietly
+    try {
+      await api('GET', '/admin/whoami');
+      showMain();
+    } catch (err) {
+      showLogin();
+    }
+  })();
+</script>
+</body>
+</html>
