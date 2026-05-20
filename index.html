@@ -1047,6 +1047,65 @@ body.in-synthesis .topnav { display: none; }
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+/* Product cards for the purchase screen */
+.product-card {
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  background: transparent;
+}
+.product-card:hover {
+  border-color: var(--accent);
+  background: var(--surface, #f9f7f0);
+}
+.product-card.selected {
+  border-color: var(--accent);
+  background: #ece4d3;
+  box-shadow: 0 0 0 2px rgba(138, 74, 44, 0.12);
+}
+.product-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 0.3rem;
+  gap: 0.5rem;
+}
+.product-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--text, #1d1d1b);
+}
+.product-price {
+  font-family: 'Fraunces', Georgia, serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--accent);
+  white-space: nowrap;
+}
+.product-desc {
+  font-size: 0.8125rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+.product-badge {
+  display: inline-block;
+  background: var(--accent);
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-left: 0.4rem;
+  vertical-align: 2px;
+}
 .modal-btn {
   width: 100%;
   padding: 0.95rem;
@@ -1079,19 +1138,62 @@ body.in-synthesis .topnav { display: none; }
 <!-- ACCESS CODE MODAL -->
 <div class="modal-overlay" id="passcodeModal">
   <div class="modal-box">
-    <h3>Enter your access code</h3>
-    <p>Type the code from your purchase email, your spouse's couple-package, or a counselor who gave you one. Codes are case-insensitive.</p>
-    <input type="text" class="modal-input" id="passcodeInput" placeholder="e.g. T139-XXXXXX or COUPLE-XXXXXX-A" autocomplete="off" spellcheck="false" autocapitalize="characters">
-    <div class="modal-feedback" id="passcodeFeedback"></div>
-    <div class="modal-error" id="passcodeError"></div>
-    <button class="modal-btn" id="passcodeSubmitBtn" onclick="submitPasscode()">Begin Assessment</button>
-    <div id="purchaseSection" style="display:flex;align-items:center;gap:1rem;margin:1.25rem 0 0.75rem;">
-      <div style="flex:1;height:1px;background:var(--border);"></div>
-      <span style="font-size:0.8rem;color:var(--faint);text-transform:uppercase;letter-spacing:0.08em;">don't have one?</span>
-      <div style="flex:1;height:1px;background:var(--border);"></div>
+
+    <!-- SCREEN 1: enter code -->
+    <div id="modalCodeScreen">
+      <h3>Enter your access code</h3>
+      <p>Type the code from your purchase email, your spouse's couple-package, or a counselor who gave you one. Codes are case-insensitive.</p>
+      <input type="text" class="modal-input" id="passcodeInput" placeholder="e.g. T139-XXXXXX or COUPLE-XXXXXX-A" autocomplete="off" spellcheck="false" autocapitalize="characters">
+      <div class="modal-feedback" id="passcodeFeedback"></div>
+      <div class="modal-error" id="passcodeError"></div>
+      <button class="modal-btn" id="passcodeSubmitBtn" onclick="submitPasscode()">Begin Assessment</button>
+      <div id="purchaseSection" style="display:flex;align-items:center;gap:1rem;margin:1.25rem 0 0.75rem;">
+        <div style="flex:1;height:1px;background:var(--border);"></div>
+        <span style="font-size:0.8rem;color:var(--faint);text-transform:uppercase;letter-spacing:0.08em;">don't have one?</span>
+        <div style="flex:1;height:1px;background:var(--border);"></div>
+      </div>
+      <button type="button" class="modal-btn" id="openPurchaseBtn" onclick="showPurchaseScreen()" style="background:transparent;border:1.5px solid var(--accent);color:var(--accent);margin-bottom:0.5rem;">Purchase access — from $20</button>
+      <button class="modal-close" onclick="closePasscodeModal()">Cancel</button>
     </div>
-    <a href="#" id="purchaseLink" class="modal-btn" style="display:block;text-align:center;text-decoration:none;background:transparent;border:1.5px solid var(--accent);color:var(--accent);margin-bottom:0.5rem;">Purchase access — from $20</a>
-    <button class="modal-close" onclick="closePasscodeModal()">Cancel</button>
+
+    <!-- SCREEN 2: purchase product selector -->
+    <div id="modalPurchaseScreen" style="display:none;">
+      <h3>Pick what fits you</h3>
+      <p style="margin-bottom:1.25rem;">Choose a product; you'll be sent to Stripe to pay. After payment your access code(s) arrive by email immediately.</p>
+
+      <div class="product-card" id="productSingle" onclick="selectProduct('single')">
+        <div class="product-header">
+          <div class="product-title">Conflict Origins</div>
+          <div class="product-price">$20</div>
+        </div>
+        <div class="product-desc">One Take 139 assessment + your personal Walkthrough PDF.</div>
+      </div>
+
+      <div class="product-card" id="productCouple" onclick="selectProduct('couple')">
+        <div class="product-header">
+          <div class="product-title">Couple Package <span class="product-badge">most chosen</span></div>
+          <div class="product-price">$40</div>
+        </div>
+        <div class="product-desc">Two assessments (one per spouse), two personal Walkthroughs, plus your Couples Walkthrough when you connect.</div>
+      </div>
+
+      <div class="product-card" id="productConnect" onclick="selectProduct('connect')">
+        <div class="product-header">
+          <div class="product-title">Connection Add-On</div>
+          <div class="product-price">$10</div>
+        </div>
+        <div class="product-desc">For couples who each already took the assessment separately and now want to connect their profiles.</div>
+      </div>
+
+      <div style="margin:1.25rem 0 0.5rem;">
+        <label for="purchaseEmail" style="display:block;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:0.4rem;">Your email</label>
+        <input type="email" class="modal-input" id="purchaseEmail" placeholder="you@example.com" autocomplete="email">
+      </div>
+      <div class="modal-error" id="purchaseError"></div>
+      <button class="modal-btn" id="purchaseSubmitBtn" onclick="submitPurchase()" disabled>Pick a product to continue</button>
+      <button type="button" class="modal-close" onclick="showCodeScreen()">← Back to code entry</button>
+    </div>
+
   </div>
 </div>
 
@@ -4232,11 +4334,19 @@ function showPasscodeModal() {
   const feedback = document.getElementById('passcodeFeedback');
   const submitBtn = document.getElementById('passcodeSubmitBtn');
   modal.classList.add('show');
+  // Always reset to the code-entry screen on open
+  const codeScreen = document.getElementById('modalCodeScreen');
+  const purchaseScreen = document.getElementById('modalPurchaseScreen');
+  if (codeScreen) codeScreen.style.display = 'block';
+  if (purchaseScreen) purchaseScreen.style.display = 'none';
   input.value = '';
   input.classList.remove('error', 'valid');
   error.textContent = '';
   if (feedback) feedback.textContent = '';
-  if (submitBtn) submitBtn.disabled = false;
+  if (submitBtn) {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Begin Assessment';
+  }
   setTimeout(() => input.focus(), 300);
 }
 
@@ -4345,6 +4455,103 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
+// ────────────────────────────────────────────────────────────────────────────
+// STRIPE PURCHASE FLOW (Session 5)
+// ────────────────────────────────────────────────────────────────────────────
+
+let _selectedProduct = null;
+
+function showPurchaseScreen() {
+  document.getElementById('modalCodeScreen').style.display = 'none';
+  document.getElementById('modalPurchaseScreen').style.display = 'block';
+  // Reset state
+  _selectedProduct = null;
+  document.querySelectorAll('.product-card').forEach(c => c.classList.remove('selected'));
+  const btn = document.getElementById('purchaseSubmitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Pick a product to continue';
+  document.getElementById('purchaseError').textContent = '';
+  // Pre-fill email if we know it (e.g., from earlier session)
+  const stored = (window._userEmail || '').trim();
+  if (stored) document.getElementById('purchaseEmail').value = stored;
+}
+
+function showCodeScreen() {
+  document.getElementById('modalPurchaseScreen').style.display = 'none';
+  document.getElementById('modalCodeScreen').style.display = 'block';
+}
+
+function selectProduct(kind) {
+  _selectedProduct = kind;
+  document.querySelectorAll('.product-card').forEach(c => c.classList.remove('selected'));
+  const ids = { single: 'productSingle', couple: 'productCouple', connect: 'productConnect' };
+  const card = document.getElementById(ids[kind]);
+  if (card) card.classList.add('selected');
+  const labels = {
+    single: 'Continue — $20',
+    couple: 'Continue — $40',
+    connect: 'Continue — $10',
+  };
+  const btn = document.getElementById('purchaseSubmitBtn');
+  btn.disabled = false;
+  btn.textContent = labels[kind] || 'Continue';
+}
+
+async function submitPurchase() {
+  const emailInput = document.getElementById('purchaseEmail');
+  const errorEl = document.getElementById('purchaseError');
+  const btn = document.getElementById('purchaseSubmitBtn');
+  const email = (emailInput.value || '').trim();
+
+  errorEl.textContent = '';
+
+  if (!_selectedProduct) {
+    errorEl.textContent = 'Pick a product first.';
+    return;
+  }
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    errorEl.textContent = 'Please enter a valid email address.';
+    emailInput.focus();
+    return;
+  }
+
+  btn.disabled = true;
+  const originalText = btn.textContent;
+  btn.textContent = 'Connecting to Stripe...';
+
+  try {
+    const res = await fetch(BACKEND_URL + '/purchase/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ kind: _selectedProduct, email: email }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      const detail = data.detail;
+      const msg = (detail && typeof detail === 'object' && detail.message)
+                  ? detail.message
+                  : (typeof detail === 'string' ? detail : 'Could not start checkout.');
+      errorEl.textContent = msg;
+      btn.disabled = false;
+      btn.textContent = originalText;
+      return;
+    }
+    // Redirect to Stripe Checkout (same tab so the success redirect works)
+    if (data.checkout_url) {
+      window.location.href = data.checkout_url;
+    } else {
+      errorEl.textContent = 'Stripe did not return a checkout URL. Try again.';
+      btn.disabled = false;
+      btn.textContent = originalText;
+    }
+  } catch (err) {
+    console.error('purchase error', err);
+    errorEl.textContent = 'Network error — check your internet and try again.';
+    btn.disabled = false;
+    btn.textContent = originalText;
+  }
+}
+
 // Allow Enter key to submit
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && document.getElementById('passcodeModal').classList.contains('show')) {
@@ -4353,23 +4560,41 @@ document.addEventListener('keydown', (e) => {
   }
 });
 
-// Stripe-success redirect handler (Session 5 will wire fully).
+// Stripe redirect handler (Session 5 — live).
 //
-// Old behavior: ?paid=true skipped the passcode entirely. That doesn't work
-// anymore because /submit now requires a REAL access code from the codes
-// table, not just a 'they paid' flag. Session 5 will replace this with:
-//   1. Stripe webhook generates real code on successful payment
-//   2. Redirect comes back with ?code=T139-XXXXXX in URL
-//   3. We auto-fill the code modal and verify against backend.
+// Stripe redirects buyers back to take139.com with ?stripe_session=cs_xxxx.
+// The webhook (server-side) is what actually creates the code and emails it.
+// On this page we just show a friendly 'check your email' banner and open
+// the code modal so the buyer can paste in their code as soon as it arrives.
 //
-// For now, if we see ?code=XXXX in the URL, auto-fill the modal and verify.
+// Power-user shortcut: ?code=XXXX in URL auto-fills the modal (e.g. if you
+// have your code from email and want to skip the manual paste).
+//
+// ?stripe_cancelled=1 is just cleaned silently — nothing else needed.
 (function checkPaymentRedirect() {
   const params = new URLSearchParams(window.location.search);
+  const stripeSession = params.get('stripe_session');
   const codeParam = params.get('code');
-  if (codeParam) {
-    // Clean the URL
+  const cancelled = params.get('stripe_cancelled');
+
+  if (stripeSession || codeParam || cancelled) {
     window.history.replaceState({}, '', window.location.pathname);
-    // Show modal pre-filled and auto-verify
+  }
+
+  if (stripeSession) {
+    // Payment succeeded — prompt user to enter their emailed code
+    setTimeout(() => {
+      showPasscodeModal();
+      const feedback = document.getElementById('passcodeFeedback');
+      if (feedback) {
+        feedback.innerHTML = '✓ Payment received! Check your email for your access code, then paste it above.';
+        feedback.className = 'modal-feedback ok';
+      }
+    }, 400);
+    return;
+  }
+
+  if (codeParam) {
     setTimeout(() => {
       showPasscodeModal();
       const input = document.getElementById('passcodeInput');
@@ -4377,7 +4602,7 @@ document.addEventListener('keydown', (e) => {
         input.value = codeParam.toUpperCase();
         onPasscodeInput();
       }
-    }, 600);
+    }, 400);
   }
 })();
 
