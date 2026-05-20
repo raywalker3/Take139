@@ -1019,16 +1019,33 @@ body.in-synthesis .topnav { display: none; }
   border-color: #a04030;
   animation: shake 0.4s ease;
 }
+.modal-input.valid {
+  border-color: #436b32;
+  background: #f6f4ea;
+}
 @keyframes shake {
   0%, 100% { transform: translateX(0); }
   20%, 60% { transform: translateX(-6px); }
   40%, 80% { transform: translateX(6px); }
 }
+.modal-feedback {
+  font-size: 0.8125rem;
+  color: var(--muted);
+  margin: 0.4rem 0 0.4rem;
+  min-height: 1.2em;
+  transition: color 0.15s;
+}
+.modal-feedback.ok { color: #436b32; font-weight: 500; }
+.modal-feedback.err { color: #a04030; }
 .modal-error {
   font-size: 0.8125rem;
   color: #a04030;
   margin-bottom: 1rem;
   min-height: 1.2em;
+}
+.modal-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 .modal-btn {
   width: 100%;
@@ -1059,20 +1076,21 @@ body.in-synthesis .topnav { display: none; }
 </head>
 <body>
 
-<!-- PASSCODE MODAL -->
+<!-- ACCESS CODE MODAL -->
 <div class="modal-overlay" id="passcodeModal">
   <div class="modal-box">
-    <h3>Access the Assessment</h3>
-    <p>Enter an access code from your counselor, or purchase access below.</p>
-    <input type="text" class="modal-input" id="passcodeInput" placeholder="Access code" autocomplete="off" spellcheck="false">
+    <h3>Enter your access code</h3>
+    <p>Type the code from your purchase email, your spouse's couple-package, or a counselor who gave you one. Codes are case-insensitive.</p>
+    <input type="text" class="modal-input" id="passcodeInput" placeholder="e.g. T139-XXXXXX or COUPLE-XXXXXX-A" autocomplete="off" spellcheck="false" autocapitalize="characters">
+    <div class="modal-feedback" id="passcodeFeedback"></div>
     <div class="modal-error" id="passcodeError"></div>
-    <button class="modal-btn" onclick="submitPasscode()">Continue with Code</button>
-    <div style="display:flex;align-items:center;gap:1rem;margin:1.25rem 0 0.75rem;">
+    <button class="modal-btn" id="passcodeSubmitBtn" onclick="submitPasscode()">Begin Assessment</button>
+    <div id="purchaseSection" style="display:flex;align-items:center;gap:1rem;margin:1.25rem 0 0.75rem;">
       <div style="flex:1;height:1px;background:var(--border);"></div>
-      <span style="font-size:0.8rem;color:var(--faint);text-transform:uppercase;letter-spacing:0.08em;">or</span>
+      <span style="font-size:0.8rem;color:var(--faint);text-transform:uppercase;letter-spacing:0.08em;">don't have one?</span>
       <div style="flex:1;height:1px;background:var(--border);"></div>
     </div>
-    <a href="https://buy.stripe.com/test_cNi14f3TD9sO7lG9dZ5Rm01" class="modal-btn" style="display:block;text-align:center;text-decoration:none;background:transparent;border:1.5px solid var(--accent);color:var(--accent);margin-bottom:0.5rem;">Purchase Access — $14.99</a>
+    <a href="#" id="purchaseLink" class="modal-btn" style="display:block;text-align:center;text-decoration:none;background:transparent;border:1.5px solid var(--accent);color:var(--accent);margin-bottom:0.5rem;">Purchase access — from $20</a>
     <button class="modal-close" onclick="closePasscodeModal()">Cancel</button>
   </div>
 </div>
@@ -3662,6 +3680,11 @@ function showResults() {
   showScreen('results');
   document.getElementById('progressFill').style.width = '100%';
 
+  // Now that pair section is in the DOM, re-apply enforcement-based UI bits
+  if (typeof checkEnforcement === 'function') {
+    checkEnforcement();
+  }
+
   const trig = results.trigger.primary.cat;
   const cq = results.coreQ.primary.cat;
   const mech = results.mechanism.primary.cat;
@@ -3836,6 +3859,12 @@ function showResults() {
         <div class="pair-form">
           <input type="text" class="pair-input" id="partnerCodeInput" placeholder="e.g. ANCHOR-4829" autocomplete="off" oninput="this.value = this.value.toUpperCase()">
           <button class="btn btn-primary" onclick="connectPartner()" id="connectBtn">Connect</button>
+        </div>
+        <!-- Connection code field — only shown when enforcement is on -->
+        <div class="pair-connection-code" id="pairConnectionCodeWrap" style="display:none; margin-top:0.85rem;">
+          <div class="pair-code-label" style="font-size:0.8125rem;">Connection code (your couple package code, or a Connection add-on):</div>
+          <input type="text" class="pair-input" id="connectionCodeInput" placeholder="e.g. COUPLE-XXXXXX-A or CONNECT-XXXXXX" autocomplete="off" style="width:100%;" oninput="this.value = this.value.toUpperCase()">
+          <div style="font-size:0.75rem;color:var(--muted);margin-top:0.3rem;">If you bought the Couple Package, paste either spouse's code. If you each bought separately, you'll need a $10 Connection add-on.</div>
         </div>
         <div class="pair-status" id="pairStatus"></div>
       </div>
@@ -4110,16 +4139,64 @@ function startOver() {
 
 // ==================== TAKE 139 EXTENSIONS ====================
 
-// ── PASSCODE SYSTEM ──
-const VALID_CODES = ['take139', 'caog'];
-let passcodeVerified = false;
+// ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+// ACCESS CODE SYSTEM (Session 4 — backend-verified)
+//
+// Flow:
+//  1. On page load, ask backend /codes/enforcement whether codes are required.
+//  2. If NOT enforced — user clicks 'Take the Assessment', goes straight in
+//     (legacy behavior; works exactly like the pre-launch site).
+//  3. If enforced — modal appears, user types a code, we hit /codes/check/{code}
+//     in real time to give them ✓ / ✗ feedback BEFORE they invest 15 minutes.
+//  4. On valid code, we set window._currentAccessCode (which already flows
+//     into the /submit payload at line ~4046), and let them through.
+// ───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 
-function beginAssessment() {
-  if (!passcodeVerified) {
-    showPasscodeModal();
+let passcodeVerified = false;
+let _enforcementCache = null; // null = unknown, true/false = fetched
+let _preflightTimer = null;
+let _lastValidatedCode = null;
+
+async function checkEnforcement() {
+  if (_enforcementCache !== null) {
+    applyEnforcementUI(_enforcementCache);
+    return _enforcementCache;
+  }
+  try {
+    const res = await fetch(BACKEND_URL + '/codes/enforcement', { cache: 'no-store' });
+    if (!res.ok) { _enforcementCache = false; applyEnforcementUI(false); return false; }
+    const data = await res.json();
+    _enforcementCache = !!data.enforced;
+  } catch (err) {
+    console.warn('enforcement check failed, defaulting to false', err);
+    _enforcementCache = false;
+  }
+  applyEnforcementUI(_enforcementCache);
+  return _enforcementCache;
+}
+
+// Toggle UI bits that only matter when codes are enforced
+function applyEnforcementUI(enforced) {
+  // Show the 'connection code' input on the pair-connect UI
+  const wrap = document.getElementById('pairConnectionCodeWrap');
+  if (wrap) wrap.style.display = enforced ? 'block' : 'none';
+}
+
+async function beginAssessment() {
+  const enforced = await checkEnforcement();
+  if (!enforced) {
+    // Codes disabled — legacy free flow
+    window._currentAccessCode = null;
+    launchDiagnostic();
     return;
   }
-  launchDiagnostic();
+  // Codes enforced — require a verified code
+  if (passcodeVerified && _lastValidatedCode) {
+    window._currentAccessCode = _lastValidatedCode;
+    launchDiagnostic();
+    return;
+  }
+  showPasscodeModal();
 }
 
 function launchDiagnostic() {
@@ -4142,19 +4219,24 @@ function launchDiagnostic() {
   }, 500);
 }
 
-// Set the initial body class so the nav shows on load
+// Set the initial body class so the nav shows on load + warm the enforcement cache
 document.addEventListener('DOMContentLoaded', function() {
   document.body.classList.add('in-welcome');
+  checkEnforcement();
 });
 
 function showPasscodeModal() {
   const modal = document.getElementById('passcodeModal');
   const input = document.getElementById('passcodeInput');
   const error = document.getElementById('passcodeError');
+  const feedback = document.getElementById('passcodeFeedback');
+  const submitBtn = document.getElementById('passcodeSubmitBtn');
   modal.classList.add('show');
   input.value = '';
-  input.classList.remove('error');
+  input.classList.remove('error', 'valid');
   error.textContent = '';
+  if (feedback) feedback.textContent = '';
+  if (submitBtn) submitBtn.disabled = false;
   setTimeout(() => input.focus(), 300);
 }
 
@@ -4162,48 +4244,140 @@ function closePasscodeModal() {
   document.getElementById('passcodeModal').classList.remove('show');
 }
 
-function submitPasscode() {
+// Real-time preflight as user types
+function onPasscodeInput() {
+  const input = document.getElementById('passcodeInput');
+  const feedback = document.getElementById('passcodeFeedback');
+  const error = document.getElementById('passcodeError');
+  if (!input || !feedback) return;
+
+  const code = (input.value || '').trim().toUpperCase();
+  error.textContent = '';
+  input.classList.remove('error', 'valid');
+
+  if (!code) {
+    feedback.textContent = '';
+    feedback.className = 'modal-feedback';
+    return;
+  }
+
+  // Minimum length check before hitting backend
+  if (code.length < 6) {
+    feedback.textContent = 'Keep typing...';
+    feedback.className = 'modal-feedback';
+    return;
+  }
+
+  clearTimeout(_preflightTimer);
+  _preflightTimer = setTimeout(async () => {
+    feedback.textContent = 'Checking...';
+    feedback.className = 'modal-feedback';
+    try {
+      const res = await fetch(BACKEND_URL + '/codes/check/' + encodeURIComponent(code), { cache: 'no-store' });
+      const data = await res.json();
+      if (data.valid) {
+        const kindLabel = data.kind === 'single' ? 'Single assessment — $20'
+                        : data.kind === 'couple' ? 'Couple package — you and your spouse'
+                        : data.kind === 'connect' ? 'Connection add-on'
+                        : data.kind;
+        feedback.innerHTML = '✓ Valid code &middot; <span style="opacity:0.75">' + kindLabel + '</span>';
+        feedback.className = 'modal-feedback ok';
+        input.classList.add('valid');
+        _lastValidatedCode = code;
+      } else {
+        feedback.textContent = '✗ ' + (data.reason || 'This code is not valid.');
+        feedback.className = 'modal-feedback err';
+        _lastValidatedCode = null;
+      }
+    } catch (err) {
+      feedback.textContent = 'Could not verify code (network error)';
+      feedback.className = 'modal-feedback err';
+    }
+  }, 350); // debounce
+}
+
+async function submitPasscode() {
   const input = document.getElementById('passcodeInput');
   const error = document.getElementById('passcodeError');
-  const code = input.value.trim().toLowerCase();
+  const feedback = document.getElementById('passcodeFeedback');
+  const submitBtn = document.getElementById('passcodeSubmitBtn');
+  const code = (input.value || '').trim().toUpperCase();
 
-  if (VALID_CODES.includes(code)) {
+  if (!code) {
+    error.textContent = 'Please enter your access code.';
+    input.focus();
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Verifying...';
+
+  try {
+    const res = await fetch(BACKEND_URL + '/codes/check/' + encodeURIComponent(code), { cache: 'no-store' });
+    const data = await res.json();
+    if (!data.valid) {
+      input.classList.add('error');
+      error.textContent = data.reason || 'This code is not valid.';
+      setTimeout(() => input.classList.remove('error'), 400);
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Begin Assessment';
+      input.focus();
+      return;
+    }
+    // Valid — lock it in and proceed
     passcodeVerified = true;
+    _lastValidatedCode = code;
     window._currentAccessCode = code;
     closePasscodeModal();
     launchDiagnostic();
-  } else {
-    input.classList.add('error');
-    error.textContent = 'Invalid access code. Please check with your counselor.';
-    setTimeout(() => input.classList.remove('error'), 400);
-    input.value = '';
-    input.focus();
+  } catch (err) {
+    error.textContent = 'Could not verify code (network error). Try again.';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Begin Assessment';
   }
 }
+
+// Wire up real-time validation + Enter key once DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+  const input = document.getElementById('passcodeInput');
+  if (input) {
+    input.addEventListener('input', onPasscodeInput);
+  }
+});
 
 // Allow Enter key to submit
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && document.getElementById('passcodeModal').classList.contains('show')) {
+    e.preventDefault();
     submitPasscode();
   }
 });
 
-// Check for Stripe payment redirect on page load
+// Stripe-success redirect handler (Session 5 will wire fully).
+//
+// Old behavior: ?paid=true skipped the passcode entirely. That doesn't work
+// anymore because /submit now requires a REAL access code from the codes
+// table, not just a 'they paid' flag. Session 5 will replace this with:
+//   1. Stripe webhook generates real code on successful payment
+//   2. Redirect comes back with ?code=T139-XXXXXX in URL
+//   3. We auto-fill the code modal and verify against backend.
+//
+// For now, if we see ?code=XXXX in the URL, auto-fill the modal and verify.
 (function checkPaymentRedirect() {
   const params = new URLSearchParams(window.location.search);
-  if (params.get('paid') === 'true') {
-    passcodeVerified = true;
-    // Clean the URL so it doesn't show ?paid=true
+  const codeParam = params.get('code');
+  if (codeParam) {
+    // Clean the URL
     window.history.replaceState({}, '', window.location.pathname);
-    // Auto-scroll to the CTA and flash a success message
+    // Show modal pre-filled and auto-verify
     setTimeout(() => {
-      const hero = document.querySelector('.hero-cta');
-      if (hero) {
-        hero.textContent = 'Payment Received — Begin';
-        hero.style.animation = 'none';
-        hero.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      showPasscodeModal();
+      const input = document.getElementById('passcodeInput');
+      if (input) {
+        input.value = codeParam.toUpperCase();
+        onPasscodeInput();
       }
-    }, 500);
+    }, 600);
   }
 })();
 
@@ -4295,14 +4469,32 @@ async function connectPartner() {
     const res = await fetch(BACKEND_URL + '/pair/connect', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ my_code: myCode, partner_code: partnerCode }),
+      body: JSON.stringify({
+        my_code: myCode,
+        partner_code: partnerCode,
+        connection_code: (function() {
+          const cci = document.getElementById('connectionCodeInput');
+          return cci ? (cci.value || '').trim().toUpperCase() || null : null;
+        })(),
+      }),
     });
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
-      if (res.status === 404) {
-        statusEl.textContent = (err.detail || 'Pair code not found.') + ' Double-check the code with your partner.';
-      } else if (res.status === 400) {
-        statusEl.textContent = err.detail || 'Could not connect.';
+      // The backend sends structured detail.message for code-gating errors
+      const detail = err.detail;
+      const msg = (detail && typeof detail === 'object' && detail.message)
+                  ? detail.message
+                  : (typeof detail === 'string' ? detail : null);
+      if (res.status === 402) {
+        statusEl.textContent = msg || 'A connection code is required.';
+      } else if (res.status === 404) {
+        statusEl.textContent = (msg || 'Code not found.') + ' Double-check with your partner.';
+      } else if (res.status === 410) {
+        statusEl.textContent = msg || 'This connection code has already been used.';
+      } else if (res.status === 409) {
+        statusEl.textContent = msg || 'One of you is already paired with another partner. Purchase a Connection add-on to re-pair.';
+      } else if (res.status === 403 || res.status === 400) {
+        statusEl.textContent = msg || 'Could not connect.';
       } else {
         statusEl.textContent = 'Connection failed. Try again in a moment.';
       }
