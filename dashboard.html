@@ -337,11 +337,16 @@ const MECHANISM_NAMES = {
   ADPT: 'The Adapter', ADAPTER: 'The Adapter',
   CAMP: 'The Campaign', PERF: 'The Performance', PERFORMANCE: 'The Performance',
 };
+// Trigger names sourced from content_library.json. The full names use
+// the suffix "-Sensitive" in the backend; on the dashboard we show the
+// short trigger word for readability (e.g. "Disrespect" not
+// "Disrespect-Sensitive"). Both legacy SHAM and current SHM map to Shame.
 const TRIGGER_NAMES = {
-  DIS: 'Disappointment',
+  DIS: 'Disrespect',
   DISC: 'Disconnection',
   INJ: 'Injustice',
-  CTRL: 'Control loss',
+  CTRL: 'Control',
+  SHM: 'Shame',
   SHAM: 'Shame',
   SIG: 'Significance',
 };
