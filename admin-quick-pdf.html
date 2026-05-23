@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Take 139 · Quick PDF Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f5f1e8; --ink: #1d1d1b;
+    --accent: #8a4a2c; --accent-2: #4f6b5e;
+    --muted: #6b6862; --rule: #cfc6b4;
+    --highlight: #ece4d3;
+    --success: #436b32; --error: #a04030;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; background:var(--paper); color:var(--ink); font-family:'Inter',sans-serif; font-size:15px; line-height:1.55; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .page { max-width: 1100px; margin: 0 auto; padding: 32px 28px 80px; }
+  header.brand {
+    display: flex; align-items: baseline; justify-content: space-between;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 14px; margin-bottom: 28px;
+  }
+  .brand h1 { font-family:'Fraunces',serif; font-weight:600; font-size:28px; margin:0; letter-spacing:-0.01em; }
+  .brand .eyebrow { font-size:11px; letter-spacing:0.15em; text-transform:uppercase; color:var(--accent); font-weight:500; }
+  .brand .right { font-size:12px; color:var(--muted); }
+  .brand .right button { background:none; border:none; color:var(--accent); cursor:pointer; font:inherit; padding:4px 0; text-decoration:underline; }
+
+  .crumb { font-size:13px; color: var(--muted); margin-bottom: 14px; }
+  .crumb a { color: var(--muted); }
+  .crumb a:hover { color: var(--accent); }
+
+  /* Login screen */
+  .login { max-width:420px; margin:80px auto; background:white; border:1px solid var(--rule); border-radius:4px; padding:36px 32px; }
+  .login h2 { font-family:'Fraunces',serif; font-weight:600; margin:0 0 18px 0; }
+  .login input { width:100%; padding:10px 12px; border:1px solid var(--rule); border-radius:3px; font:inherit; }
+  .login button { width:100%; margin-top:14px; padding:12px 16px; border:none; background:var(--ink); color:var(--paper); font-weight:600; border-radius:3px; cursor:pointer; }
+  .login button:hover { background: #000; }
+  .login .err { color: var(--error); font-size:13px; margin-top:10px; min-height:1em; }
+
+  .hidden { display: none !important; }
+
+  /* Mode toggle */
+  .mode-toggle { display:inline-flex; background:white; border:1px solid var(--rule); border-radius:4px; padding:4px; gap:4px; margin-bottom:20px; }
+  .mode-toggle button { background:none; border:none; padding:8px 16px; cursor:pointer; font-weight:600; font-size:14px; color:var(--muted); border-radius:3px; }
+  .mode-toggle button.active { background:var(--ink); color:var(--paper); }
+
+  /* Person card */
+  .person-card { background:white; border:1px solid var(--rule); border-radius:4px; padding:24px; margin-bottom:18px; }
+  .person-card h3 { margin:0 0 18px 0; font-family:'Fraunces',serif; font-weight:600; font-size:20px; }
+  .row { display:flex; gap:14px; flex-wrap:wrap; }
+  .row > .col { flex:1 1 220px; min-width:0; }
+  label { display:block; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); font-weight:600; margin-bottom:6px; }
+  input, select { width:100%; padding:10px 12px; border:1px solid var(--rule); border-radius:3px; font:inherit; background:white; }
+  select { cursor: pointer; }
+  input:focus, select:focus { outline:none; border-color:var(--accent); box-shadow: 0 0 0 3px rgba(138,74,44,0.12); }
+  .hint { font-size:12px; color:var(--muted); margin-top:4px; }
+
+  /* Action buttons */
+  .action-card { background:white; border:1px solid var(--rule); border-radius:4px; padding:24px; }
+  .action-card h3 { margin:0 0 12px 0; font-family:'Fraunces',serif; font-weight:600; font-size:18px; }
+  .btn { display:inline-block; padding:10px 18px; border:none; background:var(--ink); color:var(--paper); font:inherit; font-weight:600; font-size:13px; letter-spacing:0.03em; border-radius:3px; cursor:pointer; margin-right:8px; margin-top:6px; }
+  .btn:hover:not(:disabled) { background: #000; }
+  .btn:disabled { opacity:0.55; cursor:wait; }
+  .btn.outline { background:transparent; color:var(--ink); border:1px solid var(--rule); }
+  .btn.outline:hover { background:var(--highlight); }
+  .status { margin-top:14px; padding:10px 14px; border-radius:3px; font-size:14px; min-height:1.3em; }
+  .status.ok { background:rgba(67,107,50,0.1); color:var(--success); border:1px solid rgba(67,107,50,0.3); }
+  .status.err { background:rgba(160,64,48,0.1); color:var(--error); border:1px solid rgba(160,64,48,0.3); }
+  .status:empty { display:none; }
+
+  .preview-note { font-size:13px; color:var(--muted); margin-top:18px; padding-top:14px; border-top:1px dashed var(--rule); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="brand">
+    <div>
+      <div class="eyebrow">Take 139 · Admin</div>
+      <h1>Quick PDF Generator</h1>
+    </div>
+    <div class="right" id="signedInRight" style="display:none;">
+      <button id="logout-btn">Sign out</button>
+    </div>
+  </header>
+
+  <!-- ===== Login ===== -->
+  <div id="login-view" class="login">
+    <h2>Sign in</h2>
+    <form id="login-form">
+      <label for="pw">Admin password</label>
+      <input type="password" id="pw" autocomplete="current-password" autofocus>
+      <button type="submit">Sign in</button>
+      <div class="err" id="login-error"></div>
+    </form>
+  </div>
+
+  <!-- ===== Main view ===== -->
+  <div id="main-view" class="hidden">
+    <div class="crumb"><a href="/admin.html">← Back to admin home</a></div>
+
+    <p style="margin-top:0;color:var(--muted);max-width:680px;">
+      Build a Personal Report PDF, Walkthrough PDF, or Couples Report from a hand-selected profile &mdash; no assessment required.
+      Useful for counseling clients you already know, conference walk-ups, and sample reports.
+      <strong>Nothing is saved to the database</strong> &mdash; these are one-off generated PDFs.
+    </p>
+
+    <!-- Mode toggle -->
+    <div class="mode-toggle" role="tablist" aria-label="Report type">
+      <button id="modePersonal" class="active" onclick="setMode('personal')">Personal Report (one person)</button>
+      <button id="modeCouples" onclick="setMode('couples')">Couples Report (two people)</button>
+    </div>
+
+    <!-- Person A -->
+    <div class="person-card">
+      <h3 id="personATitle">Person</h3>
+      <div class="row">
+        <div class="col">
+          <label for="aName">Name</label>
+          <input type="text" id="aName" placeholder="Sarah Mitchell">
+        </div>
+        <div class="col">
+          <label for="aEmail">Email <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;">(optional — only needed if you want to email it)</span></label>
+          <input type="email" id="aEmail" placeholder="sarah@example.com">
+        </div>
+      </div>
+      <div class="row" style="margin-top:10px;">
+        <div class="col">
+          <label for="aMech">Archetype (mechanism)</label>
+          <select id="aMech"></select>
+        </div>
+        <div class="col">
+          <label for="aBd">Breakdown</label>
+          <select id="aBd"></select>
+        </div>
+      </div>
+      <div class="row" style="margin-top:10px;">
+        <div class="col">
+          <label for="aTrig">Primary trigger</label>
+          <select id="aTrig"></select>
+        </div>
+        <div class="col">
+          <label for="aCq">Core question</label>
+          <select id="aCq"></select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Person B (couples only) -->
+    <div id="personBSection" class="hidden">
+      <div class="person-card">
+        <h3>Partner</h3>
+        <div class="row">
+          <div class="col">
+            <label for="bName">Name</label>
+            <input type="text" id="bName" placeholder="Jordan Mitchell">
+          </div>
+          <div class="col">
+            <label for="bEmail">Email <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0;">(optional)</span></label>
+            <input type="email" id="bEmail" placeholder="jordan@example.com">
+          </div>
+        </div>
+        <div class="row" style="margin-top:10px;">
+          <div class="col">
+            <label for="bMech">Archetype</label>
+            <select id="bMech"></select>
+          </div>
+          <div class="col">
+            <label for="bBd">Breakdown</label>
+            <select id="bBd"></select>
+          </div>
+        </div>
+        <div class="row" style="margin-top:10px;">
+          <div class="col">
+            <label for="bTrig">Primary trigger</label>
+            <select id="bTrig"></select>
+          </div>
+          <div class="col">
+            <label for="bCq">Core question</label>
+            <select id="bCq"></select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="action-card">
+      <h3>Generate</h3>
+
+      <!-- Personal mode buttons -->
+      <div id="personalActions">
+        <button class="btn" onclick="downloadPersonal('personal')">Download Profile PDF</button>
+        <button class="btn outline" onclick="downloadPersonal('walkthrough')">Download Walkthrough PDF</button>
+        <button class="btn outline" onclick="emailPersonal()">Email both PDFs to person</button>
+      </div>
+
+      <!-- Couples mode buttons -->
+      <div id="couplesActions" class="hidden">
+        <button class="btn" onclick="downloadCouples()">Download Couples Report PDF</button>
+        <button class="btn outline" onclick="emailCouples()">Email full package to person A (+ partner if email given)</button>
+      </div>
+
+      <div class="status" id="status"></div>
+
+      <div class="preview-note">
+        <strong>Note:</strong> Email actions deliver the polished email template + the Personal Profile PDF + the Walkthrough PDF (and the Couples Report when applicable).
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const BACKEND = "https://take139-backend-production.up.railway.app";
+// Share token with admin.html so sign-in carries over.
+const TOKEN_KEY = "take139_admin_token";
+
+// ===== Auth =====
+function getToken() { return localStorage.getItem(TOKEN_KEY) || ''; }
+function setToken(t) { localStorage.setItem(TOKEN_KEY, t); }
+function clearToken() { localStorage.removeItem(TOKEN_KEY); }
+
+async function api(path, opts = {}) {
+  opts.headers = opts.headers || {};
+  const t = getToken();
+  if (t) opts.headers['Authorization'] = 'Bearer ' + t;
+  return fetch(BACKEND + path, opts);
+}
+
+function showLogin() {
+  document.getElementById('main-view').classList.add('hidden');
+  document.getElementById('login-view').classList.remove('hidden');
+  document.getElementById('signedInRight').style.display = 'none';
+  setTimeout(() => document.getElementById('pw').focus(), 50);
+}
+
+function showMain() {
+  document.getElementById('login-view').classList.add('hidden');
+  document.getElementById('main-view').classList.remove('hidden');
+  document.getElementById('signedInRight').style.display = 'block';
+  loadOptions();
+}
+
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const pw = document.getElementById('pw').value;
+  const errEl = document.getElementById('login-error');
+  errEl.textContent = '';
+  try {
+    const r = await fetch(BACKEND + '/admin/login', {
+      method:'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({password: pw}),
+    });
+    if (!r.ok) { errEl.textContent = 'Incorrect password.'; return; }
+    const data = await r.json();
+    setToken(data.token);
+    document.getElementById('pw').value = '';
+    showMain();
+  } catch (_) {
+    errEl.textContent = 'Could not reach the server.';
+  }
+});
+
+document.getElementById('logout-btn').addEventListener('click', () => {
+  clearToken();
+  showLogin();
+});
+
+// ===== Dropdown options =====
+function fillSelect(id, items, initial) {
+  const sel = document.getElementById(id);
+  sel.innerHTML = '';
+  items.forEach(it => {
+    const opt = document.createElement('option');
+    opt.value = it.code;
+    opt.textContent = it.name;
+    sel.appendChild(opt);
+  });
+  if (initial) sel.value = initial;
+}
+
+async function loadOptions() {
+  try {
+    const r = await api('/admin/quick-pdf/options');
+    if (r.status === 401) { clearToken(); showLogin(); return; }
+    if (!r.ok) throw new Error('options fetch failed');
+    const o = await r.json();
+    fillSelect('aMech', o.mechanisms);
+    fillSelect('aBd',   o.breakdowns);
+    fillSelect('aTrig', o.triggers);
+    fillSelect('aCq',   o.core_questions);
+    fillSelect('bMech', o.mechanisms);
+    fillSelect('bBd',   o.breakdowns);
+    fillSelect('bTrig', o.triggers);
+    fillSelect('bCq',   o.core_questions);
+  } catch (e) {
+    setStatus('Could not load profile options. Try signing out and back in.', 'err');
+  }
+}
+
+// ===== Mode toggle =====
+function setMode(mode) {
+  const isP = mode === 'personal';
+  document.getElementById('modePersonal').classList.toggle('active', isP);
+  document.getElementById('modeCouples').classList.toggle('active', !isP);
+  document.getElementById('personBSection').classList.toggle('hidden', isP);
+  document.getElementById('personalActions').classList.toggle('hidden', !isP);
+  document.getElementById('couplesActions').classList.toggle('hidden', isP);
+  document.getElementById('personATitle').textContent = isP ? 'Person' : 'Person A';
+}
+
+// ===== Form helpers =====
+function getProfile(prefix) {
+  const name = document.getElementById(prefix + 'Name').value.trim();
+  if (!name) return null;
+  return {
+    name,
+    email: document.getElementById(prefix + 'Email').value.trim() || null,
+    mechanism: document.getElementById(prefix + 'Mech').value,
+    breakdown: document.getElementById(prefix + 'Bd').value,
+    trigger:   document.getElementById(prefix + 'Trig').value,
+    core_question: document.getElementById(prefix + 'Cq').value,
+  };
+}
+
+function setStatus(msg, kind) {
+  const el = document.getElementById('status');
+  el.textContent = msg;
+  el.className = 'status ' + (kind || '');
+}
+
+async function downloadBlob(path, payload, defaultName) {
+  const r = await api(path, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(payload),
+  });
+  if (r.status === 401) { clearToken(); showLogin(); return; }
+  if (!r.ok) {
+    let msg = 'Generation failed.';
+    try { const d = await r.json(); if (d && d.detail) msg = d.detail; } catch(_){}
+    setStatus(msg, 'err');
+    return;
+  }
+  const blob = await r.blob();
+  let fname = defaultName;
+  const cd = r.headers.get('content-disposition') || '';
+  const m = cd.match(/filename="?([^";]+)"?/);
+  if (m) fname = m[1];
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = fname;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+  setStatus('Downloaded ' + fname, 'ok');
+}
+
+// ===== Personal actions =====
+async function downloadPersonal(kind) {
+  const p = getProfile('a');
+  if (!p) { setStatus('Please enter the person\u2019s name first.', 'err'); return; }
+  setStatus('Generating ' + kind + ' PDF\u2026', '');
+  const path = '/admin/quick-pdf/' + kind;
+  const def = (kind === 'walkthrough' ? 'Walkthrough.pdf' : 'Profile.pdf');
+  await downloadBlob(path, {profile: p, include_walkthrough: true}, def);
+}
+
+async function emailPersonal() {
+  const p = getProfile('a');
+  if (!p) { setStatus('Please enter the person\u2019s name first.', 'err'); return; }
+  if (!p.email) { setStatus('Please add an email address to send to.', 'err'); return; }
+  if (!confirm('Send the full package (Profile + Walkthrough PDFs) to ' + p.email + '?')) return;
+  setStatus('Sending\u2026', '');
+  const r = await api('/admin/quick-pdf/email', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({profile: p}),
+  });
+  if (r.status === 401) { clearToken(); showLogin(); return; }
+  if (!r.ok) {
+    let msg = 'Email failed.';
+    try { const d = await r.json(); if (d && d.detail) msg = d.detail; } catch(_){}
+    setStatus(msg, 'err'); return;
+  }
+  const d = await r.json();
+  setStatus(d.message || 'Sent.', 'ok');
+}
+
+// ===== Couples actions =====
+async function downloadCouples() {
+  const a = getProfile('a');
+  const b = getProfile('b');
+  if (!a || !b) { setStatus('Please enter both names first.', 'err'); return; }
+  setStatus('Generating Couples PDF\u2026', '');
+  await downloadBlob('/admin/quick-pdf/couples', {person_a:a, person_b:b}, 'Couples.pdf');
+}
+
+async function emailCouples() {
+  const a = getProfile('a');
+  const b = getProfile('b');
+  if (!a || !b) { setStatus('Please enter both names first.', 'err'); return; }
+  if (!a.email) { setStatus('Please add an email for Person A.', 'err'); return; }
+  const willPartner = !!b.email;
+  const target = a.email + (willPartner ? ' and ' + b.email : '');
+  if (!confirm('Send the full package (Profile + Walkthrough + Couples PDFs) to ' + target + '?')) return;
+  setStatus('Sending\u2026', '');
+  const r = await api('/admin/quick-pdf/email', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({profile: a, partner: b}),
+  });
+  if (r.status === 401) { clearToken(); showLogin(); return; }
+  if (!r.ok) {
+    let msg = 'Email failed.';
+    try { const d = await r.json(); if (d && d.detail) msg = d.detail; } catch(_){}
+    setStatus(msg, 'err'); return;
+  }
+  const d = await r.json();
+  setStatus(d.message || 'Sent.', 'ok');
+}
+
+// ===== Boot =====
+(async function init() {
+  if (!getToken()) { showLogin(); return; }
+  // Quick token validity check via the options endpoint
+  const r = await api('/admin/quick-pdf/options');
+  if (r.status === 401) { clearToken(); showLogin(); return; }
+  showMain();
+})();
+</script>
+</body>
+</html>
