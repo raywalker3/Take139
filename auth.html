@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Signing you in &mdash; Take 139</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f1e8; --surface: #efe9dc; --border: #d8cfba;
+  --text: #1d1d1b; --muted: #5d564b; --faint: #8b8475;
+  --accent: #8a4a2c;
+  --font-heading: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 460px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+}
+.brand {
+  font-size: 0.72rem; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--accent); font-weight: 600; margin-bottom: 1rem;
+}
+h1 {
+  font-family: var(--font-heading); font-size: 1.9rem; font-weight: 500;
+  margin: 0 0 0.75rem 0;
+}
+.subtitle {
+  font-family: var(--font-heading); font-style: italic;
+  color: var(--muted); font-size: 1rem; margin-bottom: 2rem;
+}
+.spinner {
+  width: 36px; height: 36px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+  margin: 1.5rem auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.err {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  border: 1px solid #e0c7c7;
+  background: #fdf6f6;
+  border-radius: 6px;
+  color: #a13544;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.actions { margin-top: 1.5rem; }
+.btn-link {
+  display: inline-block;
+  padding: 0.7rem 1.4rem;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border-radius: 6px;
+}
+.btn-link:hover { background: #000; }
+.secondary {
+  display: inline-block;
+  margin-left: 0.75rem;
+  font-size: 0.88rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+.secondary:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">Take 139</div>
+  <h1 id="title">Signing you in&hellip;</h1>
+  <p class="subtitle" id="subtitle">Verifying your link.</p>
+  <div class="spinner" id="spinner"></div>
+  <div id="errBox" style="display:none;"></div>
+</div>
+
+<script>
+const BACKEND_URL = 'https://take139-backend-production.up.railway.app';
+
+(async function() {
+  const params = new URLSearchParams(window.location.search);
+  const token = params.get('token');
+  const title = document.getElementById('title');
+  const subtitle = document.getElementById('subtitle');
+  const spinner = document.getElementById('spinner');
+  const errBox = document.getElementById('errBox');
+
+  function showError(msg) {
+    title.textContent = 'Sign-in failed';
+    subtitle.style.display = 'none';
+    spinner.style.display = 'none';
+    errBox.style.display = 'block';
+    errBox.innerHTML = `
+      <div class="err">${msg}</div>
+      <div class="actions">
+        <a href="/sign-in.html" class="btn-link">Request a new link</a>
+        <a href="/" class="secondary">Back to home</a>
+      </div>`;
+  }
+
+  if (!token) {
+    showError('No sign-in token was provided. Please request a fresh link.');
+    return;
+  }
+
+  try {
+    const res = await fetch(BACKEND_URL + '/auth/verify?token=' + encodeURIComponent(token));
+    if (!res.ok) {
+      let msg = 'This sign-in link is invalid, expired, or already used.';
+      try {
+        const data = await res.json();
+        if (data && data.detail) msg = data.detail;
+      } catch(_) {}
+      showError(msg);
+      return;
+    }
+    const data = await res.json();
+    // Persist session
+    try {
+      localStorage.setItem('t139_session_token', data.session_token);
+      localStorage.setItem('t139_session_email', data.email);
+    } catch (e) {
+      // localStorage blocked (private mode, etc.) — fall back to session-only.
+      sessionStorage.setItem('t139_session_token', data.session_token);
+      sessionStorage.setItem('t139_session_email', data.email);
+    }
+    title.textContent = 'Signed in';
+    subtitle.textContent = 'Taking you to your dashboard\u2026';
+    spinner.style.display = 'none';
+    setTimeout(() => { window.location.href = '/dashboard.html'; }, 600);
+  } catch (err) {
+    showError('We could not reach the server. Please check your connection and try again.');
+  }
+})();
+</script>
+</body>
+</html>

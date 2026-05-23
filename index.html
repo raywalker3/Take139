@@ -1279,7 +1279,7 @@ body.in-synthesis .topnav { display: none; }
       <li><a href="how-it-works.html">How It Works</a></li>
       <li><a href="imago/" class="hide-mobile">IMAGO</a></li>
       <li><a href="for-churches.html">For Churches</a></li>
-      <li><a href="sign-in.html" class="cta">Sign In</a></li>
+      <li><a href="sign-in.html" class="cta" id="navSignIn">Sign In</a></li>
     </ul>
   </div>
 </nav>
@@ -5123,6 +5123,37 @@ function startOver() {
   window.scrollTo({top: 0, behavior: 'instant'});
 }
 
+</script>
+<script>
+// ==================== SIGN-IN STATUS INDICATOR ====================
+// If the user has a saved session token, swap the "Sign In" nav link
+// for a "Your dashboard" link. Validation happens on /auth/me; if the
+// stored token is bad we silently clear it and keep the Sign In link.
+(function() {
+  var navEl = document.getElementById('navSignIn');
+  if (!navEl) return;
+  var token = localStorage.getItem('t139_session_token') || sessionStorage.getItem('t139_session_token') || '';
+  if (!token) return;
+  // Optimistically swap; verification is a low-priority background call.
+  var email = localStorage.getItem('t139_session_email') || sessionStorage.getItem('t139_session_email') || '';
+  navEl.textContent = email ? 'My dashboard' : 'My dashboard';
+  navEl.href = '/dashboard.html';
+  // Verify in the background — if the session is dead, restore the Sign In link.
+  try {
+    fetch('https://take139-backend-production.up.railway.app/auth/me', {
+      headers: { 'X-Session-Token': token },
+    }).then(function(r) {
+      if (r.status === 401) {
+        localStorage.removeItem('t139_session_token');
+        localStorage.removeItem('t139_session_email');
+        sessionStorage.removeItem('t139_session_token');
+        sessionStorage.removeItem('t139_session_email');
+        navEl.textContent = 'Sign In';
+        navEl.href = '/sign-in.html';
+      }
+    }).catch(function() { /* offline — keep optimistic state */ });
+  } catch(_) {}
+})();
 </script>
 </body>
 </html>

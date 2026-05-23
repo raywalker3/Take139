@@ -3,156 +3,218 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sign In — Take 139</title>
+<title>Sign in — Take 139</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 :root {
   --bg: #f5f1e8;
   --surface: #efe9dc;
+  --surface-2: #e8e1d0;
   --border: #d8cfba;
   --hairline: rgba(29, 29, 27, 0.12);
   --text: #1d1d1b;
   --muted: #5d564b;
   --faint: #8b8475;
   --accent: #8a4a2c;
+  --accent-hover: #6f3a23;
+  --accent-soft: rgba(138, 74, 44, 0.08);
   --font-heading: 'Fraunces', Georgia, serif;
   --font-body: 'Inter', system-ui, -apple-system, sans-serif;
 }
-
-html { font-size: 16px; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
 body {
   font-family: var(--font-body);
-  background: var(--bg); color: var(--text);
-  line-height: 1.6; min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   background-image:
     radial-gradient(rgba(0,0,0,0.012) 1px, transparent 1px),
     radial-gradient(rgba(0,0,0,0.010) 1px, transparent 1px);
   background-size: 24px 24px, 36px 36px;
+  background-position: 0 0, 12px 18px;
   background-attachment: fixed;
 }
-
-/* ── NAV ── */
-.topnav {
-  position: sticky; top: 0; z-index: 50;
-  background: rgba(245, 241, 232, 0.92);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--hairline);
+.wrap {
+  max-width: 460px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 3rem;
 }
-.topnav-inner {
-  max-width: 1100px; margin: 0 auto;
-  padding: 1rem 1.5rem;
-  display: flex; align-items: center; justify-content: space-between;
+.brand {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
 }
-.topnav-brand {
-  font-family: var(--font-heading); font-size: 1.25rem; font-weight: 600;
-  color: var(--text); text-decoration: none;
+.brand a { color: var(--accent); text-decoration: none; }
+h1 {
+  font-family: var(--font-heading);
+  font-size: 2.25rem;
+  line-height: 1.1;
+  font-weight: 500;
+  color: var(--text);
+  margin: 0 0 0.5rem 0;
 }
-.topnav-links {
-  display: flex; align-items: center; gap: 2rem;
-  list-style: none;
+.subtitle {
+  font-family: var(--font-heading);
+  font-style: italic;
+  color: var(--muted);
+  font-size: 1.05rem;
+  margin-bottom: 2rem;
 }
-.topnav-links a {
-  font-family: var(--font-body); font-size: 0.92rem; font-weight: 500;
-  color: var(--muted); text-decoration: none;
-}
-.topnav-links a.active { color: var(--text); }
-.topnav-links a:hover { color: var(--accent); }
-.topnav-links a.cta {
-  color: var(--bg); background: var(--text);
-  padding: 0.55rem 1.2rem; border-radius: 999px;
-}
-.topnav-links a.cta:hover { background: #2a2a26; color: var(--bg); }
-@media (max-width: 700px) {
-  .topnav-links { gap: 1rem; font-size: 0.85rem; }
-  .topnav-links a { font-size: 0.85rem; }
-  .topnav-links .hide-mobile { display: none; }
-}
-
-/* ── COMING SOON CARD ── */
-.coming-soon-wrap {
-  min-height: 70vh;
-  display: flex; align-items: center; justify-content: center;
-  padding: 4rem 1.5rem;
-}
-.coming-soon {
-  max-width: 540px; text-align: center;
+.card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
-  border-radius: 0 12px 12px 0;
-  padding: 3rem 2.5rem;
+  border-radius: 8px;
+  padding: 2rem 1.75rem;
 }
-.coming-soon .eyebrow {
-  font-family: var(--font-body); font-size: 0.7rem;
-  letter-spacing: 0.3em; text-transform: uppercase;
-  color: var(--accent); font-weight: 600; margin-bottom: 1rem;
+.label {
+  display: block;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 }
-.coming-soon h1 {
-  font-family: var(--font-heading);
-  font-size: 2.5rem; font-weight: 600;
-  font-variation-settings: 'opsz' 120;
-  letter-spacing: -0.015em; line-height: 1.0;
-  color: var(--text); margin-bottom: 1.25rem;
+.input {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s;
 }
-.coming-soon p {
-  color: var(--muted); font-size: 1rem; line-height: 1.65;
-  margin-bottom: 1.25rem;
+.input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
-.coming-soon .btn {
+.btn {
+  display: block;
+  width: 100%;
+  margin-top: 1.1rem;
+  padding: 0.95rem 1.25rem;
+  background: var(--text);
+  color: var(--bg);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn:hover:not(:disabled) { background: #000; }
+.btn:disabled { opacity: 0.55; cursor: wait; }
+.status {
+  margin-top: 1rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  min-height: 1.2em;
+}
+.status.ok { color: var(--accent); }
+.status.err { color: #a13544; }
+.copy {
+  font-size: 0.92rem;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+  line-height: 1.65;
+}
+.fine-print {
+  margin-top: 1.5rem;
+  font-size: 0.82rem;
+  color: var(--faint);
+  text-align: center;
+  line-height: 1.6;
+}
+.fine-print a { color: var(--accent); text-decoration: none; }
+.back-link {
   display: inline-block;
-  padding: 0.85rem 1.85rem; border-radius: 999px;
-  background: var(--text); color: var(--bg);
-  font-family: var(--font-body); font-size: 0.95rem; font-weight: 500;
-  text-decoration: none; transition: background 0.2s;
-  margin-top: 0.5rem;
+  margin-top: 2rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-decoration: none;
 }
-.coming-soon .btn:hover { background: #2a2a26; }
-
-.footer {
-  border-top: 1px solid var(--hairline);
-  padding: 2.5rem 1.5rem; text-align: center;
-  color: var(--faint); font-size: 0.85rem;
-}
-.footer a { color: var(--muted); text-decoration: underline; }
+.back-link:hover { color: var(--accent); }
 </style>
 </head>
 <body>
+<div class="wrap">
+  <div class="brand"><a href="/">Take 139</a></div>
+  <h1>Sign in</h1>
+  <p class="subtitle">Search me, O God, and know my heart.</p>
 
-<nav class="topnav">
-  <div class="topnav-inner">
-    <a href="index.html" class="topnav-brand">Take 139</a>
-    <ul class="topnav-links">
-      <li><a href="how-it-works.html">How It Works</a></li>
-      <li><a href="imago/" class="hide-mobile">IMAGO</a></li>
-      <li><a href="for-churches.html">For Churches</a></li>
-      <li><a href="sign-in.html" class="cta active">Sign In</a></li>
-    </ul>
+  <div class="card">
+    <p class="copy">Enter the email you used when you took the assessment. We&rsquo;ll send you a one-time sign-in link &mdash; no password to remember.</p>
+
+    <label class="label" for="emailInput">Your email</label>
+    <input type="email" class="input" id="emailInput" placeholder="your@email.com" autocomplete="email" autofocus>
+
+    <button class="btn" id="sendBtn" onclick="requestLink()">Send me a sign-in link</button>
+
+    <div class="status" id="status"></div>
   </div>
-</nav>
 
-<main class="coming-soon-wrap">
-  <div class="coming-soon">
-    <div class="eyebrow">Coming Soon</div>
-    <h1>Saved profiles &amp; a return path</h1>
-    <p>The Sign In feature is being built. Soon you will be able to create an account, save your Take 139 and IMAGO profiles, return to them whenever you need them, and view past assessments alongside your partner's.</p>
-    <p>For now, your profile is sent to the email you used at the time of the assessment. Keep the PDF safe — it is the record.</p>
-    <a class="btn" href="how-it-works.html">In the meantime, read how it works</a>
-  </div>
-</main>
+  <p class="fine-print">Once signed in, you&rsquo;ll see your pair code, your profile, and any partner connection in one place.</p>
 
-<footer class="footer">
-  <p>Take 139 &middot; <em>Search me, O God, and know my heart.</em> &middot; Created by Dr. Christopher Hilken</p>
-  <p style="margin-top:0.4rem;">
-    <a href="how-it-works.html">How It Works</a> &middot;
-    <a href="imago/">IMAGO</a> &middot;
-    <a href="for-churches.html">For Churches</a>
-  </p>
-</footer>
+  <a href="/" class="back-link">&larr; Back to home</a>
+</div>
 
+<script>
+const BACKEND_URL = 'https://take139-backend-production.up.railway.app';
+
+async function requestLink() {
+  const email = document.getElementById('emailInput').value.trim();
+  const status = document.getElementById('status');
+  const btn = document.getElementById('sendBtn');
+
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    status.textContent = 'Please enter a valid email address.';
+    status.className = 'status err';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  status.textContent = '';
+  status.className = 'status';
+
+  try {
+    const res = await fetch(BACKEND_URL + '/auth/request-magic-link', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({email}),
+    });
+    if (!res.ok) throw new Error('Server returned ' + res.status);
+    const data = await res.json();
+    status.textContent = data.message || 'Sign-in link sent. Check your inbox.';
+    status.className = 'status ok';
+    btn.textContent = 'Sent \u2713 \u2014 check your inbox';
+    // Leave button locked so users don't fire 5 requests in a row.
+  } catch (err) {
+    status.textContent = 'We hit a snag. Please try again in a minute.';
+    status.className = 'status err';
+    btn.disabled = false;
+    btn.textContent = 'Send me a sign-in link';
+  }
+}
+
+// Submit on Enter
+document.getElementById('emailInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') requestLink();
+});
+</script>
 </body>
 </html>
