@@ -248,8 +248,34 @@ body {
         <div class="pair-code-block" id="pairCode">&mdash;</div>
         <div class="status-line" id="partnerLine">&mdash;</div>
         <div class="btn-row">
-          <a href="/index.html#results" class="btn-outline btn" id="viewResultsBtn">Re-open my results</a>
-          <a href="#" class="btn" id="connectPartnerBtn" style="display:none;">Connect with my partner</a>
+          <a href="/index.html" class="btn-outline btn" id="viewResultsBtn">Take a fresh assessment</a>
+          <a href="#" class="btn" id="connectPartnerBtn" style="display:none;" onclick="toggleConnectForm(event)">Connect with my partner</a>
+        </div>
+
+        <!-- Inline connect-with-partner form. Shown when the user clicks the
+             "Connect with my partner" button. Hits POST /pair/connect on the
+             existing backend. On success, dashboard reloads to show the
+             partner card + couples PDF button. -->
+        <div id="connectFormWrap" style="display:none;margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--hairline);">
+          <h4 style="font-family:var(--font-heading);font-size:1.05rem;font-weight:500;margin:0 0 0.5rem 0;">Connect with your partner</h4>
+          <p style="font-size:0.88rem;color:var(--muted);margin:0 0 1rem 0;line-height:1.55;">After your partner takes the assessment, enter their pair code below. We&rsquo;ll bond your two profiles and email you both the Couples Report.</p>
+
+          <label style="display:block;font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:0.4rem;">Your partner&rsquo;s pair code</label>
+          <input type="text" id="connectPartnerCode" placeholder="e.g. ANCHOR-4829" style="width:100%;padding:0.75rem 0.95rem;border:1px solid var(--border);border-radius:6px;font-family:'Courier New',monospace;letter-spacing:0.08em;background:#fff;color:var(--text);font-size:1rem;text-transform:uppercase;" oninput="this.value = this.value.toUpperCase()">
+
+          <label style="display:block;font-size:0.7rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0.9rem 0 0.4rem 0;">Your access code <span style="font-weight:400;letter-spacing:0;text-transform:none;color:var(--faint);font-size:0.78rem;">(auto-filled from your purchase)</span></label>
+          <input type="text" id="connectAccessCode" placeholder="e.g. COUPLE-XXXXXX-A or CONNECT-XXXXXX" style="width:100%;padding:0.75rem 0.95rem;border:1px solid var(--border);border-radius:6px;background:#fff;color:var(--text);font-size:1rem;text-transform:uppercase;" oninput="this.value = this.value.toUpperCase()">
+          <div style="font-size:0.78rem;color:var(--muted);margin-top:0.45rem;line-height:1.5;">
+            <strong>Couple Package ($40):</strong> connection is included &mdash; either half (COUPLE-XXX-A or -B) works.<br>
+            <strong>Single ($20) + Connection Add-On ($10):</strong> enter the CONNECT-XXX code you purchased.
+          </div>
+
+          <div class="btn-row" style="margin-top:1rem;">
+            <button class="btn" id="connectSubmitBtn" onclick="submitPairConnect()">Connect</button>
+            <button class="btn btn-outline" onclick="toggleConnectForm(event)">Cancel</button>
+          </div>
+
+          <div class="status-line" id="connectStatus" style="margin-top:0.85rem;"></div>
         </div>
       </div>
 
@@ -413,7 +439,12 @@ async function loadDashboard() {
   }
 }
 
+// Hoist current user object so non-render functions (submitPairConnect, etc.)
+// can read pair codes without re-fetching.
+let currentUser = null;
+
 function renderDashboard(data) {
+  currentUser = data;
   document.getElementById('loading').style.display = 'none';
   document.getElementById('content').style.display = 'block';
 
@@ -482,10 +513,14 @@ function renderDashboard(data) {
   } else {
     partnerLine.innerHTML =
       '<span class="partner-state waiting">NOT YET CONNECTED</span> ' +
-      'Share your pair code above with your partner. Once they\u2019ve taken the assessment, connect using their pair code from your results page.';
+      'Share your pair code above with your partner. Once they\u2019ve taken the assessment, click below and enter their code.';
     connectBtn.style.display = 'inline-block';
-    connectBtn.href = '/index.html#results';
     if (dlCouples) dlCouples.style.display = 'none';
+    // Pre-fill the access code field with whatever access code the user used
+    // when they took the assessment, if we know it. (Falls back to blank.)
+    // We pull it from /me/codes — if they purchased one, suggest the
+    // matching one.
+    suggestAccessCode(primary);
   }
 
   // Render code wallet if any
@@ -633,6 +668,110 @@ function copyCode(code) {
       setTimeout(function() { if (statusEl.textContent.indexOf('copied') === 0) statusEl.textContent = ''; }, 3000);
     });
   } catch(_) {}
+}
+
+// ==================== CONNECT WITH PARTNER ====================
+function toggleConnectForm(ev) {
+  if (ev && ev.preventDefault) ev.preventDefault();
+  const wrap = document.getElementById('connectFormWrap');
+  if (!wrap) return;
+  const showing = wrap.style.display === 'block';
+  wrap.style.display = showing ? 'none' : 'block';
+  if (!showing) {
+    // Smooth-scroll the form into view.
+    setTimeout(function() { wrap.scrollIntoView({behavior:'smooth', block:'center'}); }, 50);
+    const cpc = document.getElementById('connectPartnerCode');
+    if (cpc) cpc.focus();
+  }
+}
+
+async function suggestAccessCode(primary) {
+  // Try to figure out the access code this user came in with so we can
+  // pre-fill the connect form. We check /me/codes for a redeemed code
+  // whose redeemed_by_submission_pair_code matches the user's pair_code
+  // (the backend records this when /submit consumes a code).
+  try {
+    const res = await fetch(BACKEND_URL + '/me/codes', { headers: {'X-Session-Token': getSessionToken()} });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data.codes || !data.codes.length) return;
+    // Heuristic: prefer a redeemed couple-code, then a redeemed connect-code,
+    // then any active code.
+    const candidates = data.codes.slice().sort(function(a, b) {
+      const ar = a.status === 'redeemed' ? 0 : 1;
+      const br = b.status === 'redeemed' ? 0 : 1;
+      if (ar !== br) return ar - br;
+      const order = {couple:0, connect:1, single:2};
+      return (order[a.kind] || 9) - (order[b.kind] || 9);
+    });
+    const cci = document.getElementById('connectAccessCode');
+    if (cci && !cci.value) cci.value = candidates[0].code;
+  } catch (_) { /* no-op */ }
+}
+
+async function submitPairConnect() {
+  const myPairCode = (currentUser && currentUser.submissions && currentUser.submissions[0])
+    ? currentUser.submissions[0].pair_code
+    : null;
+  const partnerInput = document.getElementById('connectPartnerCode');
+  const accessInput = document.getElementById('connectAccessCode');
+  const statusEl = document.getElementById('connectStatus');
+  const btn = document.getElementById('connectSubmitBtn');
+
+  const partnerCode = (partnerInput.value || '').trim().toUpperCase();
+  const accessCode = (accessInput.value || '').trim().toUpperCase();
+
+  if (!myPairCode) {
+    statusEl.textContent = 'We could not find your pair code. Reload the page and try again.';
+    statusEl.style.color = '#a13544';
+    return;
+  }
+  if (!partnerCode || partnerCode.length < 4 || !partnerCode.includes('-')) {
+    statusEl.textContent = 'Please enter your partner\u2019s pair code (e.g. ANCHOR-4829).';
+    statusEl.style.color = '#a13544';
+    return;
+  }
+  if (partnerCode === myPairCode.toUpperCase()) {
+    statusEl.textContent = 'That\u2019s your own pair code. Enter your partner\u2019s.';
+    statusEl.style.color = '#a13544';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Connecting\u2026';
+  statusEl.textContent = '';
+  statusEl.style.color = '';
+
+  try {
+    const res = await fetch(BACKEND_URL + '/pair/connect', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        my_code: myPairCode,
+        partner_code: partnerCode,
+        connection_code: accessCode || null,
+      }),
+    });
+    if (!res.ok) {
+      let msg = 'Could not connect. Please try again.';
+      try { const d = await res.json(); if (d && d.detail) msg = (typeof d.detail === 'string') ? d.detail : (d.detail.message || msg); } catch(_){}
+      statusEl.textContent = msg;
+      statusEl.style.color = '#a13544';
+      btn.disabled = false;
+      btn.textContent = 'Connect';
+      return;
+    }
+    statusEl.textContent = 'Connected \u2713 Your Couples Report is being prepared and will arrive by email shortly.';
+    statusEl.style.color = 'var(--accent)';
+    btn.textContent = 'Connected \u2713';
+    // Reload the dashboard so the partner card + couples PDF button appear.
+    setTimeout(function() { window.location.reload(); }, 1400);
+  } catch (err) {
+    statusEl.textContent = 'We could not reach the server. Please try again in a moment.';
+    statusEl.style.color = '#a13544';
+    btn.disabled = false;
+    btn.textContent = 'Connect';
+  }
 }
 
 loadDashboard();
