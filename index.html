@@ -362,6 +362,34 @@ body.in-synthesis .topnav { display: none; }
 }
 .skip-btn:hover { color: var(--muted); }
 
+/* Two-number question (e.g. "I was the ___ born of ___ siblings") */
+.two-number-row {
+  display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: 0.5rem 0.75rem;
+  font-family: var(--font-body); font-size: 1.1rem;
+  color: var(--ink); padding: 1rem 0.25rem 0.5rem;
+  line-height: 2;
+}
+.two-number-label { color: var(--ink); }
+.two-number-suffix { color: var(--ink); }
+.two-number-input {
+  width: 4.5rem; padding: 0.5rem 0.6rem;
+  border: 1px solid var(--border, #c8bea3);
+  border-radius: 6px; background: var(--surface, #efe9dc);
+  font-family: var(--font-body); font-size: 1.05rem;
+  color: var(--ink); text-align: center;
+  -moz-appearance: textfield;
+}
+.two-number-input::-webkit-outer-spin-button,
+.two-number-input::-webkit-inner-spin-button {
+  -webkit-appearance: none; margin: 0;
+}
+.two-number-input:focus { outline: none; border-color: var(--accent); }
+.two-number-helper {
+  margin-top: 1rem; font-size: 0.9rem; color: var(--muted);
+  font-style: italic; line-height: 1.5;
+}
+
 /* Ranking UI */
 .rank-items { display: flex; flex-direction: column; gap: 0.5rem; }
 .rank-item {
@@ -815,17 +843,10 @@ body.in-synthesis .topnav { display: none; }
 .figure-img {
   width: 100%; height: auto;
   display: block;
-  border-radius: 6px;
-  /* Multiply blend lets the illustration's cream paper background
-     fade into whatever surface the figure is sitting on — page bg,
-     detail card surface, partner card, etc. */
-  mix-blend-mode: multiply;
-}
-/* On synthesis-overview cards and similar surfaces, illustrations also
-   pick up a tiny contrast boost so they don't look washed out. */
-.partner-card .figure-img,
-.detail-card .figure-img {
-  filter: contrast(1.06);
+  /* Figures are WebP with transparent background — the cream paper has
+     been removed so the illustration sits directly on whatever surface
+     it's placed on (page bg, detail card, partner card, etc). No blend
+     mode and no border-radius needed. */
 }
 .figure-inline {
   float: right;
@@ -835,7 +856,6 @@ body.in-synthesis .topnav { display: none; }
 }
 .figure-inline .figure-img {
   width: 100%; height: auto;
-  filter: contrast(1.04);
 }
 @media (max-width: 640px) {
   .figure-inline {
@@ -984,6 +1004,41 @@ body.in-synthesis .topnav { display: none; }
   max-width: 420px;
   width: 90%;
   text-align: center;
+}
+.modal-box.modal-box-wide {
+  max-width: 720px; text-align: left;
+  padding: 2.5rem 2.75rem 2rem;
+  max-height: 85vh; overflow-y: auto;
+}
+.intro-modal .intro-eyebrow {
+  font-family: var(--font-body);
+  font-size: 0.78rem; letter-spacing: 0.14em;
+  color: var(--accent); text-transform: uppercase;
+  font-weight: 600; margin-bottom: 1.25rem;
+  text-align: center; line-height: 1.4;
+}
+.intro-modal .intro-body p {
+  color: var(--ink, var(--text));
+  font-size: 1rem; line-height: 1.7;
+  margin: 0 0 1rem; text-align: left;
+}
+.intro-modal .intro-body p.intro-three-things {
+  font-family: var(--font-heading);
+  font-size: 1.15rem; color: var(--ink, var(--text));
+  margin-top: 1.75rem; margin-bottom: 1rem;
+  font-weight: 600;
+}
+.intro-modal .intro-list {
+  margin: 0; padding-left: 1.5rem;
+  display: flex; flex-direction: column; gap: 1.1rem;
+}
+.intro-modal .intro-list li {
+  color: var(--ink, var(--text));
+  font-size: 1rem; line-height: 1.7;
+  padding-left: 0.25rem;
+}
+.intro-modal .intro-list strong {
+  color: var(--accent);
 }
 .modal-box h3 {
   font-family: var(--font-heading);
@@ -1134,6 +1189,24 @@ body.in-synthesis .topnav { display: none; }
 </style>
 </head>
 <body>
+
+<!-- DR. HILKEN INTRO MODAL — shown once, just before the first question -->
+<div class="modal-overlay" id="introModal">
+  <div class="modal-box modal-box-wide intro-modal">
+    <div class="intro-eyebrow">A NOTE FROM DR. CHRISTOPHER HILKEN ABOUT THE ASSESSMENT</div>
+    <div class="intro-body">
+      <p>You have been through a lot in your life. I don't need to have met you to know that to be true. There are a seemingly infinite number of things that have happened to you — decisions you have made, losses experienced, moments of betrayal. These events begin to construct a certain set of natural responses that we have in life. Some of these responses are helpful, some not so much.</p>
+      <p>This whole assessment is built on thousands of hours of peer-reviewed study, surveys, and focused attention on those responses. The knowledge of these loops we find ourselves in is meant to bring understanding and ultimately, through the grace of God, the ability to better recognize these patterns and achieve healthier relationships.</p>
+      <p class="intro-three-things">Three things to note as you begin.</p>
+      <ol class="intro-list">
+        <li><strong>You are not a static individual.</strong> You are complex and multi-faceted. In discovering some language that puts words to your experiences, you are not bound by those things. Every personality trait has a helpful side and a shadow side. It's not better to be one type of person than another. As scripture tells us in Romans 12, we are all members of a body that Christ has uniquely called and equipped us to be engaged in. It's not better to be outgoing than quiet and introspective — but both types will have different skills and potential pitfalls.</li>
+        <li><strong>This isn't an online guess based on arbitrary trivia.</strong> We have all, likely, taken a “Which cast member of Friends would you be?” assessment before — where you tell the app your birthday and your favorite food and it guesses, from a few random data points, the totality of your personality. Take139 is built to synthesize your self-reported answers into digestible concepts and language you can look through. It isn't guessing what you could be — it's summarizing what you have reported. There will certainly be things that you may read that you wouldn't self-ascribe in any obvious way, but it is how you answered the prompts. Sometimes it's helpful to run that by someone close to you, and you will often find it may be truer than you think.</li>
+        <li><strong>This isn't scripture, the Holy Spirit, your local pastor, or a personal counselor</strong> — and it's no substitute for any of those things. It's a helpful tool. It isn't a box you must live in or a limit you can't supersede. It's a look into your world through a lens that hopefully brings clarity and sheds light on some truth that we can process.</li>
+      </ol>
+    </div>
+    <button class="modal-btn" onclick="dismissIntroModal()" style="margin-top:1.5rem;">I'm ready to begin</button>
+  </div>
+</div>
 
 <!-- ACCESS CODE MODAL -->
 <div class="modal-overlay" id="passcodeModal">
@@ -1364,14 +1437,12 @@ const INTAKE_QUESTIONS = [
     ]
   },
   {
-    id: 'birth_order', type: 'mc',
-    text: 'What is your birth order?',
-    options: [
-      {label: 'Only child', value: 'only'},
-      {label: 'Oldest', value: 'oldest'},
-      {label: 'Middle', value: 'middle'},
-      {label: 'Youngest', value: 'youngest'},
-      {label: 'Twin / multiple', value: 'twin'}
+    id: 'birth_order', type: 'two_number',
+    text: 'In the home I grew up in, I was the ___ born of ___ siblings.',
+    helperText: 'Family size and birth position can shape personality and responses in meaningful ways.',
+    fields: [
+      {key: 'position', label: 'I was the', suffix: 'born', min: 1, max: 20},
+      {key: 'total', label: 'of', suffix: 'siblings', min: 1, max: 20}
     ]
   },
   {
@@ -1603,7 +1674,7 @@ const P2_QUESTIONS = [
   },
   {
     id: 'p2q7', type: 'scale', weight: 1.0,
-    text: 'When things are going badly in a relationship — really badly — what is the worst version of how it could end for you personally? Not what happens externally, but what it would mean about you.',
+    text: 'Imagine the relationship ends — the breakup or divorce you most fear. What would the worst version of that mean about <em>you</em>? Not what happens to the relationship, but what the ending would say about who you are.',
     anchors: [
       'Honestly, I\'d be disappointed, but I wouldn\'t make it mean something about me.',
       'I\'d feel bad for a while, but I\'d probably be able to separate "this didn\'t work out" from "something is wrong with me."',
@@ -3135,6 +3206,23 @@ function renderQuestion() {
     if (q.skipAllowed) {
       optionsHTML += `<button class="skip-btn" onclick="skipFreeText('${q.id}')">I'd rather not answer</button>`;
     }
+  } else if (q.type === 'two_number') {
+    const cur = curAnswer || {};
+    const posVal = (cur.position != null) ? cur.position : '';
+    const totVal = (cur.total != null) ? cur.total : '';
+    const f1 = q.fields[0], f2 = q.fields[1];
+    const helperHtml = q.helperText ? `<div class="two-number-helper">${q.helperText}</div>` : '';
+    optionsHTML = `
+      <div class="two-number-row">
+        <span class="two-number-label">${f1.label}</span>
+        <input type="number" class="two-number-input" id="twonum-${q.id}-pos" value="${posVal}" min="${f1.min}" max="${f1.max}" placeholder="#" oninput="updateTwoNumber('${q.id}','position', this.value)" />
+        <span class="two-number-suffix">${f1.suffix}</span>
+        <span class="two-number-label">${f2.label}</span>
+        <input type="number" class="two-number-input" id="twonum-${q.id}-tot" value="${totVal}" min="${f2.min}" max="${f2.max}" placeholder="#" oninput="updateTwoNumber('${q.id}','total', this.value)" />
+        <span class="two-number-suffix">${f2.suffix}.</span>
+      </div>
+      ${helperHtml}
+    `;
   }
 
   container.innerHTML = `
@@ -3176,6 +3264,13 @@ function skipFreeText(id) {
   answers[id] = '__skipped__';
   goNext();
 }
+function updateTwoNumber(id, field, raw) {
+  const v = parseInt(raw, 10);
+  if (!answers[id] || typeof answers[id] !== 'object') answers[id] = {};
+  answers[id][field] = (Number.isFinite(v) && v > 0) ? v : null;
+  // Sanity: if both filled and position > total, clear position so they re-enter
+  // (we don't auto-correct — just don't accept the impossible state)
+}
 
 // ==================== NAVIGATION ====================
 
@@ -3195,6 +3290,11 @@ function goNext() {
   if (q.type !== 'header' && q.type !== 'freetext') {
     if (answers[q.id] === undefined || answers[q.id] === null) return;
     if (q.multi && (!answers[q.id] || answers[q.id].length < (q.maxSelect || 2))) return;
+    if (q.type === 'two_number') {
+      const a = answers[q.id] || {};
+      if (!a.position || !a.total) return;
+      if (a.position > a.total) return;
+    }
   }
   if (q.type === 'freetext') {
     if (!answers[q.id]) answers[q.id] = '__skipped__';
@@ -3736,9 +3836,11 @@ const MECHANISM_TAGLINES = {
 };
 
 // Map a mechanism code to its illustration file path.
+// WebP with alpha channel — the cream paper background is transparent so the
+// figure sits cleanly on whatever surface it's on (page bg, card bg, etc).
 function figurePath(code) {
   if (!code) return '';
-  return `images/figures/${code}.jpg`;
+  return `images/figures/${code}.webp`;
 }
 
 // Builds an <img> element string that gracefully hides itself if the
@@ -4004,9 +4106,13 @@ function showResults() {
   updateSentence();
   buildRadarChart(results.trigger);
 
-  // Fire-and-forget backend submit without email (admin copy only).
-  // If user enters email and clicks Email My Report, we'll send again tagged with their email.
-  submitResultsToBackend({ silent: true });
+  // NOTE: We previously fired a silent /submit here to deliver the admin copy.
+  // That meant /submit was called twice (once silently, once with email), and
+  // since /submit consumes the access code on the first call, the second call
+  // — the one the user actually clicks — always failed with "code already used"
+  // and showed "We hit a snag." We now wait for the user to click "Email My
+  // Report." The single /submit call then both records the assessment for admin
+  // and emails the user their PDF.
 }
 
 function updateSentence() {
@@ -4195,7 +4301,20 @@ async function submitResultsToBackend(opts = {}) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     });
-    if (!res.ok) throw new Error('Server returned ' + res.status);
+    if (!res.ok) {
+      // Try to extract the backend's error message for a more useful UI message.
+      let backendMsg = 'Server returned ' + res.status;
+      try {
+        const errData = await res.json();
+        if (errData && errData.detail) {
+          if (typeof errData.detail === 'string') backendMsg = errData.detail;
+          else if (errData.detail.message) backendMsg = errData.detail.message;
+        }
+      } catch (_) { /* response was not JSON; keep the generic message */ }
+      const e = new Error(backendMsg);
+      e.status = res.status;
+      throw e;
+    }
     const data = await res.json();
     window._resultsSubmitted = true;
     window._pairCode = data.pair_code;
@@ -4217,7 +4336,12 @@ async function submitResultsToBackend(opts = {}) {
     }
   } catch (err) {
     if (!silent && statusEl) {
-      statusEl.textContent = 'We hit a snag. Please try again in a minute, or contact us if it persists.';
+      // Show the backend's actual message when available so users get useful info
+      // (e.g. "This code has already been used.") instead of a generic snag.
+      const userMsg = (err && err.message) ? err.message : '';
+      statusEl.textContent = userMsg && userMsg !== 'Failed to fetch'
+        ? userMsg
+        : 'We hit a snag. Please try again in a minute, or contact us if it persists.';
       statusEl.className = 'email-status err';
     }
     console.error('submit error', err);
@@ -4301,6 +4425,10 @@ async function beginAssessment() {
   showPasscodeModal();
 }
 
+// Tracks whether the Dr. Hilken intro modal has already been shown
+// this session (so users navigating Back → Begin don't see it twice).
+let _introShown = false;
+
 function launchDiagnostic() {
   const landing = document.getElementById('landingPage');
   const diagnostic = document.getElementById('diagnosticApp');
@@ -4318,7 +4446,18 @@ function launchDiagnostic() {
     currentIndex = 0;
     renderQuestion();
     window.scrollTo({top: 0, behavior: 'instant'});
+    // Show the Dr. Hilken intro modal the first time the assessment opens
+    if (!_introShown) {
+      _introShown = true;
+      const introModal = document.getElementById('introModal');
+      if (introModal) introModal.classList.add('show');
+    }
   }, 500);
+}
+
+function dismissIntroModal() {
+  const m = document.getElementById('introModal');
+  if (m) m.classList.remove('show');
 }
 
 // Set the initial body class so the nav shows on load + warm the enforcement cache
