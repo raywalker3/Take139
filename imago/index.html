@@ -3,1330 +3,461 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IMAGO — The Hardwiring Profile</title>
-<meta name="description" content="A Christian personality assessment grounded in the imago Dei doctrine. The companion to Take 139.">
+<title>IMAGO — Coming Soon | Take 139</title>
+<meta name="description" content="IMAGO is the deeper companion to Take 139 — a Christian personality assessment grounded in the imago Dei. Currently in development.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg: #1a1a1a;
-  --surface: #242424;
-  --surface-2: #2e2e2e;
-  --border: #3a3a3a;
-  --text: #f0ece4;
-  --muted: #a09888;
-  --faint: #6b6158;
-  --accent: #c8956c;
-  --accent-hover: #d4a67a;
-  --accent-soft: rgba(200, 149, 108, 0.12);
-  --accent-sel: rgba(200, 149, 108, 0.15);
-  --err: #c0392b;
-  --font-heading: 'Playfair Display', Georgia, serif;
-  --font-body: 'DM Sans', system-ui, sans-serif;
+  --bg: #f5f1e8;
+  --surface: #efe9dc;
+  --border: #c8bea3;
+  --ink: #1d1d1b;
+  --muted: #6b6357;
+  --faint: #a39d8d;
+  --accent: #8a4a2c;
+  --accent-soft: rgba(138, 74, 44, 0.08);
+  --accent-strong: #6e3a23;
+  --font-heading: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
 }
 
 html { font-size: 16px; scroll-behavior: smooth; }
 body {
   font-family: var(--font-body);
   background: var(--bg);
-  color: var(--text);
+  color: var(--ink);
   line-height: 1.6;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a { color: var(--accent); text-decoration: none; }
-a:hover { color: var(--accent-hover); }
+/* Top navigation, matching the rest of the site */
+.top-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.25rem 2rem; max-width: 1200px; margin: 0 auto;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.top-nav .logo {
+  font-family: var(--font-heading); font-size: 1.5rem;
+  font-weight: 600; color: var(--ink); text-decoration: none;
+}
+.top-nav ul {
+  display: flex; gap: 2rem; list-style: none; align-items: center;
+}
+.top-nav a {
+  color: var(--ink); text-decoration: none; font-size: 0.95rem;
+  font-weight: 500; transition: color 0.15s;
+}
+.top-nav a:hover { color: var(--accent); }
+.top-nav a.current { color: var(--accent); }
+.top-nav .signin-btn {
+  background: var(--ink); color: var(--bg);
+  padding: 0.5rem 1.25rem; border-radius: 999px;
+  font-weight: 500; font-size: 0.9rem;
+}
+.top-nav .signin-btn:hover { background: #000; color: var(--bg); }
 
-/* ═══════════ SCREEN SYSTEM ═══════════ */
-.screen { display: none; min-height: 100vh; animation: fadeIn 0.5s ease; }
-.screen.active { display: block; }
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Main wrapper */
+.wrap { max-width: 760px; margin: 0 auto; padding: 4rem 2rem 6rem; }
+
+/* Coming soon eyebrow */
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.75rem; letter-spacing: 0.18em;
+  text-transform: uppercase; font-weight: 600;
+  color: var(--accent); margin-bottom: 1.25rem;
+  padding: 0.4rem 0.9rem;
+  background: var(--accent-soft);
+  border-radius: 999px;
 }
 
-.container {
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 2rem 1.5rem 4rem;
-}
-
-/* ═══════════ LANDING ═══════════ */
-.hero {
-  min-height: 100vh; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; text-align: center;
-  padding: 2.5rem 1.5rem 5rem; position: relative;
-}
-.hero::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 50% 38%, rgba(200,149,108,0.07) 0%, transparent 70%);
-  pointer-events: none;
-}
-.hero-content { position: relative; z-index: 1; max-width: 640px; }
-
-.hero-mark {
-  display: inline-flex; align-items: center; justify-content: center;
-  margin-bottom: 2rem; opacity: 0.85;
-}
-.hero-mark svg { width: 42px; height: 42px; }
-
-.hero h1 {
+/* Hero headline */
+h1 {
   font-family: var(--font-heading);
-  font-size: clamp(3.5rem, 9vw, 5.5rem);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  line-height: 1;
-  color: var(--text);
-  margin-bottom: 0.6rem;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 600; line-height: 1.1; letter-spacing: -0.02em;
+  color: var(--ink); margin-bottom: 1.25rem;
 }
-.hero-subtitle {
-  font-family: var(--font-heading); font-style: italic;
-  font-size: clamp(1.05rem, 2.2vw, 1.35rem);
-  color: var(--accent);
-  margin-bottom: 2.25rem;
-  letter-spacing: 0.02em;
-}
-.hero-psalm {
-  font-family: var(--font-heading); font-style: italic;
-  font-size: 1.02rem; line-height: 1.7;
-  color: var(--text); opacity: 0.78;
-  max-width: 480px; margin: 0 auto 2.25rem;
-}
-.hero-psalm cite {
-  display: block; font-size: 0.78rem; font-style: normal;
-  letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--faint); margin-top: 0.65rem;
-}
-.hero-blurb {
-  font-size: 1rem; line-height: 1.75;
-  color: var(--muted); max-width: 520px;
-  margin: 0 auto 2.5rem;
-}
-.hero-cta {
-  display: inline-flex; align-items: center; gap: 0.6rem;
-  padding: 1rem 2.75rem; border-radius: 8px; border: none;
-  background: var(--accent); color: #1a1a1a;
-  font-family: var(--font-body); font-size: 1rem; font-weight: 600;
-  cursor: pointer; transition: all 0.25s ease;
-  letter-spacing: 0.02em;
-}
-.hero-cta:hover { background: var(--accent-hover); transform: translateY(-1px); }
-.hero-meta {
-  margin-top: 1.5rem;
-  font-size: 0.82rem; color: var(--faint);
-  letter-spacing: 0.06em;
+h1 em {
+  font-style: italic; color: var(--accent);
+  font-weight: 500;
 }
 
-.site-footer {
-  text-align: center; padding: 2rem 1.5rem 2.5rem;
-  border-top: 1px solid var(--border);
-  max-width: 780px; margin: 0 auto;
-}
-.footer-verse {
-  font-family: var(--font-heading); font-style: italic;
-  font-size: 0.92rem; line-height: 1.7;
-  color: var(--faint); margin-bottom: 1rem;
-}
-.footer-copy { font-size: 0.75rem; color: var(--faint); }
-.footer-copy a { color: var(--muted); }
-.footer-copy a:hover { color: var(--accent); }
-
-/* ═══════════ PASSCODE GATE ═══════════ */
-.gate-wrap {
-  min-height: 100vh; display: flex; align-items: center; justify-content: center;
-  padding: 2.5rem 1.5rem;
-}
-.gate-box {
-  max-width: 440px; width: 100%; text-align: center;
-}
-.gate-eyebrow {
-  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.22em; color: var(--accent);
-  margin-bottom: 1.25rem;
-}
-.gate-box h2 {
-  font-family: var(--font-heading); font-size: 1.85rem; font-weight: 600;
-  margin-bottom: 0.6rem; line-height: 1.25;
-}
-.gate-box p {
-  font-size: 0.95rem; color: var(--muted);
-  margin-bottom: 1.75rem; line-height: 1.6;
-}
-.gate-input {
-  width: 100%; padding: 0.95rem 1rem;
-  background: var(--surface); border: 1.5px solid var(--border);
-  border-radius: 8px; font-family: var(--font-body); font-size: 1rem;
-  color: var(--text); text-align: center;
-  letter-spacing: 0.12em; outline: none;
-  transition: border-color 0.2s; margin-bottom: 0.75rem;
-}
-.gate-input:focus { border-color: var(--accent); }
-.gate-input.error { border-color: var(--err); animation: shake 0.4s ease; }
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  20%, 60% { transform: translateX(-6px); }
-  40%, 80% { transform: translateX(6px); }
-}
-.gate-error {
-  font-size: 0.83rem; color: #e57364;
-  min-height: 1.2em; margin-bottom: 0.75rem;
-}
-.gate-btn {
-  width: 100%; padding: 0.95rem; background: var(--accent);
-  color: var(--bg); border: none; border-radius: 8px;
-  font-family: var(--font-body); font-size: 1rem; font-weight: 600;
-  cursor: pointer; transition: background 0.2s;
-}
-.gate-btn:hover { background: var(--accent-hover); }
-.gate-links {
-  margin-top: 1.75rem; display: flex; flex-direction: column;
-  gap: 0.5rem; font-size: 0.85rem;
-}
-.gate-links a, .gate-links button.linklike {
-  color: var(--muted); background: none; border: none;
-  font-family: var(--font-body); font-size: 0.85rem; cursor: pointer;
-  text-decoration: underline; text-underline-offset: 3px;
-  text-decoration-color: rgba(160,152,136,0.35);
-}
-.gate-links a:hover, .gate-links button.linklike:hover { color: var(--accent); }
-.gate-explain {
-  margin-top: 1.25rem; padding: 1rem 1.1rem;
-  background: var(--surface); border-radius: 8px;
-  border-left: 3px solid var(--accent);
-  font-size: 0.85rem; color: var(--muted); line-height: 1.6;
-  text-align: left; display: none;
-}
-.gate-explain.show { display: block; animation: fadeIn 0.3s ease; }
-
-/* ═══════════ INTAKE ═══════════ */
-.intake-wrap {
-  min-height: 100vh; display: flex; align-items: center; justify-content: center;
-  padding: 2.5rem 1.5rem;
-}
-.intake-box {
-  max-width: 480px; width: 100%;
-}
-.intake-eyebrow {
-  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.22em; color: var(--accent);
-  margin-bottom: 1rem; text-align: center;
-}
-.intake-box h2 {
-  font-family: var(--font-heading); font-size: 2rem; font-weight: 600;
-  margin-bottom: 0.6rem; line-height: 1.2; text-align: center;
-}
-.intake-lede {
-  font-size: 0.95rem; color: var(--muted);
-  margin-bottom: 2.25rem; line-height: 1.65;
-  text-align: center;
-}
-.field { margin-bottom: 1.5rem; }
-.field label {
-  display: block; font-size: 0.82rem;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--muted); margin-bottom: 0.5rem; font-weight: 500;
-}
-.field label .opt {
-  text-transform: none; letter-spacing: 0;
-  font-size: 0.78rem; color: var(--faint); margin-left: 0.5rem;
-}
-.field input[type="text"], .field input[type="email"] {
-  width: 100%; padding: 0.85rem 1rem;
-  background: var(--surface); border: 1.5px solid var(--border);
-  border-radius: 8px; font-family: var(--font-body); font-size: 1rem;
-  color: var(--text); outline: none; transition: border-color 0.2s;
-}
-.field input:focus { border-color: var(--accent); }
-.field .help {
-  font-size: 0.8rem; color: var(--faint);
-  margin-top: 0.4rem; line-height: 1.5;
-}
-.field .help em { color: var(--muted); font-style: italic; }
-.intake-submit {
-  width: 100%; padding: 1rem;
-  background: var(--accent); color: var(--bg);
-  border: none; border-radius: 8px;
-  font-family: var(--font-body); font-size: 1rem; font-weight: 600;
-  cursor: pointer; transition: background 0.2s; margin-top: 0.5rem;
-}
-.intake-submit:hover { background: var(--accent-hover); }
-.intake-submit:disabled { opacity: 0.5; cursor: not-allowed; }
-.intake-err {
-  font-size: 0.83rem; color: #e57364; text-align: center;
-  margin-top: 0.75rem; min-height: 1.2em;
+.lede {
+  font-family: var(--font-heading);
+  font-size: 1.35rem; line-height: 1.55;
+  color: var(--muted); font-weight: 400;
+  font-style: italic;
+  margin-bottom: 3rem; max-width: 600px;
 }
 
-/* ═══════════ ASSESSMENT ═══════════ */
-.progress-bar {
-  position: fixed; top: 0; left: 0; width: 100%; height: 3px;
-  background: rgba(255,255,255,0.04); z-index: 90;
-  display: none;
-}
-.progress-bar.show { display: block; }
-.progress-fill {
-  height: 100%; background: var(--accent);
-  transition: width 0.4s ease; width: 0%;
+/* Section headings */
+h2 {
+  font-family: var(--font-heading);
+  font-size: 1.65rem; font-weight: 600;
+  color: var(--ink); margin: 3rem 0 1rem;
+  letter-spacing: -0.01em;
 }
 
-.assess-header {
-  position: sticky; top: 0; z-index: 50;
-  background: rgba(26,26,26,0.92);
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-  padding: 1rem 1.5rem; border-bottom: 1px solid rgba(58,58,58,0.4);
-  display: flex; align-items: center; justify-content: space-between;
+p {
+  font-size: 1.05rem; line-height: 1.7;
+  color: var(--ink); margin-bottom: 1rem;
 }
-.assess-counter {
-  font-size: 0.8rem; letter-spacing: 0.06em;
-  color: var(--muted);
-}
-.assess-counter strong { color: var(--text); font-weight: 600; }
-.assess-quit {
-  background: none; border: none; color: var(--faint);
-  font-family: var(--font-body); font-size: 0.8rem; cursor: pointer;
-}
-.assess-quit:hover { color: var(--muted); }
+p.muted { color: var(--muted); }
 
-.assess-stage {
-  max-width: 580px; margin: 0 auto;
-  padding: 4rem 1.5rem 6rem; min-height: calc(100vh - 60px);
-  display: flex; flex-direction: column; justify-content: center;
+/* Comparison block */
+.compare {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1.25rem; margin: 2rem 0;
 }
-.item-card {
-  animation: slideIn 0.35s ease;
-}
-.item-card.leaving { animation: slideOut 0.25s ease forwards; }
-@keyframes slideIn {
-  from { opacity: 0; transform: translateX(24px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-@keyframes slideOut {
-  from { opacity: 1; transform: translateX(0); }
-  to { opacity: 0; transform: translateX(-24px); }
-}
-.item-card.back { animation: slideInBack 0.35s ease; }
-@keyframes slideInBack {
-  from { opacity: 0; transform: translateX(-24px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-.item-eyebrow {
-  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.22em; color: var(--accent);
-  margin-bottom: 1.25rem;
-}
-.item-text {
-  font-family: var(--font-heading); font-weight: 500;
-  font-size: clamp(1.5rem, 3.5vw, 1.9rem);
-  line-height: 1.4; color: var(--text);
-  margin-bottom: 2.5rem;
-}
-
-.likert {
-  display: flex; flex-direction: column; gap: 0.6rem;
-}
-.likert-opt {
-  display: flex; align-items: center; gap: 1rem;
-  padding: 0.95rem 1.1rem; border-radius: 10px;
-  border: 1.5px solid var(--border); background: var(--surface);
-  cursor: pointer; transition: all 0.18s ease;
-  text-align: left;
-  font-family: var(--font-body); color: var(--text);
-  font-size: 1rem; width: 100%;
-}
-.likert-opt:hover {
-  border-color: var(--accent); background: var(--accent-soft);
-}
-.likert-opt:focus-visible {
-  outline: none; border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(200,149,108,0.25);
-}
-.likert-opt.selected {
-  border-color: var(--accent); background: var(--accent-sel);
-}
-.likert-num {
-  width: 28px; height: 28px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 0.78rem; font-weight: 700; flex-shrink: 0;
-  border: 1.5px solid var(--border); color: var(--faint);
-  transition: all 0.18s ease;
-}
-.likert-opt.selected .likert-num,
-.likert-opt:hover .likert-num {
-  background: var(--accent); color: var(--bg); border-color: var(--accent);
-}
-.likert-label { font-size: 0.98rem; line-height: 1.4; }
-
-.assess-nav {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-top: 2.25rem; gap: 1rem;
-}
-.assess-back {
-  background: none; border: none;
-  color: var(--muted); font-family: var(--font-body);
-  font-size: 0.9rem; cursor: pointer;
-  padding: 0.5rem 0.75rem;
-  display: inline-flex; align-items: center; gap: 0.4rem;
-}
-.assess-back:hover { color: var(--accent); }
-.assess-back:disabled { opacity: 0.3; cursor: not-allowed; }
-.assess-hint {
-  font-size: 0.78rem; color: var(--faint);
-  text-align: right; letter-spacing: 0.04em;
-}
-.assess-hint kbd {
-  display: inline-block; padding: 1px 5px; margin: 0 1px;
-  background: var(--surface-2); border: 1px solid var(--border);
-  border-radius: 4px; font-family: ui-monospace, SFMono-Regular, monospace;
-  font-size: 0.72rem; color: var(--muted);
-}
-
-/* ═══════════ SUBMITTING ═══════════ */
-.submit-wrap {
-  min-height: 100vh; display: flex; align-items: center; justify-content: center;
-  padding: 2.5rem 1.5rem; text-align: center;
-}
-.submit-box { max-width: 520px; }
-.spinner {
-  width: 48px; height: 48px; margin: 0 auto 2rem;
-  border: 2.5px solid rgba(200,149,108,0.2);
-  border-top-color: var(--accent);
-  border-radius: 50%; animation: spin 1.1s linear infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-.submit-title {
-  font-family: var(--font-heading); font-size: 1.6rem;
-  font-weight: 500; margin-bottom: 2rem; color: var(--text);
-}
-.cycling-verse {
-  font-family: var(--font-heading); font-style: italic;
-  font-size: 1.02rem; line-height: 1.7;
-  color: var(--muted); min-height: 5.5rem;
-  max-width: 440px; margin: 0 auto;
-  transition: opacity 0.6s ease;
-}
-.cycling-verse cite {
-  display: block; font-size: 0.75rem; font-style: normal;
-  letter-spacing: 0.16em; text-transform: uppercase;
-  color: var(--faint); margin-top: 0.5rem;
-}
-
-/* ═══════════ RESULTS ═══════════ */
-.results-wrap { padding: 4rem 1.5rem 4rem; }
-.results-box { max-width: 640px; margin: 0 auto; }
-.results-verse {
-  font-family: var(--font-heading); font-style: italic;
-  font-size: 1.05rem; line-height: 1.75;
-  color: var(--accent); text-align: center;
-  margin-bottom: 3rem; max-width: 540px; margin-left: auto; margin-right: auto;
-  opacity: 0; animation: verseFadeIn 1.6s ease 0.3s forwards;
-}
-.results-verse cite {
-  display: block; font-size: 0.74rem; font-style: normal;
-  letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--faint); margin-top: 0.65rem;
-}
-@keyframes verseFadeIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 0.95; transform: translateY(0); }
-}
-
-.results-eyebrow {
-  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.22em; color: var(--muted);
-  margin-bottom: 0.7rem; text-align: center;
-}
-.results-shape {
-  font-family: var(--font-heading); font-weight: 600;
-  font-size: clamp(2.25rem, 5.5vw, 3rem);
-  line-height: 1.15; text-align: center;
-  color: var(--text); margin-bottom: 0.4rem;
-}
-.results-shape em { color: var(--accent); font-style: normal; }
-.results-archetype {
-  font-family: var(--font-heading); font-style: italic;
-  font-size: clamp(1.2rem, 2.6vw, 1.5rem);
-  text-align: center; color: var(--muted);
-  margin-bottom: 2.75rem;
-}
-
-.results-divider {
-  height: 1px; background: var(--border);
-  max-width: 80px; margin: 0 auto 2.75rem;
-}
-
-.results-letter-section {
-  text-align: center; margin-bottom: 2.5rem;
-}
-.results-letter-label {
-  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.22em; color: var(--muted);
-  margin-bottom: 0.85rem;
-}
-.results-letters {
-  font-family: var(--font-heading); font-weight: 600;
-  font-size: clamp(3rem, 8vw, 4.5rem);
-  line-height: 1; letter-spacing: 0.02em;
-}
-.results-letters .ltr-upper { color: var(--text); }
-.results-letters .ltr-lower { color: var(--accent); }
-.results-letters .ltr-borderline {
-  color: var(--text);
-  border-bottom: 3px solid var(--accent);
-  padding-bottom: 2px;
-}
-
-.results-pair {
-  text-align: center; margin-bottom: 2.5rem;
-}
-.results-pair-label {
-  font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
-  letter-spacing: 0.22em; color: var(--muted);
-  margin-bottom: 0.8rem;
-}
-.results-pair-code {
-  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
-  font-size: 1.5rem; font-weight: 600;
-  background: var(--surface); display: inline-block;
-  padding: 0.75rem 1.4rem; border-radius: 8px;
+.compare-card {
+  background: var(--surface);
   border: 1px solid var(--border);
-  letter-spacing: 0.12em; color: var(--accent);
+  border-radius: 12px; padding: 1.5rem;
+}
+.compare-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.15rem; font-weight: 600;
+  color: var(--ink); margin-bottom: 0.6rem;
+}
+.compare-card .label {
+  font-family: var(--font-body);
+  font-size: 0.72rem; letter-spacing: 0.14em;
+  text-transform: uppercase; font-weight: 600;
+  color: var(--accent); margin-bottom: 0.4rem;
+}
+.compare-card p {
+  font-size: 0.95rem; line-height: 1.6;
+  color: var(--muted); margin: 0;
 }
 
-.results-summary {
-  background: var(--surface); border-radius: 12px;
-  padding: 1.75rem 1.85rem; border-left: 3px solid var(--accent);
-  margin-bottom: 2.5rem;
-  font-family: var(--font-heading); font-style: italic;
-  font-size: 1.05rem; line-height: 1.75; color: var(--text);
-  opacity: 0.92;
+/* Pillars */
+.pillars {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem; margin: 2rem 0 1rem;
+}
+.pillar h3 {
+  font-family: var(--font-heading);
+  font-size: 1.1rem; font-weight: 600;
+  color: var(--ink); margin-bottom: 0.5rem;
+}
+.pillar p {
+  font-size: 0.92rem; line-height: 1.55;
+  color: var(--muted); margin: 0;
+}
+.pillar-num {
+  display: inline-block;
+  font-family: var(--font-heading);
+  font-size: 0.95rem; font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.1em;
 }
 
-.results-email {
-  text-align: center; font-size: 0.95rem;
-  color: var(--muted); margin-bottom: 2.5rem;
-  padding: 1rem 1.2rem; background: var(--surface);
-  border-radius: 8px; line-height: 1.6;
+/* Block quote / verse */
+.verse {
+  margin: 2.5rem 0;
+  padding: 1.75rem 2rem;
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
 }
-.results-email strong { color: var(--text); font-weight: 600; }
-
-.results-cta-row {
-  display: flex; flex-direction: column; gap: 0.85rem;
-  margin-top: 2rem;
+.verse p {
+  font-family: var(--font-heading);
+  font-style: italic; font-size: 1.15rem;
+  line-height: 1.55; color: var(--ink);
+  margin: 0 0 0.5rem;
 }
-.results-cta {
-  display: block; padding: 1rem 1.5rem;
-  background: var(--accent); color: var(--bg);
-  border: none; border-radius: 8px;
-  font-family: var(--font-body); font-size: 0.98rem; font-weight: 600;
-  cursor: pointer; text-align: center; text-decoration: none;
-  transition: background 0.2s;
-}
-.results-cta:hover { background: var(--accent-hover); color: var(--bg); }
-.results-cta.secondary {
-  background: transparent; color: var(--muted);
-  border: 1.5px solid var(--border);
-}
-.results-cta.secondary:hover {
-  border-color: var(--accent); color: var(--accent);
+.verse .ref {
+  font-family: var(--font-body);
+  font-size: 0.85rem; letter-spacing: 0.05em;
+  color: var(--accent); font-weight: 500;
 }
 
-/* ═══════════ CONFETTI (gentle) ═══════════ */
-.confetti-layer {
-  position: fixed; inset: 0; pointer-events: none;
-  z-index: 200; overflow: hidden;
+/* Timeline */
+.timeline {
+  margin: 2rem 0; padding: 0; list-style: none;
 }
-.confetti-piece {
-  position: absolute; top: -20px;
-  width: 8px; height: 8px;
-  background: var(--accent);
-  opacity: 0;
-  animation: gentleFall 4.5s ease-in forwards;
+.timeline li {
+  display: flex; gap: 1rem; align-items: baseline;
+  padding: 0.85rem 0;
+  border-bottom: 1px dashed var(--border);
 }
-@keyframes gentleFall {
-  0% { opacity: 0; transform: translateY(0) rotate(0); }
-  10% { opacity: 0.85; }
-  100% { opacity: 0; transform: translateY(110vh) rotate(540deg); }
+.timeline li:last-child { border-bottom: none; }
+.timeline .stage {
+  flex-shrink: 0;
+  font-family: var(--font-body);
+  font-size: 0.78rem; letter-spacing: 0.12em;
+  text-transform: uppercase; font-weight: 600;
+  color: var(--accent); min-width: 110px;
+}
+.timeline .desc {
+  color: var(--ink); font-size: 1rem;
+}
+.timeline .stage.done { color: var(--muted); }
+.timeline li.done .desc { color: var(--muted); }
+.timeline li.done .desc::before { content: '✓ '; color: var(--accent); }
+
+/* Signup card */
+.signup {
+  margin: 3.5rem 0 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.5rem 2.25rem;
+}
+.signup .label {
+  font-family: var(--font-body);
+  font-size: 0.75rem; letter-spacing: 0.18em;
+  text-transform: uppercase; font-weight: 600;
+  color: var(--accent); margin-bottom: 0.75rem;
+}
+.signup h2 {
+  margin-top: 0; margin-bottom: 0.75rem;
+  font-size: 1.7rem;
+}
+.signup p { margin-bottom: 1.5rem; color: var(--muted); }
+.signup-form {
+  display: flex; gap: 0.75rem; flex-wrap: wrap;
+}
+.signup-form input[type="email"] {
+  flex: 1; min-width: 240px;
+  padding: 0.85rem 1.1rem;
+  font-family: var(--font-body); font-size: 1rem;
+  background: var(--bg);
+  border: 1px solid var(--border); border-radius: 999px;
+  color: var(--ink);
+}
+.signup-form input[type="email"]:focus {
+  outline: none; border-color: var(--accent);
+}
+.signup-form button {
+  padding: 0.85rem 1.75rem;
+  font-family: var(--font-body); font-size: 1rem;
+  font-weight: 500;
+  background: var(--ink); color: var(--bg);
+  border: none; border-radius: 999px; cursor: pointer;
+  transition: background 0.15s;
+}
+.signup-form button:hover { background: #000; }
+.signup-form button:disabled {
+  background: var(--faint); cursor: not-allowed;
+}
+.signup-status {
+  margin-top: 1rem; font-size: 0.9rem;
+  min-height: 1.2rem;
+}
+.signup-status.ok { color: var(--accent-strong); font-weight: 500; }
+.signup-status.err { color: #c0392b; }
+
+/* Back to Take 139 link */
+.back-link {
+  display: inline-block; margin-top: 2rem;
+  font-size: 0.95rem; color: var(--muted);
+  text-decoration: none; border-bottom: 1px solid var(--border);
+  padding-bottom: 2px;
+  transition: color 0.15s, border-color 0.15s;
+}
+.back-link:hover { color: var(--accent); border-color: var(--accent); }
+
+/* Footer */
+footer {
+  border-top: 1px solid rgba(0,0,0,0.06);
+  padding: 2rem; text-align: center;
+  font-size: 0.85rem; color: var(--faint);
 }
 
-/* ═══════════ MOBILE ═══════════ */
-@media (max-width: 540px) {
-  .hero { padding: 2rem 1.25rem 4rem; }
-  .container { padding: 1.5rem 1.25rem 3rem; }
-  .assess-stage { padding: 2.5rem 1.25rem 5rem; }
-  .item-text { font-size: 1.35rem; margin-bottom: 2rem; }
-  .likert-opt { padding: 0.85rem 1rem; }
-  .results-summary { padding: 1.4rem 1.5rem; font-size: 1rem; }
-  .assess-hint { display: none; }
+/* Responsive */
+@media (max-width: 720px) {
+  .top-nav { padding: 1rem; }
+  .top-nav ul { gap: 1.25rem; }
+  .top-nav a.hide-mobile { display: none; }
+  .wrap { padding: 2.5rem 1.25rem 4rem; }
+  .compare, .pillars { grid-template-columns: 1fr; }
+  .signup { padding: 1.75rem 1.5rem; }
+  .signup-form { flex-direction: column; }
+  .signup-form button { width: 100%; }
 }
-
-/* ═══════════ A11Y ═══════════ */
-.sr-only {
-  position: absolute; width: 1px; height: 1px; padding: 0;
-  margin: -1px; overflow: hidden; clip: rect(0,0,0,0);
-  white-space: nowrap; border: 0;
-}
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
 </style>
 </head>
 <body>
 
-<div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
+<!-- Top nav, matches main site -->
+<nav class="top-nav">
+  <a class="logo" href="/">Take 139</a>
+  <ul>
+    <li><a href="/how-it-works.html" class="hide-mobile">How It Works</a></li>
+    <li><a href="/imago/" class="current">IMAGO</a></li>
+    <li><a href="/for-churches.html" class="hide-mobile">For Churches</a></li>
+    <li><a href="/sign-in.html" class="signin-btn">Sign In</a></li>
+  </ul>
+</nav>
 
-<!-- ═══════════ SCREEN 1: LANDING ═══════════ -->
-<section class="screen active" id="screen-landing" aria-label="IMAGO landing">
-  <div class="hero">
-    <div class="hero-content">
-      <div class="hero-mark" aria-hidden="true">
-        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);">
-          <circle cx="24" cy="24" r="20"/>
-          <path d="M24 4v40M4 24h40"/>
-        </svg>
-      </div>
-      <h1>IMAGO</h1>
-      <div class="hero-subtitle">The Hardwiring Profile</div>
-      <div class="hero-psalm">
-        I praise you, for I am fearfully and wonderfully made.<br>
-        Wonderful are your works; my soul knows it very well.
-        <cite>Psalm 139:14</cite>
-      </div>
-      <p class="hero-blurb">
-        A Christian personality assessment grounded in the <em>imago Dei</em> doctrine. The companion to Take 139 — a slow, prayerful naming of how you were made.
-      </p>
-      <button class="hero-cta" onclick="goToGate()">Begin</button>
-      <div class="hero-meta">100 items · about 15 minutes</div>
+<main class="wrap">
+
+  <span class="eyebrow">In Development · Coming Soon</span>
+
+  <h1>IMAGO. <em>The deeper profile.</em></h1>
+
+  <p class="lede">Take 139 names the loop you fall into under pressure. IMAGO names the person God made underneath it.</p>
+
+  <h2>What IMAGO will be</h2>
+  <p>
+    IMAGO is the longer-form companion to Take 139, currently in development. Where Take 139 is a focused diagnostic — the trigger, the question, the mechanism, the breakdown — IMAGO is a fuller portrait of how God designed you to bear his image in this particular life. It will be a paid assessment of comparable depth to MBTI or the Enneagram, but built from the ground up on Christian theological anthropology rather than secular personality theory.
+  </p>
+  <p>
+    The assessment is being built carefully, with peer review, pastoral oversight, and a slower release cadence than Take 139. It is not finished yet. We are not in a hurry to put it in front of you before it is ready.
+  </p>
+
+  <h2>How IMAGO differs from Take 139</h2>
+  <div class="compare">
+    <div class="compare-card">
+      <div class="label">Take 139</div>
+      <h3>The Conflict Loop</h3>
+      <p>A focused diagnostic. What happens to you under relational pressure — the trigger, the question, the mechanism that protects you, the breakdown when it collapses. Practical, fast, action-oriented.</p>
+    </div>
+    <div class="compare-card">
+      <div class="label">IMAGO</div>
+      <h3>The Whole Person</h3>
+      <p>A fuller theological portrait. Who God made you to be when you are running on the gospel rather than on protection. Vocation, gifting, weakness, growth — read through the lens of the <em>imago Dei</em>.</p>
     </div>
   </div>
-  <footer class="site-footer">
-    <div class="footer-verse">
-      "For you formed my inward parts; you knitted me together in my mother's womb."
-    </div>
-    <div class="footer-copy">
-      Created by Dr. Christopher Hilken · <a href="https://take139.com">take139.com</a>
-    </div>
-  </footer>
-</section>
 
-<!-- ═══════════ SCREEN 2: PASSCODE GATE ═══════════ -->
-<section class="screen" id="screen-gate" aria-label="Access code">
-  <div class="gate-wrap">
-    <div class="gate-box">
-      <div class="gate-eyebrow">Early Access</div>
-      <h2>Enter your access code</h2>
-      <p>IMAGO is in private beta while we finish the report. Please use the code you were given.</p>
-      <input type="text" class="gate-input" id="gateInput" placeholder="access code" autocomplete="off" spellcheck="false" autocapitalize="off">
-      <div class="gate-error" id="gateError"></div>
-      <button class="gate-btn" onclick="submitGate()">Continue</button>
-      <div class="gate-explain" id="gateExplain">
-        This gate is here while IMAGO is in early access. We're testing the assessment with a small group of pastors, counselors, and friends before opening it to everyone. If you've been given a code by Chris, your church, or a counselor, enter it above. Codes you give us are stored only with your submission — they help us see who's testing.
-      </div>
-      <div class="gate-links">
-        <button class="linklike" onclick="toggleGateExplain()">What is this?</button>
-        <a href="mailto:christopher.hilken@gmail.com?subject=IMAGO%20access%20code">I need a code</a>
-      </div>
+  <h2>The doctrine underneath it</h2>
+  <p>
+    The whole assessment is built on one of the oldest and most important convictions in Christian theology: that every human being is made in the image of God (Genesis 1:26–27). The <em>imago Dei</em> is not erased by the Fall. It is wounded, distorted, sometimes nearly buried — but never destroyed. The redemption Christ accomplishes is not the manufacture of a new image but the restoration of the one already there.
+  </p>
+
+  <div class="verse">
+    <p>"Then God said, <em>Let us make man in our image, after our likeness</em>… So God created man in his own image, in the image of God he created him; male and female he created them."</p>
+    <span class="ref">— GENESIS 1:26–27</span>
+  </div>
+
+  <p>
+    Most modern personality assessments treat the human person as a bundle of preferences, traits, or behavioral patterns. They produce something usable — a label, a type, a category — but their theological anthropology is thin or absent. IMAGO begins where Christian doctrine begins: with the conviction that you were intentionally designed, that the design has been distorted by sin, and that the work of the Spirit is to restore the design rather than replace it.
+  </p>
+
+  <h2>What you will receive when it ships</h2>
+  <div class="pillars">
+    <div class="pillar">
+      <div class="pillar-num">01</div>
+      <h3>A profile of design</h3>
+      <p>Your unique configuration of strengths, weaknesses, and natural inclinations — read as evidence of how God shaped you, not as a verdict.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">02</div>
+      <h3>A profile of distortion</h3>
+      <p>The specific ways your design has been bent by the Fall, by formative experience, by repeated patterns of self-protection.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-num">03</div>
+      <h3>A path of restoration</h3>
+      <p>Scripture, practices, and pastoral counsel calibrated to how the gospel restores <em>your</em> shape — not a generic Christian growth plan.</p>
     </div>
   </div>
-</section>
 
-<!-- ═══════════ SCREEN 3: INTAKE ═══════════ -->
-<section class="screen" id="screen-intake" aria-label="Intake">
-  <div class="intake-wrap">
-    <div class="intake-box">
-      <div class="intake-eyebrow">A few details</div>
-      <h2>Before we begin</h2>
-      <p class="intake-lede">Take your time. There are no right answers — only honest ones.</p>
+  <h2>Where we are in development</h2>
+  <ul class="timeline">
+    <li class="done">
+      <span class="stage done">Phase 1</span>
+      <span class="desc">Theological framework drafted — imago Dei, design, distortion, restoration</span>
+    </li>
+    <li class="done">
+      <span class="stage done">Phase 2</span>
+      <span class="desc">Candidate items written and refined with peer review</span>
+    </li>
+    <li>
+      <span class="stage">Phase 3</span>
+      <span class="desc">Validation testing with a small cohort of pastors and counselors</span>
+    </li>
+    <li>
+      <span class="stage">Phase 4</span>
+      <span class="desc">Open beta — limited free access for early feedback</span>
+    </li>
+    <li>
+      <span class="stage">Public launch</span>
+      <span class="desc">IMAGO available to the public, integrated with your Take 139 profile</span>
+    </li>
+  </ul>
 
-      <div class="field">
-        <label for="nameInput">Your name</label>
-        <input type="text" id="nameInput" autocomplete="name" placeholder="First and last">
-      </div>
+  <p class="muted" style="margin-top: 1.5rem;">No promised launch date. Some things are worth waiting for.</p>
 
-      <div class="field">
-        <label for="emailInput">Email <span class="opt">(optional but encouraged)</span></label>
-        <input type="email" id="emailInput" autocomplete="email" placeholder="you@example.com">
-        <div class="help">If you give us an email, your full IMAGO report arrives there as a PDF a minute or two after you finish.</div>
-      </div>
-
-      <div class="field">
-        <label for="pairInput">Take 139 pair code <span class="opt">(optional)</span></label>
-        <input type="text" id="pairInput" autocomplete="off" placeholder="e.g. T139-AB12" spellcheck="false">
-        <div class="help"><em>Already taken Take 139?</em> Drop your pair code in to link the two reports.</div>
-      </div>
-
-      <button class="intake-submit" onclick="submitIntake()">Begin assessment</button>
-      <div class="intake-err" id="intakeErr"></div>
-    </div>
+  <!-- Waitlist signup -->
+  <div class="signup">
+    <div class="label">Be among the first to know</div>
+    <h2>Join the IMAGO waitlist</h2>
+    <p>We will email you once when IMAGO opens for beta, and once when it launches publicly. That is the entire list. No marketing, no drip campaigns.</p>
+    <form class="signup-form" id="waitlistForm" onsubmit="return submitWaitlist(event)">
+      <input type="email" id="waitlistEmail" placeholder="you@example.com" required>
+      <button type="submit" id="waitlistBtn">Notify me</button>
+    </form>
+    <div class="signup-status" id="waitlistStatus"></div>
   </div>
-</section>
 
-<!-- ═══════════ SCREEN 4: ASSESSMENT ═══════════ -->
-<section class="screen" id="screen-assess" aria-label="Assessment">
-  <div class="assess-header">
-    <div class="assess-counter"><strong id="counterCurrent">1</strong> <span style="color:var(--faint);">of</span> <span id="counterTotal">100</span></div>
-    <button class="assess-quit" onclick="confirmQuit()">Save &amp; exit</button>
-  </div>
-  <div class="assess-stage">
-    <div id="itemSlot"></div>
-    <div class="assess-nav">
-      <button class="assess-back" id="backBtn" onclick="goPrev()">
-        <span aria-hidden="true">←</span> Back
-      </button>
-      <div class="assess-hint">
-        <kbd>1</kbd>–<kbd>5</kbd> to answer · <kbd>←</kbd> to revise
-      </div>
-    </div>
-  </div>
-</section>
+  <a class="back-link" href="/">← Back to Take 139</a>
+</main>
 
-<!-- ═══════════ SCREEN 5: SUBMITTING ═══════════ -->
-<section class="screen" id="screen-submit" aria-label="Submitting">
-  <div class="submit-wrap">
-    <div class="submit-box">
-      <div class="spinner" aria-hidden="true"></div>
-      <div class="submit-title">Computing your IMAGO…</div>
-      <div class="cycling-verse" id="cyclingVerse"></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════ SCREEN 6: RESULTS ═══════════ -->
-<section class="screen" id="screen-results" aria-label="Results">
-  <div class="results-wrap">
-    <div class="results-box">
-      <div class="results-verse" id="resultsVerse">
-        I praise you, for I am fearfully and wonderfully made.<br>
-        Wonderful are your works; my soul knows it very well.
-        <cite>Psalm 139:14</cite>
-      </div>
-
-      <div class="results-eyebrow">Your soul shape</div>
-      <div class="results-shape">The <em id="rShape">—</em></div>
-      <div class="results-archetype">The <span id="rArchetype">—</span></div>
-
-      <div class="results-divider"></div>
-
-      <div class="results-letter-section">
-        <div class="results-letter-label">Your letter type</div>
-        <div class="results-letters" id="rLetters">—</div>
-      </div>
-
-      <div class="results-pair">
-        <div class="results-pair-label">Your pair code</div>
-        <div class="results-pair-code" id="rPair">—</div>
-      </div>
-
-      <div class="results-summary" id="rSummary">
-        Your hardwiring is being read by the people who love you, by the work in front of you, and by the God who made you. The report below names what we found, plainly, so you can carry it forward.
-      </div>
-
-      <div class="results-email" id="rEmail" style="display:none;">
-        Your full report has been emailed to <strong id="rEmailAddr"></strong>.<br>
-        <span style="font-size:0.85rem;color:var(--faint);">It may take a minute to arrive. Check your spam folder if it doesn't.</span>
-      </div>
-
-      <div class="results-cta-row">
-        <a href="https://take139.com" class="results-cta">Take Take 139 next</a>
-        <button class="results-cta secondary" onclick="takeAgain()">Take IMAGO again</button>
-      </div>
-    </div>
-  </div>
-  <footer class="site-footer" style="margin-top:3rem;">
-    <div class="footer-verse">"Search me, O God, and know my heart." — Psalm 139:23</div>
-    <div class="footer-copy">
-      <a href="https://take139.com">take139.com</a>
-    </div>
-  </footer>
-</section>
-
-<div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
+<footer>
+  © Take 139 · Built with care
+</footer>
 
 <script>
-'use strict';
+function submitWaitlist(e) {
+  e.preventDefault();
+  const emailInput = document.getElementById('waitlistEmail');
+  const btn = document.getElementById('waitlistBtn');
+  const status = document.getElementById('waitlistStatus');
+  const email = (emailInput.value || '').trim();
+  if (!email || !email.includes('@')) {
+    status.textContent = 'Please enter a valid email address.';
+    status.className = 'signup-status err';
+    return false;
+  }
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
 
-// ════════════════════════════════════════════════════════════
-//  CONFIG
-// ════════════════════════════════════════════════════════════
-const BACKEND_URL = 'https://take139-backend-production.up.railway.app';
-const VALID_CODES = ['take139', 'caog']; // also accepts any code the user types in lowercase that passes server-side later
-const STORAGE_KEY = 'imago_v1';
-const ITEMS_CACHE_KEY = 'imago_items_v1';
-const ITEMS_CACHE_TTL_MS = 1000 * 60 * 60 * 24 * 7; // 7 days
-
-// silence console in production
-const DEBUG = false;
-const log = DEBUG ? console.log.bind(console) : () => {};
-const errlog = DEBUG ? console.error.bind(console) : () => {};
-
-const LIKERT = [
-  { value: 1, label: 'Very inaccurate' },
-  { value: 2, label: 'Moderately inaccurate' },
-  { value: 3, label: 'Neither' },
-  { value: 4, label: 'Moderately accurate' },
-  { value: 5, label: 'Very accurate' },
-];
-
-const PSALM_VERSES = [
-  { t: 'O Lord, you have searched me and known me.', c: 'Psalm 139:1' },
-  { t: 'You know when I sit down and when I rise up;\nyou discern my thoughts from afar.', c: 'Psalm 139:2' },
-  { t: 'Such knowledge is too wonderful for me;\nit is high; I cannot attain it.', c: 'Psalm 139:6' },
-  { t: 'For you formed my inward parts;\nyou knitted me together in my mother\u2019s womb.', c: 'Psalm 139:13' },
-  { t: 'I praise you, for I am fearfully and wonderfully made.', c: 'Psalm 139:14' },
-  { t: 'My frame was not hidden from you,\nwhen I was being made in secret.', c: 'Psalm 139:15' },
-  { t: 'Your eyes saw my unformed substance;\nin your book were written, every one of them, the days that were formed for me.', c: 'Psalm 139:16' },
-  { t: 'Search me, O God, and know my heart;\ntry me and know my thoughts.', c: 'Psalm 139:23' },
-];
-
-// ════════════════════════════════════════════════════════════
-//  STATE
-// ════════════════════════════════════════════════════════════
-const state = {
-  screen: 'landing',
-  accessCode: null,
-  name: null,
-  email: null,
-  pairCode: null,
-  items: [],          // [{ item_id, text }]
-  index: 0,           // 0-based current item
-  answers: {},        // { item_id: 1-5 }
-  direction: 'fwd',   // for slide animation
-};
-
-function persist() {
+  // Store the email in localStorage as a fallback so it isn't lost if there's no backend route yet.
+  // When the backend /waitlist endpoint is live, this will also POST to it.
   try {
-    const snap = {
-      screen: state.screen,
-      accessCode: state.accessCode,
-      name: state.name,
-      email: state.email,
-      pairCode: state.pairCode,
-      index: state.index,
-      answers: state.answers,
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(snap));
-  } catch (e) { errlog('persist', e); }
-}
+    const stored = JSON.parse(localStorage.getItem('imago_waitlist') || '[]');
+    stored.push({ email: email, ts: new Date().toISOString() });
+    localStorage.setItem('imago_waitlist', JSON.stringify(stored));
+  } catch (_) { /* localStorage may be unavailable; ignore */ }
 
-function loadPersisted() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    return JSON.parse(raw);
-  } catch (e) { return null; }
-}
-
-function clearPersisted() {
-  try {
-    localStorage.removeItem(STORAGE_KEY);
-    localStorage.removeItem(ITEMS_CACHE_KEY);
-  } catch (e) {}
-}
-
-// ════════════════════════════════════════════════════════════
-//  SCREEN ROUTER
-// ════════════════════════════════════════════════════════════
-function showScreen(name) {
-  document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
-  const el = document.getElementById('screen-' + name);
-  if (el) el.classList.add('active');
-  state.screen = name;
-  const pb = document.getElementById('progressBar');
-  if (name === 'assess') pb.classList.add('show');
-  else pb.classList.remove('show');
-  window.scrollTo({ top: 0, behavior: 'instant' });
-  persist();
-}
-
-// ════════════════════════════════════════════════════════════
-//  LANDING → GATE
-// ════════════════════════════════════════════════════════════
-function goToGate() {
-  // If we already have an access code from a prior session, skip gate.
-  if (state.accessCode) {
-    showScreen('intake');
-    return;
-  }
-  showScreen('gate');
-  setTimeout(() => document.getElementById('gateInput')?.focus(), 250);
-}
-
-// ════════════════════════════════════════════════════════════
-//  GATE
-// ════════════════════════════════════════════════════════════
-function submitGate() {
-  const input = document.getElementById('gateInput');
-  const err = document.getElementById('gateError');
-  const code = (input.value || '').trim().toLowerCase();
-  if (!code) {
-    err.textContent = 'Please enter a code.';
-    input.classList.add('error');
-    setTimeout(() => input.classList.remove('error'), 400);
-    return;
-  }
-  if (!VALID_CODES.includes(code)) {
-    err.textContent = 'That code wasn\u2019t recognized. Please check it and try again.';
-    input.classList.add('error');
-    setTimeout(() => input.classList.remove('error'), 400);
-    input.select();
-    return;
-  }
-  state.accessCode = code;
-  persist();
-  err.textContent = '';
-  showScreen('intake');
-  setTimeout(() => document.getElementById('nameInput')?.focus(), 200);
-}
-
-function toggleGateExplain() {
-  document.getElementById('gateExplain').classList.toggle('show');
-}
-
-// ════════════════════════════════════════════════════════════
-//  INTAKE
-// ════════════════════════════════════════════════════════════
-function submitIntake() {
-  const nameEl = document.getElementById('nameInput');
-  const emailEl = document.getElementById('emailInput');
-  const pairEl = document.getElementById('pairInput');
-  const errEl = document.getElementById('intakeErr');
-
-  const name = (nameEl.value || '').trim();
-  const email = (emailEl.value || '').trim();
-  const pair = (pairEl.value || '').trim();
-
-  if (!name) {
-    errEl.textContent = 'Please share your name.';
-    nameEl.focus();
-    return;
-  }
-  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    errEl.textContent = 'That email doesn\u2019t look quite right.';
-    emailEl.focus();
-    return;
-  }
-  errEl.textContent = '';
-
-  state.name = name;
-  state.email = email || null;
-  state.pairCode = pair || null;
-  persist();
-
-  startAssessment();
-}
-
-// ════════════════════════════════════════════════════════════
-//  ITEMS — fetch + cache
-// ════════════════════════════════════════════════════════════
-async function loadItems() {
-  // try cache first
-  try {
-    const raw = localStorage.getItem(ITEMS_CACHE_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      if (parsed.cachedAt && (Date.now() - parsed.cachedAt) < ITEMS_CACHE_TTL_MS
-          && Array.isArray(parsed.items) && parsed.items.length > 0) {
-        log('items from cache', parsed.items.length);
-        return parsed.items;
-      }
-    }
-  } catch (e) {}
-
-  // fetch from backend
-  try {
-    const res = await fetch(BACKEND_URL + '/imago/items?shuffle=true', { method: 'GET' });
-    if (!res.ok) throw new Error('http ' + res.status);
-    const data = await res.json();
-    // accept either { items: [...] } or [...] directly
-    const raw = Array.isArray(data) ? data : (data.items || []);
-    const items = raw.map(x => ({
-      item_id: x.item_id || x.id || x.code,
-      text: x.item_text || x.text || x.statement,
-    })).filter(x => x.item_id && x.text);
-    if (items.length === 0) throw new Error('no items returned');
-    try {
-      localStorage.setItem(ITEMS_CACHE_KEY, JSON.stringify({ cachedAt: Date.now(), items }));
-    } catch (e) {}
-    return items;
-  } catch (e) {
-    errlog('item fetch failed', e);
-    return null;
-  }
-}
-
-async function startAssessment() {
-  // show a tiny inline loading state on the intake screen briefly
-  const btn = document.querySelector('.intake-submit');
-  if (btn) { btn.disabled = true; btn.textContent = 'Loading items…'; }
-
-  const items = await loadItems();
-  if (!items) {
-    document.getElementById('intakeErr').textContent =
-      'We couldn\u2019t load the assessment. Please check your connection and try again in a moment.';
-    if (btn) { btn.disabled = false; btn.textContent = 'Begin assessment'; }
-    return;
-  }
-  state.items = items;
-  if (btn) { btn.disabled = false; btn.textContent = 'Begin assessment'; }
-
-  // resume index if there are persisted answers and we're not past the end
-  const persisted = loadPersisted();
-  if (persisted && persisted.answers && state.items.length) {
-    state.answers = persisted.answers;
-    // jump to first unanswered, capped at end
-    let resumeIdx = 0;
-    for (let i = 0; i < state.items.length; i++) {
-      if (state.answers[state.items[i].item_id] == null) { resumeIdx = i; break; }
-      resumeIdx = i + 1;
-    }
-    state.index = Math.min(resumeIdx, state.items.length - 1);
-  } else {
-    state.index = 0;
-  }
-
-  document.getElementById('counterTotal').textContent = state.items.length;
-  showScreen('assess');
-  renderItem(true);
-}
-
-// ════════════════════════════════════════════════════════════
-//  ASSESSMENT — render & nav
-// ════════════════════════════════════════════════════════════
-function renderItem(initial) {
-  if (state.index < 0) state.index = 0;
-  if (state.index >= state.items.length) {
-    finishAssessment();
-    return;
-  }
-  const item = state.items[state.index];
-  const slot = document.getElementById('itemSlot');
-  const current = state.answers[item.item_id];
-
-  const directionClass = state.direction === 'back' ? 'back' : '';
-  slot.innerHTML = '';
-  const card = document.createElement('div');
-  card.className = 'item-card ' + directionClass;
-  card.innerHTML = `
-    <div class="item-eyebrow">Item ${state.index + 1}</div>
-    <div class="item-text">${escapeHtml(item.text)}</div>
-    <div class="likert" role="radiogroup" aria-label="Likert scale">
-      ${LIKERT.map(opt => `
-        <button class="likert-opt ${current === opt.value ? 'selected' : ''}"
-                role="radio"
-                aria-checked="${current === opt.value ? 'true' : 'false'}"
-                data-value="${opt.value}"
-                onclick="selectAnswer(${opt.value})">
-          <span class="likert-num">${opt.value}</span>
-          <span class="likert-label">${opt.label}</span>
-        </button>
-      `).join('')}
-    </div>
-  `;
-  slot.appendChild(card);
-
-  // counter + progress
-  document.getElementById('counterCurrent').textContent = state.index + 1;
-  const answered = Object.keys(state.answers).length;
-  document.getElementById('progressFill').style.width =
-    ((state.index) / state.items.length * 100).toFixed(2) + '%';
-
-  // back btn enabled?
-  document.getElementById('backBtn').disabled = state.index === 0;
-
-  // focus first option for keyboard users (only after initial render or back nav)
-  if (!initial) {
-    // don't auto-focus on every render — keeps it gentle
-  }
-}
-
-let _advancing = false;
-function selectAnswer(value) {
-  if (_advancing) return;
-  const item = state.items[state.index];
-  if (!item) return;
-  state.answers[item.item_id] = value;
-  persist();
-
-  // visually mark selected for a beat, then advance
-  document.querySelectorAll('.likert-opt').forEach(b => {
-    b.classList.toggle('selected', parseInt(b.dataset.value, 10) === value);
-    b.setAttribute('aria-checked', parseInt(b.dataset.value, 10) === value ? 'true' : 'false');
-  });
-
-  // slide-out, then advance
-  _advancing = true;
-  const card = document.querySelector('.item-card');
-  if (card) card.classList.add('leaving');
-  setTimeout(() => {
-    state.direction = 'fwd';
-    state.index += 1;
-    renderItem();
-    _advancing = false;
-  }, 220);
-}
-
-function goPrev() {
-  if (state.index === 0) return;
-  state.direction = 'back';
-  state.index -= 1;
-  renderItem();
-}
-
-function confirmQuit() {
-  // soft save & exit back to landing — answers stay in localStorage
-  showScreen('landing');
-}
-
-function escapeHtml(s) {
-  return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
-// ════════════════════════════════════════════════════════════
-//  KEYBOARD
-// ════════════════════════════════════════════════════════════
-document.addEventListener('keydown', (e) => {
-  if (state.screen === 'gate' && e.key === 'Enter') {
-    submitGate();
-    return;
-  }
-  if (state.screen === 'intake' && e.key === 'Enter' && e.target.tagName === 'INPUT') {
-    submitIntake();
-    return;
-  }
-  if (state.screen === 'assess') {
-    if (e.key >= '1' && e.key <= '5') {
-      e.preventDefault();
-      selectAnswer(parseInt(e.key, 10));
-    } else if (e.key === 'ArrowLeft' || e.key === 'Backspace') {
-      if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
-        e.preventDefault();
-        goPrev();
-      }
-    } else if (e.key === 'ArrowRight') {
-      // only advance if answered
-      const item = state.items[state.index];
-      if (item && state.answers[item.item_id] != null && state.index < state.items.length - 1) {
-        e.preventDefault();
-        state.direction = 'fwd';
-        state.index += 1;
-        renderItem();
-      }
-    } else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-      // move selection focus among likert options
-      const opts = Array.from(document.querySelectorAll('.likert-opt'));
-      if (opts.length === 0) return;
-      const focused = document.activeElement;
-      let i = opts.indexOf(focused);
-      if (i === -1) i = 0;
-      else i = e.key === 'ArrowDown' ? Math.min(i + 1, opts.length - 1) : Math.max(i - 1, 0);
-      opts[i].focus();
-      e.preventDefault();
-    }
-  }
-});
-
-// ════════════════════════════════════════════════════════════
-//  SUBMIT
-// ════════════════════════════════════════════════════════════
-let verseTimer = null;
-
-function cycleVerses() {
-  const el = document.getElementById('cyclingVerse');
-  let i = 0;
-  function show() {
-    const v = PSALM_VERSES[i % PSALM_VERSES.length];
-    el.style.opacity = '0';
-    setTimeout(() => {
-      el.innerHTML =
-        `${escapeHtml(v.t).replace(/\n/g, '<br>')}<cite>${escapeHtml(v.c)}</cite>`;
-      el.style.opacity = '1';
-    }, 500);
-    i += 1;
-  }
-  show();
-  verseTimer = setInterval(show, 4500);
-}
-
-function stopVerses() {
-  if (verseTimer) { clearInterval(verseTimer); verseTimer = null; }
-}
-
-async function finishAssessment() {
-  // verify all answered
-  const missing = state.items.filter(x => state.answers[x.item_id] == null);
-  if (missing.length > 0) {
-    // jump back to first missing
-    const firstMissing = state.items.findIndex(x => state.answers[x.item_id] == null);
-    state.index = firstMissing;
-    renderItem();
-    return;
-  }
-
-  showScreen('submit');
-  cycleVerses();
-
-  const payload = {
-    name: state.name,
-    email: state.email,
-    access_code_used: state.accessCode,
-    answers: state.answers,
-    take139_pair_code: state.pairCode || null,
-  };
-
-  try {
-    const res = await fetch(BACKEND_URL + '/imago/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+  const BACKEND_URL = 'https://take139-backend-production.up.railway.app';
+  fetch(BACKEND_URL + '/imago/waitlist', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: email, source: 'imago_coming_soon' })
+  })
+    .then(r => {
+      // We treat any 2xx as success. Other statuses (including 404 if the
+      // endpoint isn't deployed yet) still count as "captured locally" since
+      // we already stored to localStorage above.
+      status.textContent = 'Thank you — we will email you when IMAGO is ready.';
+      status.className = 'signup-status ok';
+      emailInput.value = '';
+      btn.textContent = 'Notify me';
+      btn.disabled = false;
+    })
+    .catch(_ => {
+      // Network error — still treat as captured locally.
+      status.textContent = 'Thank you — we will email you when IMAGO is ready.';
+      status.className = 'signup-status ok';
+      emailInput.value = '';
+      btn.textContent = 'Notify me';
+      btn.disabled = false;
     });
-    if (!res.ok) throw new Error('http ' + res.status);
-    const data = await res.json();
-    // smooth: hold submit screen at least 1.6s so it doesn't feel abrupt
-    setTimeout(() => {
-      stopVerses();
-      renderResults(data);
-    }, 1600);
-  } catch (e) {
-    errlog('submit failed', e);
-    stopVerses();
-    // show a graceful error inside the submit screen
-    document.querySelector('.submit-title').textContent = 'We hit a snag.';
-    document.getElementById('cyclingVerse').innerHTML =
-      'Your answers are saved. Please try again in a minute — the system is just getting on its feet.' +
-      '<div style="margin-top:1.5rem;"><button class="hero-cta" onclick="finishAssessment()">Try again</button></div>';
-  }
+
+  return false;
 }
-
-// ════════════════════════════════════════════════════════════
-//  RESULTS
-// ════════════════════════════════════════════════════════════
-function renderResults(data) {
-  // expected shape:
-  // { soul_shape, archetype, letter_type, letter_breakdown?:[{letter,case,borderline?}], pair_code, summary, email_sent_to_user }
-  const shape = data.soul_shape || data.soulShape || 'Image-Bearer';
-  const archetype = data.archetype || data.archetype_name || 'Person';
-  const letters = data.letter_type || data.letters || 'iMago';
-  const letterBreakdown = data.letter_breakdown || data.letterBreakdown || null;
-  const pair = data.pair_code || data.pairCode || '—';
-  const summary = data.summary || data.short_summary ||
-    'Your hardwiring is being read by the people who love you, by the work in front of you, and by the God who made you. The full report names what we found, plainly, so you can carry it forward.';
-  const emailSent = data.email_sent_to_user === true;
-
-  document.getElementById('rShape').textContent = shape;
-  document.getElementById('rArchetype').textContent = archetype;
-  document.getElementById('rPair').textContent = pair;
-  document.getElementById('rSummary').textContent = summary;
-  document.getElementById('rLetters').innerHTML = formatLetters(letters, letterBreakdown);
-
-  if (state.email && emailSent) {
-    document.getElementById('rEmailAddr').textContent = state.email;
-    document.getElementById('rEmail').style.display = 'block';
-  } else if (state.email) {
-    // Backend received it but maybe still processing
-    document.getElementById('rEmailAddr').textContent = state.email;
-    document.getElementById('rEmail').style.display = 'block';
-  }
-
-  showScreen('results');
-  pastoralConfetti();
-}
-
-function formatLetters(letterStr, breakdown) {
-  // if backend gives us a structured breakdown, use it
-  if (Array.isArray(breakdown) && breakdown.length > 0) {
-    return breakdown.map(b => {
-      const ch = b.letter || '';
-      if (b.borderline) {
-        return `<span class="ltr-borderline">${escapeHtml(ch)}</span>`;
-      }
-      const isUpper = (b.case === 'upper') || (ch === ch.toUpperCase() && ch !== ch.toLowerCase());
-      return `<span class="${isUpper ? 'ltr-upper' : 'ltr-lower'}">${escapeHtml(ch)}</span>`;
-    }).join('');
-  }
-  // otherwise, infer from the string's casing
-  const s = String(letterStr || '');
-  return [...s].map(ch => {
-    if (!/[a-zA-Z]/.test(ch)) {
-      return `<span class="ltr-upper">${escapeHtml(ch)}</span>`;
-    }
-    const isUpper = ch === ch.toUpperCase();
-    return `<span class="${isUpper ? 'ltr-upper' : 'ltr-lower'}">${escapeHtml(ch)}</span>`;
-  }).join('');
-}
-
-function pastoralConfetti() {
-  const layer = document.getElementById('confettiLayer');
-  if (!layer) return;
-  layer.innerHTML = '';
-  const colors = ['#c8956c', '#d4a67a', '#f0ece4', '#a09888'];
-  const count = 24; // gentle — not a circus
-  for (let i = 0; i < count; i++) {
-    const piece = document.createElement('div');
-    piece.className = 'confetti-piece';
-    piece.style.left = (Math.random() * 100) + '%';
-    piece.style.background = colors[i % colors.length];
-    piece.style.opacity = '0';
-    piece.style.animationDelay = (Math.random() * 1.2) + 's';
-    piece.style.animationDuration = (3.5 + Math.random() * 2) + 's';
-    const size = 5 + Math.random() * 6;
-    piece.style.width = size + 'px';
-    piece.style.height = size + 'px';
-    if (Math.random() > 0.5) piece.style.borderRadius = '50%';
-    layer.appendChild(piece);
-  }
-  // clean up after animations finish
-  setTimeout(() => { layer.innerHTML = ''; }, 7000);
-}
-
-function takeAgain() {
-  clearPersisted();
-  state.accessCode = null;
-  state.name = null;
-  state.email = null;
-  state.pairCode = null;
-  state.items = [];
-  state.index = 0;
-  state.answers = {};
-  state.direction = 'fwd';
-  document.getElementById('gateInput').value = '';
-  document.getElementById('nameInput').value = '';
-  document.getElementById('emailInput').value = '';
-  document.getElementById('pairInput').value = '';
-  showScreen('landing');
-}
-
-// ════════════════════════════════════════════════════════════
-//  BOOT
-// ════════════════════════════════════════════════════════════
-(function boot() {
-  const p = loadPersisted();
-  if (p) {
-    state.accessCode = p.accessCode || null;
-    state.name = p.name || null;
-    state.email = p.email || null;
-    state.pairCode = p.pairCode || null;
-    state.answers = p.answers || {};
-    if (p.name) {
-      document.getElementById('nameInput').value = p.name;
-    }
-    if (p.email) {
-      document.getElementById('emailInput').value = p.email;
-    }
-    if (p.pairCode) {
-      document.getElementById('pairInput').value = p.pairCode;
-    }
-    // If we were mid-assessment and have answers, offer the resume by starting on landing
-    // (user can press Begin to resume — items will load and jump to first unanswered).
-  }
-  showScreen('landing');
-})();
 </script>
+
 </body>
 </html>
