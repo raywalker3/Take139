@@ -4088,6 +4088,9 @@ function showResults() {
         <input type="email" class="email-input" id="emailInput" placeholder="your@email.com" autocomplete="email">
         <button class="btn btn-primary" onclick="submitResultsToBackend()" id="emailSendBtn">Email My Report</button>
       </div>
+      <div id="emailResendWrap" style="display:none;text-align:center;margin-top:0.75rem;font-size:0.85rem;">
+        <a href="#" onclick="resendToDifferentEmail(event)" style="color:var(--muted);text-decoration:underline;cursor:pointer;">Send a copy to a different email address</a>
+      </div>
       <div class="email-status" id="emailStatus"></div>
     </div>
 
@@ -4348,6 +4351,15 @@ async function submitResultsToBackend(opts = {}) {
         statusEl.className = 'email-status ok';
       }
     }
+    // Prevent accidental duplicate sends. The button locks to "Sent ✓" until
+    // the user explicitly opts into sending to a different address.
+    if (!silent && btn) {
+      btn.disabled = true;
+      btn.textContent = `Sent ✓ to ${email}`;
+      btn.dataset.locked = 'true';
+      const resendWrap = document.getElementById('emailResendWrap');
+      if (resendWrap) resendWrap.style.display = 'block';
+    }
   } catch (err) {
     if (!silent && statusEl) {
       // Show the backend's actual message when available so users get useful info
@@ -4360,8 +4372,40 @@ async function submitResultsToBackend(opts = {}) {
     }
     console.error('submit error', err);
   } finally {
-    if (!silent && btn) { btn.disabled = false; btn.textContent = 'Email My Report'; }
+    // Only re-enable the button if we did NOT just successfully send — the
+    // success path locks the button itself with "Sent ✓" so users don't fire
+    // a second send by accident. Errors still reset to allow retry.
+    if (!silent && btn && btn.dataset.locked !== 'true') {
+      btn.disabled = false;
+      btn.textContent = 'Email My Report';
+    }
   }
+}
+
+// Allow user to opt into a second send to a different address.
+// Shows a soft confirm so accidental clicks don't fire another email.
+function resendToDifferentEmail(ev) {
+  if (ev && ev.preventDefault) ev.preventDefault();
+  const btn = document.getElementById('emailSendBtn');
+  const emailInput = document.getElementById('emailInput');
+  const statusEl = document.getElementById('emailStatus');
+  const ok = window.confirm('Send your report to a different email address?\n\nClear the email field and type the new address, then click "Email My Report".');
+  if (!ok) return;
+  if (emailInput) {
+    emailInput.value = '';
+    emailInput.focus();
+  }
+  if (statusEl) {
+    statusEl.textContent = '';
+    statusEl.className = 'email-status';
+  }
+  if (btn) {
+    btn.disabled = false;
+    btn.textContent = 'Email My Report';
+    btn.dataset.locked = 'false';
+  }
+  const resendWrap = document.getElementById('emailResendWrap');
+  if (resendWrap) resendWrap.style.display = 'none';
 }
 
 function startOver() {
