@@ -252,6 +252,60 @@ body {
           <a href="#" class="btn" id="connectPartnerBtn" style="display:none;">Connect with my partner</a>
         </div>
       </div>
+
+      <!-- Connected partner detail card (only when paired) -->
+      <div id="partnerSection" style="display:none;">
+        <div class="section-label" style="margin-top:1.75rem;">Your Partner</div>
+        <div class="card">
+          <div class="profile-row">
+            <div class="col">
+              <div class="lbl">Name</div>
+              <div class="val" id="partnerName">&mdash;</div>
+            </div>
+            <div class="col">
+              <div class="lbl">Their Profile</div>
+              <div class="val" id="partnerProfile">&mdash;</div>
+            </div>
+          </div>
+          <div class="status-line" style="margin-top:0.9rem;" id="partnerTriggerLine"></div>
+        </div>
+      </div>
+
+      <!-- Downloads section -->
+      <div class="section-label" style="margin-top:1.75rem;">Your PDFs</div>
+      <div class="card">
+        <p style="font-size:0.93rem;color:var(--muted);margin:0 0 1rem 0;">Download your reports any time. Files are generated on-demand from the latest version of your profile.</p>
+        <div class="btn-row">
+          <a href="#" class="btn" onclick="downloadPdf(event,'personal')" id="dlPersonal">Download my profile (PDF)</a>
+          <a href="#" class="btn btn-outline" onclick="downloadPdf(event,'walkthrough')" id="dlWalkthrough">Download my walkthrough</a>
+          <a href="#" class="btn btn-outline" onclick="downloadPdf(event,'couples')" id="dlCouples" style="display:none;">Download the Couples Report</a>
+        </div>
+        <div class="btn-row" style="margin-top:0.6rem;">
+          <a href="#" class="btn btn-outline" onclick="resendReport(event)" id="resendBtn">Email me my report again</a>
+        </div>
+        <div class="status-line" style="margin-top:0.75rem;" id="dlStatus"></div>
+      </div>
+
+      <!-- Code wallet (only shown if user has codes) -->
+      <div id="codesSection" style="display:none;">
+        <div class="section-label" style="margin-top:1.75rem;">Your Purchased Codes</div>
+        <div class="card">
+          <p style="font-size:0.93rem;color:var(--muted);margin:0 0 1rem 0;">These are the access codes attached to your purchases. Share unused codes with the person taking the assessment.</p>
+          <div id="codesList"></div>
+        </div>
+      </div>
+
+      <!-- Cross-assessment hub (IMAGO + future) -->
+      <div class="section-label" style="margin-top:1.75rem;">More from Take 139</div>
+      <div class="card" style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+        <div style="flex:1 1 260px;min-width:0;">
+          <h3 style="font-family:var(--font-heading);font-size:1.2rem;font-weight:500;margin:0 0 0.25rem 0;">IMAGO
+            <span style="background:var(--accent-soft);color:var(--accent);padding:0.18rem 0.5rem;border-radius:3px;font-size:0.65rem;letter-spacing:0.08em;font-weight:600;text-transform:uppercase;margin-left:0.4rem;vertical-align:middle;">Coming soon</span>
+          </h3>
+          <p style="font-size:0.92rem;color:var(--muted);margin:0;">A new assessment focused on the image of God in you and how it shapes your marriage.</p>
+        </div>
+        <a href="/imago/" class="btn btn-outline">Learn more</a>
+      </div>
     </div>
 
     <div id="historySection" style="display:none;">
@@ -393,19 +447,44 @@ function renderDashboard(data) {
 
   const partnerLine = document.getElementById('partnerLine');
   const connectBtn = document.getElementById('connectPartnerBtn');
+  const dlCouples = document.getElementById('dlCouples');
+  const partnerSection = document.getElementById('partnerSection');
+
   if (primary.paired_with_code) {
     partnerLine.innerHTML =
       '<span class="partner-state connected">CONNECTED</span> ' +
       'Paired with <strong style="font-family:\'Courier New\',monospace;letter-spacing:0.08em;">' +
       primary.paired_with_code + '</strong>. Your Couples Report has been sent.';
     connectBtn.style.display = 'none';
+    // Show the couples PDF download.
+    if (dlCouples) dlCouples.style.display = 'inline-block';
+
+    // Render the partner detail card if backend returned partner info.
+    if (data.partner) {
+      const p = data.partner;
+      const mk = (p.primary_mechanism || '').toUpperCase();
+      const tk = (p.primary_trigger || '').toUpperCase();
+      const pName = p.name || 'Your partner';
+      document.getElementById('partnerName').textContent = pName;
+      document.getElementById('partnerProfile').textContent = MECHANISM_NAMES[mk] || p.primary_mechanism || '\u2014';
+      const trig = TRIGGER_NAMES[tk] || p.primary_trigger || '';
+      const triggerLineEl = document.getElementById('partnerTriggerLine');
+      if (trig) {
+        triggerLineEl.innerHTML = '<span style="color:var(--muted);font-size:0.88rem;">Primary trigger: <strong>' + trig + '</strong></span>';
+      }
+      partnerSection.style.display = 'block';
+    }
   } else {
     partnerLine.innerHTML =
       '<span class="partner-state waiting">NOT YET CONNECTED</span> ' +
       'Share your pair code above with your partner. Once they\u2019ve taken the assessment, connect using their pair code from your results page.';
     connectBtn.style.display = 'inline-block';
     connectBtn.href = '/index.html#results';
+    if (dlCouples) dlCouples.style.display = 'none';
   }
+
+  // Render code wallet if any
+  loadMyCodes();
 
   // History (only show if 2+ submissions)
   if (subs.length > 1) {
@@ -429,6 +508,126 @@ function renderDashboard(data) {
       list.appendChild(row);
     });
   }
+}
+
+// ==================== PDF DOWNLOADS + RESEND ====================
+async function downloadPdf(ev, kind) {
+  if (ev && ev.preventDefault) ev.preventDefault();
+  const statusEl = document.getElementById('dlStatus');
+  statusEl.textContent = '';
+  statusEl.className = 'status-line';
+  const btnIds = {personal:'dlPersonal', walkthrough:'dlWalkthrough', couples:'dlCouples'};
+  const labels  = {personal:'Download my profile (PDF)', walkthrough:'Download my walkthrough', couples:'Download the Couples Report'};
+  const btn = document.getElementById(btnIds[kind]);
+  const origLabel = labels[kind];
+  if (btn) { btn.textContent = 'Preparing\u2026'; btn.style.pointerEvents = 'none'; btn.style.opacity = '0.7'; }
+  const tok = getSessionToken();
+  try {
+    const url = BACKEND_URL + '/me/pdf/' + kind;
+    const res = await fetch(url, { headers: { 'X-Session-Token': tok } });
+    if (!res.ok) {
+      let msg = 'Could not download.';
+      try { const d = await res.json(); if (d && d.detail) msg = d.detail; } catch(_){}
+      statusEl.textContent = msg;
+      statusEl.style.color = '#a13544';
+      if (btn) { btn.textContent = origLabel; btn.style.pointerEvents = ''; btn.style.opacity = ''; }
+      return;
+    }
+    const blob = await res.blob();
+    // Pull filename from Content-Disposition if available
+    let fname = 'Take139.pdf';
+    const cd = res.headers.get('content-disposition') || '';
+    const m = cd.match(/filename="?([^";]+)"?/);
+    if (m) fname = m[1];
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = fname;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    statusEl.textContent = 'Downloaded \u2713';
+    statusEl.style.color = 'var(--accent)';
+    if (btn) { btn.textContent = origLabel; btn.style.pointerEvents = ''; btn.style.opacity = ''; }
+  } catch (err) {
+    statusEl.textContent = 'We hit a snag downloading the file. Please try again.';
+    statusEl.style.color = '#a13544';
+    if (btn) { btn.textContent = origLabel; btn.style.pointerEvents = ''; btn.style.opacity = ''; }
+  }
+}
+
+async function resendReport(ev) {
+  if (ev && ev.preventDefault) ev.preventDefault();
+  const btn = document.getElementById('resendBtn');
+  const statusEl = document.getElementById('dlStatus');
+  statusEl.textContent = ''; statusEl.style.color = '';
+  if (!confirm('Send a fresh copy of your full report to your email?')) return;
+  if (btn) { btn.textContent = 'Sending\u2026'; btn.style.pointerEvents = 'none'; btn.style.opacity = '0.7'; }
+  try {
+    const res = await fetch(BACKEND_URL + '/me/resend-report', {
+      method: 'POST',
+      headers: { 'X-Session-Token': getSessionToken(), 'Content-Type':'application/json' },
+      body: '{}',
+    });
+    if (!res.ok) {
+      let msg = 'Could not resend right now.';
+      try { const d = await res.json(); if (d && d.detail) msg = d.detail; } catch(_){}
+      statusEl.textContent = msg; statusEl.style.color = '#a13544';
+      if (btn) { btn.textContent = 'Email me my report again'; btn.style.pointerEvents = ''; btn.style.opacity = ''; }
+      return;
+    }
+    const data = await res.json();
+    statusEl.textContent = data.message || 'On its way \u2713';
+    statusEl.style.color = 'var(--accent)';
+    if (btn) { btn.textContent = 'Sent \u2713'; }
+  } catch(_) {
+    statusEl.textContent = 'Could not reach the server.';
+    statusEl.style.color = '#a13544';
+    if (btn) { btn.textContent = 'Email me my report again'; btn.style.pointerEvents = ''; btn.style.opacity = ''; }
+  }
+}
+
+async function loadMyCodes() {
+  try {
+    const res = await fetch(BACKEND_URL + '/me/codes', { headers: {'X-Session-Token': getSessionToken()} });
+    if (!res.ok) return;
+    const data = await res.json();
+    if (!data.count) return;
+    const sec = document.getElementById('codesSection');
+    const list = document.getElementById('codesList');
+    list.innerHTML = '';
+    data.codes.forEach(function(c) {
+      const isRedeemed = c.status === 'redeemed';
+      const kindLabel = ({single:'Single ($20)', couple:'Couple ($40)', connect:'Connection ($10)'})[c.kind] || c.kind;
+      const row = document.createElement('div');
+      row.style.cssText = 'padding:0.8rem 0;border-bottom:1px solid var(--hairline);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:0.75rem;';
+      const statusBadge = isRedeemed
+        ? '<span style="background:var(--surface-2);color:var(--muted);padding:0.2rem 0.55rem;border-radius:3px;font-size:0.7rem;letter-spacing:0.05em;font-weight:600;text-transform:uppercase;">REDEEMED</span>'
+        : '<span style="background:var(--accent-soft);color:var(--accent);padding:0.2rem 0.55rem;border-radius:3px;font-size:0.7rem;letter-spacing:0.05em;font-weight:600;text-transform:uppercase;">AVAILABLE</span>';
+      const right = isRedeemed
+        ? '<span style="font-size:0.82rem;color:var(--muted);">Redeemed by ' + (c.redeemed_by_email || 'someone you shared with') + '</span>'
+        : '<button onclick="copyCode(\'' + c.code + '\')" style="background:none;border:1px solid var(--border);color:var(--text);padding:0.4rem 0.85rem;border-radius:4px;font-size:0.82rem;font-weight:600;letter-spacing:0.04em;cursor:pointer;">Copy code</button>';
+      row.innerHTML =
+        '<div style="min-width:0;">' +
+          '<div style="font-family:\'Courier New\',monospace;font-weight:700;color:var(--accent);letter-spacing:0.1em;font-size:0.95rem;">' + c.code + '</div>' +
+          '<div style="font-size:0.8rem;color:var(--muted);margin-top:0.2rem;">' + kindLabel + ' &middot; ' + statusBadge + '</div>' +
+        '</div>' +
+        '<div>' + right + '</div>';
+      list.appendChild(row);
+    });
+    sec.style.display = 'block';
+  } catch(_) { /* silent — codes section just stays hidden */ }
+}
+
+function copyCode(code) {
+  try {
+    navigator.clipboard.writeText(code).then(function() {
+      const statusEl = document.getElementById('dlStatus');
+      statusEl.textContent = 'Code copied: ' + code;
+      statusEl.style.color = 'var(--accent)';
+      setTimeout(function() { if (statusEl.textContent.indexOf('copied') === 0) statusEl.textContent = ''; }, 3000);
+    });
+  } catch(_) {}
 }
 
 loadDashboard();
