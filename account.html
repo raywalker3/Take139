@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Account settings &mdash; Take 139</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f1e8; --surface: #efe9dc; --surface-2: #e8e1d0;
+  --border: #d8cfba; --hairline: rgba(29, 29, 27, 0.12);
+  --text: #1d1d1b; --muted: #5d564b; --faint: #8b8475;
+  --accent: #8a4a2c; --accent-soft: rgba(138, 74, 44, 0.08);
+  --font-heading: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body); background: var(--bg); color: var(--text);
+  line-height: 1.6; min-height: 100vh; -webkit-font-smoothing: antialiased;
+  background-image: radial-gradient(rgba(0,0,0,0.012) 1px, transparent 1px), radial-gradient(rgba(0,0,0,0.010) 1px, transparent 1px);
+  background-size: 24px 24px, 36px 36px; background-position: 0 0, 12px 18px;
+  background-attachment: fixed;
+}
+.topbar { border-bottom: 1px solid var(--hairline); padding: 1rem 0; }
+.topbar-inner { max-width: 720px; margin: 0 auto; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; }
+.brand { font-size: 0.72rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--accent); font-weight: 600; text-decoration: none; }
+.user-pill { font-size: 0.85rem; color: var(--muted); display: flex; gap: 0.75rem; align-items: center; }
+.user-pill a { color: var(--muted); text-decoration: none; cursor: pointer; font-size: 0.85rem; }
+.user-pill a:hover { color: var(--accent); }
+
+.wrap { max-width: 720px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+.crumb { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem; }
+.crumb a { color: var(--muted); text-decoration: none; }
+.crumb a:hover { color: var(--accent); }
+
+h1 { font-family: var(--font-heading); font-size: 2.4rem; font-weight: 500; line-height: 1.1; margin: 0 0 0.5rem 0; }
+.subtitle { font-family: var(--font-heading); font-style: italic; color: var(--muted); font-size: 1.05rem; margin-bottom: 2rem; }
+
+.section-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin: 0 0 0.75rem 0; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.75rem; margin-bottom: 1.25rem; }
+.card h2 { font-family: var(--font-heading); font-size: 1.35rem; font-weight: 500; margin: 0 0 0.4rem 0; }
+.card p.copy { font-size: 0.92rem; color: var(--muted); margin: 0 0 1rem 0; }
+
+.label { display: block; font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 0.5rem; margin-top: 0.9rem; }
+.label:first-of-type { margin-top: 0; }
+.input { width: 100%; font-family: var(--font-body); font-size: 1.02rem; padding: 0.8rem 0.95rem; border: 1px solid var(--border); border-radius: 6px; background: #fff; color: var(--text); outline: none; transition: border-color 0.15s; }
+.input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.input:disabled, .input[readonly] { background: var(--surface-2); color: var(--muted); }
+
+.btn { display: inline-block; margin-top: 1rem; padding: 0.7rem 1.3rem; background: var(--text); color: var(--bg); font-size: 0.88rem; font-weight: 600; letter-spacing: 0.04em; border: none; border-radius: 6px; cursor: pointer; transition: background 0.15s; }
+.btn:hover:not(:disabled) { background: #000; }
+.btn:disabled { opacity: 0.55; cursor: wait; }
+.btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border); }
+.btn-outline:hover { background: var(--surface-2); }
+
+.status { margin-top: 0.85rem; font-size: 0.9rem; line-height: 1.45; min-height: 1.1em; }
+.status.ok { color: var(--accent); }
+.status.err { color: #a13544; }
+
+.hint { font-size: 0.78rem; color: var(--faint); margin-top: 0.3rem; }
+.badge { display: inline-block; padding: 0.2rem 0.55rem; font-size: 0.7rem; letter-spacing: 0.05em; font-weight: 600; border-radius: 3px; background: var(--accent-soft); color: var(--accent); text-transform: uppercase; margin-left: 0.5rem; vertical-align: middle; }
+
+.loading { text-align: center; padding: 4rem 1rem; color: var(--muted); }
+.spinner { width: 32px; height: 32px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; margin: 0 auto 1.25rem; animation: spin 0.9s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <a href="/" class="brand">Take 139</a>
+    <div class="user-pill">
+      <span id="userEmail"></span>
+      <a href="#" onclick="signOut(event)">Sign out</a>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    Loading account&hellip;
+  </div>
+
+  <div id="content" style="display:none;">
+    <div class="crumb"><a href="/dashboard.html">&larr; Back to dashboard</a></div>
+    <h1>Account settings</h1>
+    <p class="subtitle">Manage your name, email, and password.</p>
+
+    <!-- Profile -->
+    <div class="card">
+      <h2>Your profile</h2>
+      <p class="copy">This is how Take 139 addresses you in emails and reports.</p>
+
+      <label class="label" for="nameInput">Display name</label>
+      <input type="text" class="input" id="nameInput" placeholder="First and last">
+
+      <label class="label" for="emailDisplay">Email <span class="badge" id="verifiedBadge" style="display:none;">Verified</span></label>
+      <input type="email" class="input" id="emailDisplay" readonly>
+      <div class="hint">Email address changes will be added in a future update. Please contact support if you need to change yours.</div>
+
+      <button class="btn" id="saveNameBtn" onclick="saveName()">Save name</button>
+      <div class="status" id="nameStatus"></div>
+    </div>
+
+    <!-- Password -->
+    <div class="card">
+      <h2 id="pwTitle">Password</h2>
+      <p class="copy" id="pwCopy">Change your password. We recommend at least 8 characters that you don&rsquo;t use anywhere else.</p>
+
+      <div id="currentPwWrap">
+        <label class="label" for="currentPw">Current password</label>
+        <input type="password" class="input" id="currentPw" autocomplete="current-password">
+      </div>
+
+      <label class="label" for="newPw">New password</label>
+      <input type="password" class="input" id="newPw" placeholder="At least 8 characters" autocomplete="new-password">
+      <div class="hint">8 characters minimum. No spaces at the start or end.</div>
+
+      <button class="btn" id="savePwBtn" onclick="savePassword()">Update password</button>
+      <div class="status" id="pwStatus"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const BACKEND_URL = 'https://take139-backend-production.up.railway.app';
+
+function getToken() { return localStorage.getItem('t139_session_token') || sessionStorage.getItem('t139_session_token') || ''; }
+function clearSession() {
+  ['t139_session_token','t139_session_email'].forEach(k => { localStorage.removeItem(k); sessionStorage.removeItem(k); });
+}
+
+async function signOut(ev) {
+  if (ev && ev.preventDefault) ev.preventDefault();
+  const tok = getToken();
+  if (tok) {
+    try { await fetch(BACKEND_URL + '/auth/signout', {method:'POST', headers:{'X-Session-Token':tok}}); } catch(_) {}
+  }
+  clearSession();
+  window.location.href = '/';
+}
+
+let currentUser = null;
+
+async function loadAccount() {
+  const tok = getToken();
+  if (!tok) { window.location.href = '/sign-in.html'; return; }
+  try {
+    const res = await fetch(BACKEND_URL + '/auth/me', {headers: {'X-Session-Token': tok}});
+    if (res.status === 401) { clearSession(); window.location.href = '/sign-in.html'; return; }
+    if (!res.ok) throw new Error('Server returned ' + res.status);
+    currentUser = await res.json();
+    renderAccount();
+  } catch(err) {
+    document.getElementById('loading').innerHTML = '<div style="color:#a13544;">We could not load your account. <a href="/sign-in.html">Sign in again</a>.</div>';
+  }
+}
+
+function renderAccount() {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('content').style.display = 'block';
+  document.getElementById('userEmail').textContent = currentUser.email || '';
+
+  document.getElementById('nameInput').value = currentUser.name || '';
+  document.getElementById('emailDisplay').value = currentUser.email || '';
+  if (currentUser.email_verified) document.getElementById('verifiedBadge').style.display = 'inline-block';
+
+  // If the user has no password yet (magic-link only), hide "current password"
+  // and switch the heading/copy to "Set a password".
+  if (!currentUser.has_password) {
+    document.getElementById('currentPwWrap').style.display = 'none';
+    document.getElementById('pwTitle').textContent = 'Set a password';
+    document.getElementById('pwCopy').textContent = 'Right now you sign in with email links. Setting a password gives you a faster way back in next time.';
+    document.getElementById('savePwBtn').textContent = 'Set password';
+  }
+}
+
+async function saveName() {
+  const name = document.getElementById('nameInput').value.trim();
+  const btn = document.getElementById('saveNameBtn');
+  const status = document.getElementById('nameStatus');
+  if (!name) { status.textContent = 'Please enter a name.'; status.className = 'status err'; return; }
+  btn.disabled = true; btn.textContent = 'Saving\u2026';
+  status.textContent = ''; status.className = 'status';
+  try {
+    const res = await fetch(BACKEND_URL + '/auth/update-name', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','X-Session-Token':getToken()},
+      body: JSON.stringify({name}),
+    });
+    if (!res.ok) {
+      let msg = 'Could not save.';
+      try { const d = await res.json(); if (d && d.detail) msg = d.detail; } catch(_){}
+      status.textContent = msg; status.className = 'status err';
+      btn.disabled = false; btn.textContent = 'Save name'; return;
+    }
+    status.textContent = 'Saved \u2713'; status.className = 'status ok';
+    btn.disabled = false; btn.textContent = 'Save name';
+  } catch(_) {
+    status.textContent = 'Could not reach the server.'; status.className = 'status err';
+    btn.disabled = false; btn.textContent = 'Save name';
+  }
+}
+
+async function savePassword() {
+  const newPw = document.getElementById('newPw').value;
+  const currentPw = document.getElementById('currentPw').value;
+  const btn = document.getElementById('savePwBtn');
+  const status = document.getElementById('pwStatus');
+  if (!newPw || newPw.length < 8) {
+    status.textContent = 'Password must be at least 8 characters.';
+    status.className = 'status err'; return;
+  }
+  if (currentUser.has_password && !currentPw) {
+    status.textContent = 'Please enter your current password.';
+    status.className = 'status err'; return;
+  }
+  btn.disabled = true; btn.textContent = 'Updating\u2026';
+  status.textContent = ''; status.className = 'status';
+  try {
+    const body = {new_password: newPw};
+    if (currentUser.has_password) body.current_password = currentPw;
+    const res = await fetch(BACKEND_URL + '/auth/set-password', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','X-Session-Token':getToken()},
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) {
+      let msg = 'Could not update password.';
+      try { const d = await res.json(); if (d && d.detail) msg = d.detail; } catch(_){}
+      status.textContent = msg; status.className = 'status err';
+      btn.disabled = false; btn.textContent = currentUser.has_password ? 'Update password' : 'Set password'; return;
+    }
+    status.textContent = currentUser.has_password ? 'Password updated \u2713' : 'Password set \u2713 \u2014 you can now sign in with your password.';
+    status.className = 'status ok';
+    document.getElementById('newPw').value = '';
+    document.getElementById('currentPw').value = '';
+    // After first-time set, treat as if user now has password and update UI.
+    if (!currentUser.has_password) {
+      currentUser.has_password = true;
+      document.getElementById('currentPwWrap').style.display = 'block';
+      document.getElementById('pwTitle').textContent = 'Password';
+      document.getElementById('pwCopy').textContent = 'Change your password. We recommend at least 8 characters that you don\u2019t use anywhere else.';
+      btn.textContent = 'Update password';
+    } else {
+      btn.textContent = 'Update password';
+    }
+    btn.disabled = false;
+  } catch(_) {
+    status.textContent = 'Could not reach the server.'; status.className = 'status err';
+    btn.disabled = false;
+    btn.textContent = currentUser.has_password ? 'Update password' : 'Set password';
+  }
+}
+
+loadAccount();
+</script>
+</body>
+</html>

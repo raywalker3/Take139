@@ -206,6 +206,7 @@ body {
     <a href="/" class="brand">Take 139</a>
     <div class="user-pill">
       <span id="userEmail"></span>
+      <a href="/account.html">Account</a>
       <a href="#" onclick="signOut(event)">Sign out</a>
     </div>
   </div>
@@ -220,6 +221,12 @@ body {
   <div id="content" style="display:none;">
     <h1 class="greeting" id="greetingTitle">Welcome back.</h1>
     <p class="greeting-sub">Search me, O God, and know my heart. &mdash; Psalm 139:23</p>
+
+    <!-- Soft nudge for magic-link-only users to set a password -->
+    <div id="setPwNudge" style="display:none;background:#fff;border:1px solid var(--accent);border-radius:6px;padding:0.9rem 1.1rem;margin-bottom:1.5rem;font-size:0.93rem;line-height:1.55;">
+      <strong style="color:var(--accent);">Tip:</strong> You can set a password for faster sign-in next time.
+      <a href="/account.html" style="color:var(--accent);font-weight:500;text-decoration:underline;margin-left:0.25rem;">Set a password &rarr;</a>
+    </div>
 
     <div id="primarySection" style="display:none;">
       <div class="section-label">Your Primary Profile</div>
@@ -355,6 +362,14 @@ function renderDashboard(data) {
 
   const firstName = firstNameFrom(data.name) || 'friend';
   document.getElementById('greetingTitle').textContent = `Welcome back, ${firstName}.`;
+
+  // If this user signed in via magic-link only and has no password yet,
+  // surface a friendly nudge to set one. Hide it for users who already have
+  // a password.
+  if (data && data.has_password === false) {
+    var n = document.getElementById('setPwNudge');
+    if (n) n.style.display = 'block';
+  }
 
   const subs = data.submissions || [];
 

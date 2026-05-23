@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Create your account &mdash; Take 139</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f1e8; --surface: #efe9dc; --border: #d8cfba; --hairline: rgba(29, 29, 27, 0.12);
+  --text: #1d1d1b; --muted: #5d564b; --faint: #8b8475;
+  --accent: #8a4a2c; --accent-soft: rgba(138, 74, 44, 0.08);
+  --font-heading: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: var(--font-body); background: var(--bg); color: var(--text);
+  line-height: 1.6; min-height: 100vh; -webkit-font-smoothing: antialiased;
+  background-image: radial-gradient(rgba(0,0,0,0.012) 1px, transparent 1px), radial-gradient(rgba(0,0,0,0.010) 1px, transparent 1px);
+  background-size: 24px 24px, 36px 36px; background-position: 0 0, 12px 18px;
+  background-attachment: fixed;
+}
+.wrap { max-width: 460px; margin: 0 auto; padding: 4rem 1.5rem 3rem; }
+.brand { font-size: 0.72rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 0.75rem; }
+.brand a { color: var(--accent); text-decoration: none; }
+h1 { font-family: var(--font-heading); font-size: 2.25rem; line-height: 1.1; font-weight: 500; margin: 0 0 0.5rem 0; }
+.subtitle { font-family: var(--font-heading); font-style: italic; color: var(--muted); font-size: 1.05rem; margin-bottom: 2rem; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 2rem 1.75rem; }
+.label { display: block; font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 0.5rem; margin-top: 1rem; }
+.label:first-of-type { margin-top: 0; }
+.hint { font-size: 0.78rem; color: var(--faint); margin-top: 0.3rem; }
+.input { width: 100%; font-family: var(--font-body); font-size: 1.05rem; padding: 0.85rem 1rem; border: 1px solid var(--border); border-radius: 6px; background: #fff; color: var(--text); outline: none; transition: border-color 0.15s; }
+.input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.btn { display: block; width: 100%; margin-top: 1.25rem; padding: 0.95rem 1.25rem; background: var(--text); color: var(--bg); font-size: 0.95rem; font-weight: 600; letter-spacing: 0.04em; border: none; border-radius: 6px; cursor: pointer; transition: background 0.15s; }
+.btn:hover:not(:disabled) { background: #000; }
+.btn:disabled { opacity: 0.55; cursor: wait; }
+.status { margin-top: 1rem; font-size: 0.92rem; line-height: 1.5; min-height: 1.2em; }
+.status.ok { color: var(--accent); }
+.status.err { color: #a13544; }
+.success-card { display: none; background: #fff; border: 1px solid var(--accent); border-radius: 6px; padding: 1.25rem; margin-top: 1rem; }
+.success-card h3 { font-family: var(--font-heading); font-size: 1.25rem; font-weight: 500; margin: 0 0 0.5rem 0; color: var(--accent); }
+.success-card p { margin: 0 0 0.5rem 0; font-size: 0.92rem; color: var(--text); }
+.fine-print { margin-top: 1.5rem; font-size: 0.85rem; color: var(--muted); text-align: center; line-height: 1.6; }
+.fine-print a { color: var(--accent); text-decoration: none; font-weight: 500; }
+.back-link { display: inline-block; margin-top: 2rem; font-size: 0.85rem; color: var(--muted); text-decoration: none; }
+.back-link:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><a href="/">Take 139</a></div>
+  <h1>Create your account</h1>
+  <p class="subtitle">One place for your assessments, your pair codes, and your partner.</p>
+
+  <div class="card">
+    <label class="label" for="suName">Your name</label>
+    <input type="text" class="input" id="suName" placeholder="First and last" autocomplete="name">
+
+    <label class="label" for="suEmail">Your email</label>
+    <input type="email" class="input" id="suEmail" placeholder="your@email.com" autocomplete="email">
+
+    <label class="label" for="suPassword">Choose a password</label>
+    <input type="password" class="input" id="suPassword" placeholder="At least 8 characters" autocomplete="new-password">
+    <div class="hint">8 characters minimum. No spaces at the start or end.</div>
+
+    <button class="btn" id="suBtn" onclick="signUp()">Create my account</button>
+    <div class="status" id="suStatus"></div>
+
+    <div class="success-card" id="successCard">
+      <h3>Check your email</h3>
+      <p>We just sent a verification link to <strong id="successEmail"></strong>.</p>
+      <p>Click the link to verify your email and finish creating your account. The link is good for the next 15 minutes.</p>
+    </div>
+  </div>
+
+  <p class="fine-print">Already have an account? <a href="/sign-in.html">Sign in</a></p>
+
+  <a href="/" class="back-link">&larr; Back to home</a>
+</div>
+
+<script>
+const BACKEND_URL = 'https://take139-backend-production.up.railway.app';
+
+async function signUp() {
+  const name = document.getElementById('suName').value.trim();
+  const email = document.getElementById('suEmail').value.trim();
+  const password = document.getElementById('suPassword').value;
+  const btn = document.getElementById('suBtn');
+  const status = document.getElementById('suStatus');
+
+  if (!email || !email.includes('@')) {
+    status.textContent = 'Please enter a valid email address.';
+    status.className = 'status err';
+    return;
+  }
+  if (!password || password.length < 8) {
+    status.textContent = 'Password must be at least 8 characters.';
+    status.className = 'status err';
+    return;
+  }
+  btn.disabled = true; btn.textContent = 'Creating\u2026';
+  status.textContent = ''; status.className = 'status';
+
+  try {
+    const body = {email, password};
+    if (name) body.name = name;
+    const res = await fetch(BACKEND_URL + '/auth/signup', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) {
+      let msg = 'We could not create your account.';
+      try { const d = await res.json(); if (d && d.detail) msg = d.detail; } catch(_){}
+      status.textContent = msg; status.className = 'status err';
+      btn.disabled = false; btn.textContent = 'Create my account';
+      return;
+    }
+    const data = await res.json();
+    // Show success card; lock the form.
+    document.getElementById('successEmail').textContent = email;
+    document.getElementById('successCard').style.display = 'block';
+    status.textContent = '';
+    btn.textContent = 'Account created \u2713';
+    document.getElementById('suName').disabled = true;
+    document.getElementById('suEmail').disabled = true;
+    document.getElementById('suPassword').disabled = true;
+  } catch(err) {
+    status.textContent = 'We could not reach the server. Please try again.';
+    status.className = 'status err';
+    btn.disabled = false; btn.textContent = 'Create my account';
+  }
+}
+
+['suName','suEmail','suPassword'].forEach(function(id){
+  document.getElementById(id).addEventListener('keydown', function(e){
+    if (e.key === 'Enter') signUp();
+  });
+});
+</script>
+</body>
+</html>
