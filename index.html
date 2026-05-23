@@ -4064,11 +4064,16 @@ function showResults() {
           <input type="text" class="pair-input" id="partnerCodeInput" placeholder="e.g. ANCHOR-4829" autocomplete="off" oninput="this.value = this.value.toUpperCase()">
           <button class="btn btn-primary" onclick="connectPartner()" id="connectBtn">Connect</button>
         </div>
-        <!-- Connection code field — only shown when enforcement is on -->
-        <div class="pair-connection-code" id="pairConnectionCodeWrap" style="display:none; margin-top:0.85rem;">
-          <div class="pair-code-label" style="font-size:0.8125rem;">Connection code (your couple package code, or a Connection add-on):</div>
+        <!-- Connection code field — always visible so users know what's expected.
+             Auto-fills from window._currentAccessCode when the user took the
+             assessment using a Couple/Connect code. -->
+        <div class="pair-connection-code" id="pairConnectionCodeWrap" style="margin-top:1rem;">
+          <div class="pair-code-label" style="font-size:0.8125rem;">Your access code <span style="color:var(--muted);font-weight:normal;">(auto-filled from your purchase):</span></div>
           <input type="text" class="pair-input" id="connectionCodeInput" placeholder="e.g. COUPLE-XXXXXX-A or CONNECT-XXXXXX" autocomplete="off" style="width:100%;" oninput="this.value = this.value.toUpperCase()">
-          <div style="font-size:0.75rem;color:var(--muted);margin-top:0.3rem;">If you bought the Couple Package, paste either spouse's code. If you each bought separately, you'll need a $10 Connection add-on.</div>
+          <div style="font-size:0.78rem;color:var(--muted);margin-top:0.4rem;line-height:1.5;">
+            <strong>Couple Package ($40):</strong> connection is included — just enter either half (COUPLE-XXX-A or -B).<br>
+            <strong>Single ($20) + Connection Add-On ($10):</strong> enter the CONNECT-XXX code you purchased.
+          </div>
         </div>
         <div class="pair-status" id="pairStatus"></div>
       </div>
@@ -4325,6 +4330,15 @@ async function submitResultsToBackend(opts = {}) {
     if (pairCodeDisplay) pairCodeDisplay.textContent = data.pair_code;
     if (pairCodeHint) pairCodeHint.textContent = 'Codes are valid for 30 days. Your partner enters this on their own results page after completing the assessment.';
 
+    // Auto-fill the connection-code field with the access code the user
+    // came in with. This is the key fix for the COUPLE-XXX-A/-B auto-connect:
+    // the user's couple half is exactly what authorises the pairing, and they
+    // should not have to type it twice.
+    const cci = document.getElementById('connectionCodeInput');
+    if (cci && window._currentAccessCode && !cci.value) {
+      cci.value = String(window._currentAccessCode).toUpperCase();
+    }
+
     if (!silent && statusEl) {
       if (data.email_sent_to_user) {
         statusEl.textContent = `Sent. Check ${email} for your PDF (may take a minute).`;
@@ -4401,11 +4415,12 @@ async function checkEnforcement() {
   return _enforcementCache;
 }
 
-// Toggle UI bits that only matter when codes are enforced
+// Toggle UI bits that only matter when codes are enforced.
+// (The pair connection-code input is now always visible — we don't
+// hide it based on enforcement, because users need to see how to
+// connect even before they hit the gate.)
 function applyEnforcementUI(enforced) {
-  // Show the 'connection code' input on the pair-connect UI
-  const wrap = document.getElementById('pairConnectionCodeWrap');
-  if (wrap) wrap.style.display = enforced ? 'block' : 'none';
+  // Reserved for future enforcement-only UI changes.
 }
 
 async function beginAssessment() {
