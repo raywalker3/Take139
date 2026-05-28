@@ -866,6 +866,97 @@ body.in-synthesis .topnav { display: none; }
     display: block;
   }
 }
+/* What-happens-next card on the couples synthesis page — makes it clear
+   that the deeper Counselor walkthrough PDF is on its way by email. */
+.synthesis-overview-label {
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.synthesis-overview-cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.synthesis-overview-note {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 14px;
+  color: var(--muted);
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.55;
+}
+.next-steps-card {
+  background: var(--paper);
+  border: 1px solid var(--accent);
+  border-radius: 10px;
+  padding: 28px 28px;
+  margin: 36px auto 28px;
+  max-width: 880px;
+}
+.next-steps-eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.next-steps-title {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: 26px;
+  font-weight: 500;
+  margin: 0 0 12px 0;
+  line-height: 1.15;
+}
+.next-steps-lead {
+  font-size: 16px;
+  line-height: 1.55;
+  margin: 0 0 22px 0;
+}
+.next-steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+.next-steps-item {
+  background: #ffffff;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 16px 18px;
+}
+.next-steps-item-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.next-steps-item p {
+  font-size: 13.5px;
+  line-height: 1.55;
+  margin: 0;
+}
+.next-steps-footer {
+  margin: 40px auto 20px;
+  max-width: 880px;
+  padding: 18px 22px;
+  background: var(--highlight, #ece4d3);
+  border-left: 3px solid var(--accent);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.next-steps-footer a { color: var(--accent); }
+.next-steps-footer strong { color: var(--accent); }
+
 .figure-inline-sm {
   float: right;
   width: 110px;
@@ -1279,7 +1370,7 @@ body.in-synthesis .topnav { display: none; }
       <li><a href="how-it-works.html">How It Works</a></li>
       <li><a href="imago/" class="hide-mobile">IMAGO</a></li>
       <li><a href="for-churches.html">For Churches</a></li>
-      <li><a href="sign-in.html" class="cta" id="navSignIn">Sign In</a></li>
+      <li><a href="sign-in.html" class="cta">Sign In</a></li>
     </ul>
   </div>
 </nav>
@@ -4088,9 +4179,6 @@ function showResults() {
         <input type="email" class="email-input" id="emailInput" placeholder="your@email.com" autocomplete="email">
         <button class="btn btn-primary" onclick="submitResultsToBackend()" id="emailSendBtn">Email My Report</button>
       </div>
-      <div id="emailResendWrap" style="display:none;text-align:center;margin-top:0.75rem;font-size:0.85rem;">
-        <a href="#" onclick="resendToDifferentEmail(event)" style="color:var(--muted);text-decoration:underline;cursor:pointer;">Send a copy to a different email address</a>
-      </div>
       <div class="email-status" id="emailStatus"></div>
     </div>
 
@@ -4351,15 +4439,6 @@ async function submitResultsToBackend(opts = {}) {
         statusEl.className = 'email-status ok';
       }
     }
-    // Prevent accidental duplicate sends. The button locks to "Sent ✓" until
-    // the user explicitly opts into sending to a different address.
-    if (!silent && btn) {
-      btn.disabled = true;
-      btn.textContent = `Sent ✓ to ${email}`;
-      btn.dataset.locked = 'true';
-      const resendWrap = document.getElementById('emailResendWrap');
-      if (resendWrap) resendWrap.style.display = 'block';
-    }
   } catch (err) {
     if (!silent && statusEl) {
       // Show the backend's actual message when available so users get useful info
@@ -4372,40 +4451,8 @@ async function submitResultsToBackend(opts = {}) {
     }
     console.error('submit error', err);
   } finally {
-    // Only re-enable the button if we did NOT just successfully send — the
-    // success path locks the button itself with "Sent ✓" so users don't fire
-    // a second send by accident. Errors still reset to allow retry.
-    if (!silent && btn && btn.dataset.locked !== 'true') {
-      btn.disabled = false;
-      btn.textContent = 'Email My Report';
-    }
+    if (!silent && btn) { btn.disabled = false; btn.textContent = 'Email My Report'; }
   }
-}
-
-// Allow user to opt into a second send to a different address.
-// Shows a soft confirm so accidental clicks don't fire another email.
-function resendToDifferentEmail(ev) {
-  if (ev && ev.preventDefault) ev.preventDefault();
-  const btn = document.getElementById('emailSendBtn');
-  const emailInput = document.getElementById('emailInput');
-  const statusEl = document.getElementById('emailStatus');
-  const ok = window.confirm('Send your report to a different email address?\n\nClear the email field and type the new address, then click "Email My Report".');
-  if (!ok) return;
-  if (emailInput) {
-    emailInput.value = '';
-    emailInput.focus();
-  }
-  if (statusEl) {
-    statusEl.textContent = '';
-    statusEl.className = 'email-status';
-  }
-  if (btn) {
-    btn.disabled = false;
-    btn.textContent = 'Email My Report';
-    btn.dataset.locked = 'false';
-  }
-  const resendWrap = document.getElementById('emailResendWrap');
-  if (resendWrap) resendWrap.style.display = 'none';
 }
 
 function startOver() {
@@ -5123,37 +5170,6 @@ function startOver() {
   window.scrollTo({top: 0, behavior: 'instant'});
 }
 
-</script>
-<script>
-// ==================== SIGN-IN STATUS INDICATOR ====================
-// If the user has a saved session token, swap the "Sign In" nav link
-// for a "Your dashboard" link. Validation happens on /auth/me; if the
-// stored token is bad we silently clear it and keep the Sign In link.
-(function() {
-  var navEl = document.getElementById('navSignIn');
-  if (!navEl) return;
-  var token = localStorage.getItem('t139_session_token') || sessionStorage.getItem('t139_session_token') || '';
-  if (!token) return;
-  // Optimistically swap; verification is a low-priority background call.
-  var email = localStorage.getItem('t139_session_email') || sessionStorage.getItem('t139_session_email') || '';
-  navEl.textContent = email ? 'My dashboard' : 'My dashboard';
-  navEl.href = '/dashboard.html';
-  // Verify in the background — if the session is dead, restore the Sign In link.
-  try {
-    fetch('https://take139-backend-production.up.railway.app/auth/me', {
-      headers: { 'X-Session-Token': token },
-    }).then(function(r) {
-      if (r.status === 401) {
-        localStorage.removeItem('t139_session_token');
-        localStorage.removeItem('t139_session_email');
-        sessionStorage.removeItem('t139_session_token');
-        sessionStorage.removeItem('t139_session_email');
-        navEl.textContent = 'Sign In';
-        navEl.href = '/sign-in.html';
-      }
-    }).catch(function() { /* offline — keep optimistic state */ });
-  } catch(_) {}
-})();
 </script>
 </body>
 </html>

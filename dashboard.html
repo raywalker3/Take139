@@ -490,7 +490,12 @@ function renderDashboard(data) {
     partnerLine.innerHTML =
       '<span class="partner-state connected">CONNECTED</span> ' +
       'Paired with <strong style="font-family:\'Courier New\',monospace;letter-spacing:0.08em;">' +
-      primary.paired_with_code + '</strong>. Your Couples Report has been sent.';
+      primary.paired_with_code + '</strong>. Your Couples Report is in both inboxes.' +
+      '<div style="margin-top:0.6rem;font-size:0.85rem;">' +
+        '<a href="#" onclick="resendCouplesReport(event)" style="color:var(--accent);text-decoration:underline;">' +
+          'Didn\u2019t get the email? Resend Couples Report' +
+        '</a>' +
+      '</div>';
     connectBtn.style.display = 'none';
     // Show the couples PDF download.
     if (dlCouples) dlCouples.style.display = 'inline-block';
@@ -709,6 +714,45 @@ async function suggestAccessCode(primary) {
   } catch (_) { /* no-op */ }
 }
 
+// Resend the Couples Walkthrough email to both partners. Used when the
+// original auto-send from /pair/connect failed silently (the bug we fixed
+// 2026-05-27). Backend rate-limits this to once per minute per user.
+async function resendCouplesReport(ev) {
+  if (ev && ev.preventDefault) ev.preventDefault();
+  const link = ev && ev.target;
+  if (!confirm('Resend the Couples Report email to both you and your partner?')) return;
+  if (link) { link.textContent = 'Sending\u2026'; link.style.pointerEvents = 'none'; link.style.opacity = '0.65'; }
+  try {
+    const res = await fetch(BACKEND_URL + '/pair/resend-couples', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json', 'X-Session-Token': getSessionToken()},
+      body: JSON.stringify({}),
+    });
+    if (!res.ok) {
+      let msg = 'Could not resend right now. Please try again in a minute.';
+      try { const d = await res.json(); if (d && d.detail) msg = d.detail; } catch(_){}
+      alert(msg);
+      if (link) { link.textContent = 'Didn\u2019t get the email? Resend Couples Report'; link.style.pointerEvents = ''; link.style.opacity = ''; }
+      return;
+    }
+    const data = await res.json();
+    const es = (data && data.email_status) || {};
+    // Build a clear summary so the user knows whether each address received it.
+    const lines = [];
+    if (es.me) {
+      lines.push((es.me.sent ? '\u2713 Sent to ' : '\u26a0 Could not send to ') + (es.me.email || 'your email') + (es.me.sent ? '' : ' \u2014 ' + (es.me.reason || 'unknown error')));
+    }
+    if (es.partner) {
+      lines.push((es.partner.sent ? '\u2713 Sent to ' : '\u26a0 Could not send to ') + (es.partner.email || 'your partner') + (es.partner.sent ? '' : ' \u2014 ' + (es.partner.reason || 'unknown error')));
+    }
+    alert('Couples Report resend status:\n\n' + (lines.join('\n') || 'Sent.'));
+    if (link) { link.textContent = 'Resent \u2713'; }
+  } catch (e) {
+    alert('We couldn\u2019t reach the server. Please try again shortly.');
+    if (link) { link.textContent = 'Didn\u2019t get the email? Resend Couples Report'; link.style.pointerEvents = ''; link.style.opacity = ''; }
+  }
+}
+
 async function submitPairConnect() {
   const myPairCode = (currentUser && currentUser.submissions && currentUser.submissions[0])
     ? currentUser.submissions[0].pair_code
@@ -761,11 +805,28 @@ async function submitPairConnect() {
       btn.textContent = 'Connect';
       return;
     }
-    statusEl.textContent = 'Connected \u2713 Your Couples Report is being prepared and will arrive by email shortly.';
+    // Surface precise email_status so the user knows whether the report
+    // actually went out (avoids the silent-failure that bit us on May 27).
+    const data = await res.json().catch(function(){ return {}; });
+    const es = (data && data.email_status) || {};
+    let msg = 'Connected \u2713';
+    if (es.me && es.partner) {
+      if (es.me.sent && es.partner.sent) {
+        msg += ' Couples Report emailed to both inboxes.';
+      } else if (es.me.sent || es.partner.sent) {
+        msg += ' Couples Report sent to ' + (es.me.sent ? (es.me.email || 'you') : (es.partner.email || 'your partner')) +
+               '. The other delivery had an issue \u2014 you can resend from the dashboard.';
+      } else {
+        msg += ' Profiles are paired, but the email send hit a snag. Use the Resend button on the dashboard.';
+      }
+    } else {
+      msg += ' Couples Report is being prepared and will arrive by email shortly.';
+    }
+    statusEl.textContent = msg;
     statusEl.style.color = 'var(--accent)';
     btn.textContent = 'Connected \u2713';
     // Reload the dashboard so the partner card + couples PDF button appear.
-    setTimeout(function() { window.location.reload(); }, 1400);
+    setTimeout(function() { window.location.reload(); }, 1800);
   } catch (err) {
     statusEl.textContent = 'We could not reach the server. Please try again in a moment.';
     statusEl.style.color = '#a13544';
