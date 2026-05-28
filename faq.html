@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frequently Asked Questions &middot; Take 139</title>
+<meta name="description" content="Common questions about Take 139 — the premarital diagnostic by Dr. Christopher Hilken. Covers privacy, refunds, methodology, and how it compares to Prepare/Enrich.">
+
+<!-- Favicon + Open Graph -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/favicon-180.png">
+<meta property="og:title" content="FAQ · Take 139">
+<meta property="og:description" content="Common questions about Take 139 — privacy, refunds, methodology, how it compares to other tools.">
+<meta property="og:image" content="https://take139.com/og-image.png">
+<meta property="og:url" content="https://take139.com/faq.html">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #f5f1e8;
+  --surface: #efe9dc;
+  --surface-2: #e8e1d0;
+  --border: #d8cfba;
+  --hairline: rgba(29, 29, 27, 0.12);
+  --text: #1d1d1b;
+  --muted: #5d564b;
+  --faint: #8b8475;
+  --accent: #8a4a2c;
+  --accent-hover: #6f3a23;
+  --accent-soft: rgba(138, 74, 44, 0.08);
+  --font-heading: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+}
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image:
+    radial-gradient(rgba(0,0,0,0.012) 1px, transparent 1px),
+    radial-gradient(rgba(0,0,0,0.010) 1px, transparent 1px);
+  background-size: 24px 24px, 36px 36px;
+  background-position: 0 0, 12px 18px;
+  background-attachment: fixed;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+h1, h2, h3 { font-family: var(--font-heading); font-weight: 500; line-height: 1.2; }
+
+.topnav { border-bottom: 1px solid var(--hairline); padding: 1rem 0; background: var(--bg); position: sticky; top: 0; z-index: 50; }
+.topnav-inner { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.topnav-brand { font-size: 0.78rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--accent); font-weight: 600; text-decoration: none; }
+.topnav-links { list-style: none; display: flex; gap: 1.5rem; align-items: center; }
+.topnav-links a { font-size: 0.92rem; font-weight: 500; color: var(--muted); }
+.topnav-links a:hover { color: var(--accent); }
+.topnav-links a.active { color: var(--text); }
+.topnav-links a.cta { background: var(--text); color: var(--bg); padding: 0.55rem 1rem; border-radius: 4px; font-weight: 600; }
+.topnav-links a.cta:hover { background: #2a2a26; color: var(--bg); }
+@media (max-width: 640px) {
+  .topnav-inner { padding: 0.85rem 1rem; gap: 0.5rem; }
+  .topnav-links { gap: 0.85rem; }
+  .topnav-links .hide-mobile { display: none; }
+}
+
+.hero { max-width: 880px; margin: 0 auto; padding: 4rem 1.5rem 1rem; text-align: center; }
+.eyebrow { font-size: 0.78rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 1rem; }
+.hero h1 { font-size: clamp(2.4rem, 5vw, 3.2rem); margin-bottom: 0.75rem; }
+.hero .subtitle { font-family: var(--font-heading); font-style: italic; color: var(--muted); font-size: 1.1rem; max-width: 580px; margin: 0 auto; }
+
+.faq-list { max-width: 760px; margin: 3rem auto 2rem; padding: 0 1.5rem; }
+.faq-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 0.85rem;
+  overflow: hidden;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.faq-item[open] {
+  border-color: var(--accent);
+  box-shadow: 0 4px 18px -10px rgba(138, 74, 44, 0.22);
+}
+.faq-item summary {
+  cursor: pointer;
+  padding: 1.15rem 1.4rem;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  font-family: var(--font-heading);
+  font-size: 1.12rem;
+  font-weight: 500;
+  color: var(--text);
+}
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after {
+  content: "+";
+  font-family: var(--font-body);
+  font-size: 1.5rem;
+  color: var(--accent);
+  font-weight: 400;
+  line-height: 1;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+.faq-item[open] summary::after {
+  content: "−";
+  transform: rotate(0deg);
+}
+.faq-body {
+  padding: 0 1.4rem 1.3rem;
+  color: var(--muted);
+  font-size: 0.98rem;
+  line-height: 1.7;
+}
+.faq-body p + p { margin-top: 0.85rem; }
+.faq-body em { font-family: var(--font-heading); font-style: italic; color: var(--text); }
+
+.section-label {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin: 2.5rem 0 0.85rem;
+  padding-left: 0.25rem;
+}
+.section-label:first-of-type { margin-top: 0; }
+
+.bottom-cta {
+  max-width: 720px;
+  margin: 3rem auto 4rem;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.bottom-cta h2 { font-size: 1.7rem; margin-bottom: 0.6rem; }
+.bottom-cta p { color: var(--muted); margin-bottom: 1.4rem; }
+.btn {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.85rem 1.6rem;
+  border-radius: 6px;
+  text-decoration: none;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-hover); color: #fff; }
+.btn-secondary { background: transparent; color: var(--text); border-color: var(--border); }
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+.btn-row { display: flex; gap: 0.85rem; justify-content: center; flex-wrap: wrap; }
+
+.site-footer {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 2rem;
+  text-align: center;
+  border-top: 1px solid var(--hairline);
+  color: var(--faint);
+  font-size: 0.88rem;
+}
+.site-footer .footer-verse { font-family: var(--font-heading); font-style: italic; color: var(--muted); margin-bottom: 0.85rem; max-width: 620px; margin-left: auto; margin-right: auto; }
+.site-footer a { color: var(--muted); }
+.site-footer a:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="/" class="topnav-brand">Take 139</a>
+    <ul class="topnav-links">
+      <li><a href="how-it-works.html">How It Works</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="faq.html" class="active">FAQ</a></li>
+      <li><a href="for-churches.html" class="hide-mobile">For Churches</a></li>
+      <li><a href="sign-in.html" class="cta">Sign In</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow">Frequently Asked</div>
+  <h1>Questions, answered honestly</h1>
+  <p class="subtitle">Everything we get asked before someone takes Take 139 — from pastors, from couples, and from people who are skeptical of assessments in general.</p>
+</section>
+
+<div class="faq-list">
+
+  <div class="section-label">About the assessment</div>
+
+  <details class="faq-item">
+    <summary>Is this counseling?</summary>
+    <div class="faq-body">
+      <p>No. Take 139 is a <em>diagnostic</em> — a structured way to surface what's underneath your conflict patterns so you can name it and talk about it with your partner, a mentor, or a pastor. It is not therapy, and it does not replace counseling.</p>
+      <p>The most common pattern we see is couples taking Take 139 a few weeks before premarital counseling, then bringing the report to their first session. The report does the work of helping you describe yourself — counseling does the work of helping you change.</p>
+    </div>
+  </details>
+
+  <details class="faq-item">
+    <summary>How long does it take?</summary>
+    <div class="faq-body">
+      <p>About 15–20 minutes for the assessment itself. There are 5 intake questions, 10 trigger questions, 5 mechanism questions, and 5 breakdown questions — plus the final synthesis screen.</p>
+      <p>Couples typically spend another 30–60 minutes reading the written walkthrough together once both reports are paired.</p>
+    </div>
+  </details>
+
+  <details class="faq-item">
+    <summary>What if I disagree with my result?</summary>
+    <div class="faq-body">
+      <p>Then it's working. The result is a starting point for conversation, not a verdict. Take 139 is built on self-report — the words you choose to describe your reactions — so the report reflects what you said about yourself.</p>
+      <p>If something feels off, look at the questions you answered most strongly. Those are usually the ones driving the result. You can retake the assessment from the same account, and you can write back to Chris with what didn't fit — that kind of feedback shapes the next revision.</p>
+    </div>
+  </details>
+
+  <details class="faq-item">
+    <summary>Can I retake it?</summary>
+    <div class="faq-body">
+      <p>Yes. From your dashboard you can start a new run any time. Each completed report is saved, so you can compare them — useful if you take it once now and again a year into marriage.</p>
+      <p>A single access code is good for one report. If you want to retake from a fresh code, you can purchase a new one — but you can also reload your existing report from the dashboard at no cost.</p>
+    </div>
+  </details>
+
+  <div class="section-label">Privacy & data</div>
+
+  <details class="faq-item">
+    <summary>Who can see my report?</summary>
+    <div class="faq-body">
+      <p>Only you. Your report is tied to your email address and a passcode you set. Nobody else — including pastors, including Chris — can pull up your report without your access code.</p>
+      <p>When you pair with a partner using the couple code, the synthesis page shows both names and both result sentences. That's the only context in which your data is shared, and you control whether you pair.</p>
+    </div>
+  </details>
+
+  <details class="faq-item">
+    <summary>Will my pastor see my report?</summary>
+    <div class="faq-body">
+      <p>Not unless you send it to them. The reports are designed to be shareable — you can download a PDF and email it, print it, or hand it over in counseling. But that's your decision, not an automatic step.</p>
+      <p>For churches running Take 139 as part of a premarital track, we recommend the couple bring their own paired report to the first session. The pastor doesn't get a back-channel copy.</p>
+    </div>
+  </details>
+
+  <details class="faq-item">
+    <summary>Do you sell or share my data?</summary>
+    <div class="faq-body">
+      <p>No. We don't sell your data, we don't share it with advertisers, and we don't use it to train AI models. Reports are stored encrypted on our backend, accessible only through your account.</p>
+      <p>If you want your data deleted entirely, email <a href="mailto:hello@take139.com">hello@take139.com</a> and we'll remove your account and reports within 7 days.</p>
+    </div>
+  </details>
+
+  <div class="section-label">Pricing & refunds</div>
+
+  <details class="faq-item">
+    <summary>What does it cost?</summary>
+    <div class="faq-body">
+      <p>$20 for a single report. $40 for a couple package (two codes, A and B — one for each of you, plus the paired walkthrough and date-night appendix). $10 for a connection add-on if you've already taken it individually and want to pair with a partner later.</p>
+      <p>Full pricing details on the <a href="pricing.html">pricing page</a>.</p>
+    </div>
+  </details>
+
+  <details class="faq-item">
+    <summary>Do you offer refunds?</summary>
+    <div class="faq-body">
+      <p>Yes. We offer a 30-day money-back guarantee on every purchase. If Take 139 didn't help you understand yourself or your relationship better, email <a href="mailto:hello@take139.com">hello@take139.com</a> within 30 days of purchase and we'll refund you — no questions asked, no forms.</p>
+      <p>We'd rather have your trust than your $20.</p>
+    </div>
+  </details>
+
+  <div class="section-label">Methodology & comparisons</div>
+
+  <details class="faq-item">
+    <summary>How is this different from Prepare/Enrich, SYMBIS, or other premarital tools?</summary>
+    <div class="faq-body">
+      <p>Prepare/Enrich and SYMBIS are broad premarital inventories — they survey communication, finances, family-of-origin, conflict, sexuality, spiritual life, and dozens of other categories. They're excellent at giving a wide-angle scan of where a couple is healthy and where they need work. They're also typically administered <em>by</em> a counselor and require a facilitator.</p>
+      <p>Take 139 is narrower and self-administered. It does one thing: it diagnoses the story underneath your conflict — the trigger, the core question, the mechanism, the breakdown. The deliverable is a single complete sentence you can hand to your partner. It's designed to pair well with broader tools, not replace them.</p>
+      <p>Many pastors use both. Prepare/Enrich for the wide scan; Take 139 for the deep cut into how you fight.</p>
+    </div>
+  </details>
+
+  <details class="faq-item">
+    <summary>Who is Dr. Christopher Hilken?</summary>
+    <div class="faq-body">
+      <p>Chris is a pastor, theology professor, and counselor based in San Diego. He has spent over two decades in pastoral ministry — preaching, marriage counseling, and teaching at the seminary level — and has walked hundreds of couples through premarital preparation. He developed the Take 139 framework out of that work, drawing on attachment theory, biblical counseling, family systems, and Scripture.</p>
+      <p>The framework integrates 23 peer-reviewed and ministry-tested sources, including Levine &amp; Heller (attachment), Gibson (idolatry of the heart), Clinton &amp; Sibcy (attachment styles in marriage), Powlison (heart change), Sande (peacemaking), and Welch (fear of man), among others — all read through a gospel lens.</p>
+    </div>
+  </details>
+
+  <details class="faq-item">
+    <summary>Who is Take 139 for?</summary>
+    <div class="faq-body">
+      <p>It's built for engaged and pre-engaged couples preparing for marriage. It also serves married couples who want to do diagnostic work on their conflict patterns, and pastors or counselors who want a tool to assign before counseling sessions.</p>
+      <p>It is not built for high-conflict situations involving abuse, addiction, or active crisis — those need direct counseling, not a self-administered diagnostic. If that's where you are, please reach out to a qualified counselor in person.</p>
+    </div>
+  </details>
+
+</div>
+
+<div class="bottom-cta">
+  <h2>Still have a question?</h2>
+  <p>Email <a href="mailto:hello@take139.com">hello@take139.com</a> and you'll hear back from Chris directly, usually within 24 hours.</p>
+  <div class="btn-row">
+    <a href="pricing.html" class="btn btn-primary">See pricing</a>
+    <a href="/" class="btn btn-secondary">Back to home</a>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <p class="footer-verse">"Search me, O God, and know my heart; test me and know my anxious thoughts."<br>— Psalm 139:23</p>
+  <p>&copy; 2026 Take 139 &middot; <a href="how-it-works.html">How It Works</a> &middot; <a href="pricing.html">Pricing</a> &middot; <a href="for-churches.html">For Churches</a> &middot; <a href="mailto:hello@take139.com">hello@take139.com</a></p>
+</footer>
+
+</body>
+</html>

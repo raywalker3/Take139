@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pricing &middot; Take 139</title>
+<meta name="description" content="Three simple ways to take Take 139 — single ($20), couple package ($40), or connection add-on ($10). 30-day money-back guarantee.">
+
+<!-- Favicon + Open Graph -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/favicon-180.png">
+<meta property="og:title" content="Pricing · Take 139">
+<meta property="og:description" content="Single $20 · Couple $40 · Connection $10. 30-day money-back guarantee.">
+<meta property="og:image" content="https://take139.com/og-image.png">
+<meta property="og:url" content="https://take139.com/pricing.html">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #f5f1e8;
+  --surface: #efe9dc;
+  --surface-2: #e8e1d0;
+  --border: #d8cfba;
+  --hairline: rgba(29, 29, 27, 0.12);
+  --text: #1d1d1b;
+  --muted: #5d564b;
+  --faint: #8b8475;
+  --accent: #8a4a2c;
+  --accent-hover: #6f3a23;
+  --accent-soft: rgba(138, 74, 44, 0.08);
+  --font-heading: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+}
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image:
+    radial-gradient(rgba(0,0,0,0.012) 1px, transparent 1px),
+    radial-gradient(rgba(0,0,0,0.010) 1px, transparent 1px);
+  background-size: 24px 24px, 36px 36px;
+  background-position: 0 0, 12px 18px;
+  background-attachment: fixed;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); }
+h1, h2, h3 { font-family: var(--font-heading); font-weight: 500; line-height: 1.15; }
+
+/* ===== Top nav ===== */
+.topnav { border-bottom: 1px solid var(--hairline); padding: 1rem 0; background: var(--bg); position: sticky; top: 0; z-index: 50; }
+.topnav-inner { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.topnav-brand { font-size: 0.78rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--accent); font-weight: 600; text-decoration: none; }
+.topnav-links { list-style: none; display: flex; gap: 1.5rem; align-items: center; }
+.topnav-links a { font-size: 0.92rem; font-weight: 500; color: var(--muted); }
+.topnav-links a:hover { color: var(--accent); }
+.topnav-links a.active { color: var(--text); }
+.topnav-links a.cta { background: var(--text); color: var(--bg); padding: 0.55rem 1rem; border-radius: 4px; font-weight: 600; }
+.topnav-links a.cta:hover { background: #2a2a26; color: var(--bg); }
+@media (max-width: 640px) {
+  .topnav-inner { padding: 0.85rem 1rem; gap: 0.5rem; }
+  .topnav-links { gap: 0.85rem; }
+  .topnav-links .hide-mobile { display: none; }
+}
+
+/* ===== Hero ===== */
+.hero { max-width: 1080px; margin: 0 auto; padding: 4rem 1.5rem 1rem; text-align: center; }
+.eyebrow { font-size: 0.78rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 1rem; }
+.hero h1 { font-size: clamp(2.6rem, 5vw, 3.4rem); margin-bottom: 0.75rem; }
+.hero .subtitle { font-family: var(--font-heading); font-style: italic; color: var(--muted); font-size: 1.15rem; max-width: 620px; margin: 0 auto 1.25rem; }
+.hero p.intro { color: var(--muted); max-width: 600px; margin: 0 auto; font-size: 1.02rem; line-height: 1.7; }
+
+/* ===== Pricing grid ===== */
+.pricing-grid {
+  max-width: 1080px; margin: 3rem auto 2rem; padding: 0 1.5rem;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem; align-items: stretch;
+}
+.tier {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 2rem 1.75rem 2rem;
+  position: relative;
+  display: flex; flex-direction: column;
+}
+.tier.featured {
+  border-color: var(--accent);
+  background: #fbf7ec;
+  box-shadow: 0 8px 32px -16px rgba(138, 74, 44, 0.25);
+}
+.tier .badge {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  background: var(--accent); color: var(--bg);
+  font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600;
+  padding: 0.4rem 0.85rem; border-radius: 999px;
+}
+.tier-label { font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 0.5rem; }
+.tier h3 { font-size: 1.55rem; font-weight: 500; margin-bottom: 0.4rem; line-height: 1.1; }
+.tier .price { font-family: var(--font-heading); font-size: 2.6rem; font-weight: 500; color: var(--text); margin-bottom: 0.4rem; }
+.tier .price .currency { font-size: 1.3rem; vertical-align: top; margin-right: 0.15rem; color: var(--muted); }
+.tier .price .unit { font-size: 0.85rem; color: var(--muted); font-family: var(--font-body); font-weight: 400; margin-left: 0.3rem; }
+.tier .for-who { font-family: var(--font-heading); font-style: italic; color: var(--muted); font-size: 0.98rem; margin-bottom: 1.25rem; min-height: 2.7rem; }
+.tier ul { list-style: none; margin-bottom: 1.5rem; flex-grow: 1; }
+.tier ul li { padding: 0.55rem 0 0.55rem 1.4rem; border-bottom: 1px solid var(--hairline); position: relative; font-size: 0.94rem; line-height: 1.5; }
+.tier ul li:last-child { border-bottom: none; }
+.tier ul li::before { content: "\2713"; position: absolute; left: 0; top: 0.55rem; color: var(--accent); font-weight: 600; }
+.tier .cta {
+  display: block; text-align: center;
+  background: var(--text); color: var(--bg);
+  padding: 0.85rem 1.25rem; border-radius: 6px;
+  font-weight: 600; letter-spacing: 0.04em; font-size: 0.95rem;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.tier .cta:hover { background: #000; color: var(--bg); }
+.tier.featured .cta { background: var(--accent); }
+.tier.featured .cta:hover { background: var(--accent-hover); }
+
+/* ===== Guarantee bar ===== */
+.guarantee-bar {
+  max-width: 880px; margin: 2rem auto 0; padding: 1.25rem 1.75rem;
+  background: var(--surface-2);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  display: flex; gap: 1rem; align-items: flex-start;
+  font-size: 0.95rem; line-height: 1.6;
+}
+.guarantee-bar strong { color: var(--accent); }
+.guarantee-bar .gicon { font-size: 1.4rem; line-height: 1; }
+
+/* ===== Compare table ===== */
+.compare {
+  max-width: 1080px; margin: 4rem auto 2rem; padding: 0 1.5rem;
+}
+.compare h2 { text-align: center; font-size: 2rem; margin-bottom: 0.5rem; }
+.compare .subtitle { text-align: center; color: var(--muted); margin-bottom: 2rem; }
+.compare-table {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; overflow: hidden;
+  font-size: 0.93rem;
+}
+.compare-table table { width: 100%; border-collapse: collapse; }
+.compare-table th, .compare-table td {
+  padding: 0.95rem 1.1rem; text-align: left;
+  border-bottom: 1px solid var(--hairline);
+}
+.compare-table th { background: var(--surface-2); font-weight: 600; font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.compare-table td:not(:first-child) { text-align: center; }
+.compare-table tr:last-child td { border-bottom: none; }
+.check { color: var(--accent); font-weight: 700; }
+.dash { color: var(--faint); }
+
+/* ===== FAQ teaser ===== */
+.faq-teaser {
+  max-width: 720px; margin: 4rem auto 2rem; padding: 0 1.5rem; text-align: center;
+}
+.faq-teaser h2 { font-size: 1.7rem; margin-bottom: 0.5rem; }
+.faq-teaser p { color: var(--muted); margin-bottom: 1.25rem; }
+.btn-outline {
+  display: inline-block; padding: 0.7rem 1.4rem;
+  border: 1px solid var(--border); border-radius: 6px;
+  font-weight: 600; font-size: 0.92rem;
+  background: transparent; color: var(--text);
+}
+.btn-outline:hover { background: var(--surface-2); color: var(--text); }
+
+/* ===== Footer ===== */
+footer { max-width: 1080px; margin: 4rem auto 0; padding: 2rem 1.5rem 3rem; border-top: 1px solid var(--hairline); text-align: center; font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+footer .verse { font-family: var(--font-heading); font-style: italic; color: var(--faint); margin-top: 0.85rem; font-size: 0.92rem; max-width: 640px; margin-left: auto; margin-right: auto; }
+footer .links { margin-top: 1rem; }
+footer .links a { color: var(--muted); margin: 0 0.6rem; }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="/" class="topnav-brand">Take 139</a>
+    <ul class="topnav-links">
+      <li><a href="/how-it-works.html">How It Works</a></li>
+      <li><a href="/pricing.html" class="active">Pricing</a></li>
+      <li><a href="/for-churches.html" class="hide-mobile">For Churches</a></li>
+      <li><a href="/sign-in.html" class="cta">Sign In</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow">Pricing</div>
+  <h1>Simple, honest pricing.</h1>
+  <p class="subtitle">No subscriptions. No upsells. Three ways to take Take 139, priced for the depth of what you receive.</p>
+  <p class="intro">A counselor session in San Diego averages $150-$300. Take 139 gives you and your partner a 30-page personalized walkthrough &mdash; with prayer, scripture, and date-night discussion prompts &mdash; for less than the cost of dinner.</p>
+</section>
+
+<section class="pricing-grid">
+  <div class="tier">
+    <div class="tier-label">For one person</div>
+    <h3>Conflict Origins</h3>
+    <div class="price"><span class="currency">$</span>20<span class="unit">one-time</span></div>
+    <div class="for-who">For the person who wants to understand themselves before they understand the relationship.</div>
+    <ul>
+      <li>One full assessment (20&ndash;25 min)</li>
+      <li>10-page Personal Profile PDF</li>
+      <li>30+ page Personal Walkthrough PDF</li>
+      <li>Scripture, prayer, and reflection questions tailored to your profile</li>
+      <li>Yours to keep, re-download anytime</li>
+    </ul>
+    <a href="/index.html#purchase" class="cta">Get the assessment</a>
+  </div>
+
+  <div class="tier featured">
+    <div class="badge">Most Chosen</div>
+    <div class="tier-label">For couples</div>
+    <h3>Couple Package</h3>
+    <div class="price"><span class="currency">$</span>40<span class="unit">one-time, for both</span></div>
+    <div class="for-who">For couples who want to understand each other before, during, or after the wedding.</div>
+    <ul>
+      <li>Two full assessments (one per partner)</li>
+      <li>Two Personal Profile + Walkthrough PDFs</li>
+      <li>Combined Couples Report with date-night conversation prompts</li>
+      <li>Conflict liturgy + marriage prayer written for your two profiles</li>
+      <li>Includes free connection (no add-on needed)</li>
+      <li>Both kept forever, re-downloadable from your dashboard</li>
+    </ul>
+    <a href="/index.html#purchase" class="cta">Start as a couple</a>
+  </div>
+
+  <div class="tier">
+    <div class="tier-label">For already-taken couples</div>
+    <h3>Connection Add-On</h3>
+    <div class="price"><span class="currency">$</span>10<span class="unit">one-time</span></div>
+    <div class="for-who">For couples where each partner already took Take 139 separately and now want to bond their profiles.</div>
+    <ul>
+      <li>Connects two existing pair codes</li>
+      <li>Generates the combined Couples Report</li>
+      <li>Date-night discussion prompts</li>
+      <li>Marriage prayer for both wirings together</li>
+      <li>Delivered to both partners&rsquo; inboxes</li>
+    </ul>
+    <a href="/index.html#purchase" class="cta">Add the connection</a>
+  </div>
+</section>
+
+<div style="max-width: 880px; margin: 1rem auto 0; padding: 0 1.5rem;">
+  <div class="guarantee-bar">
+    <div class="gicon">&#9655;</div>
+    <div>
+      <strong>30-day money-back guarantee.</strong>
+      Take it, read it, sit with it. If it doesn&rsquo;t help you understand yourself or your partner more clearly, reply to your purchase email within 30 days and we&rsquo;ll refund you. No questions, no friction.
+    </div>
+  </div>
+</div>
+
+<section class="compare">
+  <h2>What&rsquo;s in each tier</h2>
+  <p class="subtitle">A side-by-side comparison.</p>
+  <div class="compare-table">
+    <table>
+      <thead>
+        <tr>
+          <th>&nbsp;</th>
+          <th>Single</th>
+          <th>Couple</th>
+          <th>Add-On</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Take the assessment</strong></td>
+          <td class="check">&#10003; 1 person</td>
+          <td class="check">&#10003; 2 people</td>
+          <td class="dash">already taken</td>
+        </tr>
+        <tr>
+          <td><strong>Personal Profile PDF</strong></td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003; &times;2</td>
+          <td class="dash">already received</td>
+        </tr>
+        <tr>
+          <td><strong>Personal Walkthrough PDF</strong></td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003; &times;2</td>
+          <td class="dash">already received</td>
+        </tr>
+        <tr>
+          <td><strong>Couples Report PDF</strong></td>
+          <td class="dash">&mdash;</td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+        </tr>
+        <tr>
+          <td><strong>Date-night prompts</strong></td>
+          <td class="dash">&mdash;</td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+        </tr>
+        <tr>
+          <td><strong>Conflict liturgy + marriage prayer</strong></td>
+          <td class="dash">&mdash;</td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+        </tr>
+        <tr>
+          <td><strong>Account + re-download forever</strong></td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+        </tr>
+        <tr>
+          <td><strong>30-day refund</strong></td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+          <td class="check">&#10003;</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="faq-teaser">
+  <h2>Still have questions?</h2>
+  <p>Read our FAQ for answers to common questions about Take 139.</p>
+  <a href="/faq.html" class="btn-outline">Read the FAQ</a>
+</section>
+
+<footer>
+  Take 139 &middot; Created by Dr. Christopher Hilken
+  <div class="links">
+    <a href="/how-it-works.html">How It Works</a>
+    <a href="/pricing.html">Pricing</a>
+    <a href="/faq.html">FAQ</a>
+    <a href="/for-churches.html">For Churches</a>
+    <a href="mailto:hello@take139.com">Contact</a>
+  </div>
+  <p class="verse">&ldquo;Search me, O God, and know my heart; try me, and know my thoughts: and see if there be any wicked way in me, and lead me in the way everlasting.&rdquo; &mdash; Psalm 139:23&ndash;24</p>
+</footer>
+
+</body>
+</html>

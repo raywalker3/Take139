@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Take 139 — Search Me and Know Me</title>
-<meta name="description" content="A premarital diagnostic for the stories underneath your conflict. Created by Dr. Christopher Hilken.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<title>Take 139 — Search Me and Know Me</title><link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -235,6 +233,176 @@ body.in-synthesis .topnav { display: none; }
   margin-bottom: 0.75rem; color: var(--text);
 }
 .about-card p { font-size: 0.92rem; color: var(--muted); line-height: 1.65; margin-bottom: 0.75rem; }
+
+/* ── Social proof bar ── */
+.social-proof {
+  max-width: 1080px; margin: 0 auto; padding: 1.5rem 1.5rem 1rem;
+}
+.proof-row {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 1.4rem 1.5rem;
+}
+.proof-item { text-align: center; }
+.proof-item .num {
+  font-family: var(--font-heading); font-size: 1.85rem; font-weight: 500;
+  color: var(--accent); line-height: 1; margin-bottom: 0.35rem;
+}
+.proof-item .label {
+  font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--muted); font-weight: 600;
+}
+
+/* ── Founder ── */
+.founder {
+  max-width: 980px; margin: 3rem auto 0; padding: 0 1.5rem;
+}
+.founder-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 2.25rem; display: grid;
+  grid-template-columns: 200px 1fr; gap: 2rem; align-items: center;
+}
+.founder-photo {
+  width: 200px; height: 200px; border-radius: 50%; overflow: hidden;
+  background: var(--surface-2); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--faint); font-size: 0.78rem; letter-spacing: 0.14em;
+  text-transform: uppercase; font-weight: 600; text-align: center; padding: 0.5rem;
+}
+.founder-photo img { width: 100%; height: 100%; object-fit: cover; }
+.founder-body h2 {
+  font-family: var(--font-heading); font-size: 1.8rem; font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+.founder-body .founder-title {
+  font-family: var(--font-heading); font-style: italic; color: var(--muted);
+  margin-bottom: 1rem; font-size: 1.02rem;
+}
+.founder-body p { color: var(--muted); margin-bottom: 0.85rem; font-size: 0.96rem; line-height: 1.7; }
+.founder-creds { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 0.85rem; }
+.founder-creds .cred {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 999px;
+  padding: 0.32rem 0.85rem; font-size: 0.78rem; color: var(--text); font-weight: 500;
+}
+@media (max-width: 720px) {
+  .founder-card { grid-template-columns: 1fr; text-align: center; padding: 1.85rem; }
+  .founder-photo { margin: 0 auto; width: 160px; height: 160px; }
+  .founder-creds { justify-content: center; }
+}
+
+/* ── Testimonials ── */
+.testimonials {
+  max-width: 1080px; margin: 3rem auto 0; padding: 0 1.5rem;
+}
+.testimonials h2 {
+  text-align: center; font-family: var(--font-heading); font-size: 2rem;
+  font-weight: 500; margin-bottom: 0.5rem;
+}
+.testimonials .lead {
+  text-align: center; color: var(--muted); margin-bottom: 2rem;
+  font-family: var(--font-heading); font-style: italic;
+}
+.testimonial-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.15rem;
+}
+.testimonial {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 1.65rem 1.65rem 1.5rem; position: relative;
+}
+.testimonial::before {
+  content: "“"; position: absolute; top: 0.45rem; left: 1.1rem;
+  font-family: var(--font-heading); font-size: 3rem; color: var(--accent);
+  opacity: 0.35; line-height: 1;
+}
+.testimonial blockquote {
+  font-family: var(--font-heading); font-size: 1.02rem; line-height: 1.6;
+  color: var(--text); margin-bottom: 1.1rem; padding-top: 0.85rem; font-style: italic;
+}
+.testimonial .attr {
+  font-size: 0.82rem; color: var(--muted); border-top: 1px solid var(--hairline);
+  padding-top: 0.85rem;
+}
+.testimonial .attr strong { color: var(--text); font-weight: 600; display: block; margin-bottom: 0.15rem; }
+.testimonial.placeholder blockquote { color: var(--faint); }
+.testimonial.placeholder .attr { color: var(--faint); font-style: italic; }
+
+/* ── Sample download ── */
+.sample-section {
+  max-width: 980px; margin: 3rem auto 0; padding: 0 1.5rem;
+}
+.sample-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 2.25rem; display: grid; grid-template-columns: 1fr 280px; gap: 2rem; align-items: center;
+}
+.sample-card h2 { font-size: 1.7rem; margin-bottom: 0.55rem; }
+.sample-card p { color: var(--muted); margin-bottom: 1.1rem; line-height: 1.7; }
+.sample-buttons { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+.btn-outline {
+  display: inline-block; background: transparent; color: var(--text);
+  border: 1px solid var(--border); padding: 0.7rem 1.15rem; border-radius: 6px;
+  font-family: var(--font-body); font-weight: 600; font-size: 0.9rem;
+  text-decoration: none; cursor: pointer; transition: all 0.18s ease;
+}
+.btn-outline:hover { border-color: var(--accent); color: var(--accent); background: var(--bg); }
+.btn-secondary-cta {
+  display: inline-block; background: transparent; color: var(--text);
+  border: 1.5px solid var(--text); padding: 0.85rem 1.5rem; border-radius: 6px;
+  font-family: var(--font-body); font-weight: 600; font-size: 0.95rem;
+  text-decoration: none; cursor: pointer; transition: all 0.18s ease;
+}
+.btn-secondary-cta:hover { background: var(--text); color: var(--bg); }
+.sample-preview {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+  padding: 1.1rem; text-align: center;
+}
+.sample-preview .preview-stack {
+  font-family: var(--font-heading); font-size: 2.2rem; color: var(--accent);
+  font-weight: 500; line-height: 1;
+}
+.sample-preview .preview-label {
+  font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--muted); margin-top: 0.6rem; font-weight: 600;
+}
+.sample-preview .preview-pages { font-size: 0.85rem; color: var(--muted); margin-top: 0.35rem; }
+@media (max-width: 720px) {
+  .sample-card { grid-template-columns: 1fr; text-align: center; padding: 1.85rem; }
+  .sample-buttons { justify-content: center; }
+}
+
+/* ── Pricing teaser ── */
+.pricing-teaser {
+  max-width: 1080px; margin: 3rem auto 0; padding: 0 1.5rem;
+}
+.pricing-teaser h2 { text-align: center; font-size: 2rem; margin-bottom: 0.5rem; }
+.pricing-teaser .lead {
+  text-align: center; color: var(--muted); font-family: var(--font-heading);
+  font-style: italic; margin-bottom: 2rem;
+}
+.tier-row {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.1rem; margin-bottom: 1.5rem;
+}
+.mini-tier {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+  padding: 1.55rem 1.55rem 1.3rem; text-align: center;
+}
+.mini-tier.featured { border-color: var(--accent); background: #fbf7ec; }
+.mini-tier .tier-name {
+  font-family: var(--font-heading); font-size: 1.2rem; font-weight: 500;
+  margin-bottom: 0.45rem;
+}
+.mini-tier .tier-price {
+  font-family: var(--font-heading); font-size: 2.2rem; color: var(--accent);
+  font-weight: 500; margin-bottom: 0.55rem; line-height: 1;
+}
+.mini-tier .tier-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.55; }
+.guarantee-row {
+  text-align: center; color: var(--muted); font-family: var(--font-heading);
+  font-style: italic; font-size: 0.98rem; margin-top: 0.5rem;
+}
+.guarantee-row strong { color: var(--text); font-style: normal; font-weight: 600; }
+.pricing-teaser-cta { text-align: center; margin-top: 1.5rem; }
 
 /* Final CTA */
 .final-cta {
@@ -1278,6 +1446,23 @@ body.in-synthesis .topnav { display: none; }
 }
 .modal-close:hover { color: var(--muted); }
 </style>
+
+<!-- Favicon + Open Graph -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/favicon-180.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Take 139 · Search Me and Know Me">
+<meta property="og:description" content="A premarital diagnostic for the stories underneath your conflict. Created by Dr. Christopher Hilken. 15-20 minutes. 30-day money-back guarantee.">
+<meta property="og:image" content="https://take139.com/og-image.png">
+<meta property="og:url" content="https://take139.com/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Take 139 · Search Me and Know Me">
+<meta name="twitter:description" content="A premarital diagnostic for the stories underneath your conflict. Created by Dr. Christopher Hilken. 15-20 minutes. 30-day money-back guarantee.">
+<meta name="twitter:image" content="https://take139.com/og-image.png">
+<meta name="description" content="A premarital diagnostic for the stories underneath your conflict. Created by Dr. Christopher Hilken. 15-20 minutes. 30-day money-back guarantee.">
+
 </head>
 <body>
 
@@ -1368,8 +1553,9 @@ body.in-synthesis .topnav { display: none; }
     <a href="#" onclick="return false;" class="topnav-brand">Take 139</a>
     <ul class="topnav-links">
       <li><a href="how-it-works.html">How It Works</a></li>
-      <li><a href="imago/" class="hide-mobile">IMAGO</a></li>
-      <li><a href="for-churches.html">For Churches</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="faq.html" class="hide-mobile">FAQ</a></li>
+      <li><a href="for-churches.html" class="hide-mobile">For Churches</a></li>
       <li><a href="sign-in.html" class="cta">Sign In</a></li>
     </ul>
   </div>
@@ -1394,6 +1580,28 @@ body.in-synthesis .topnav { display: none; }
       </svg>
     </div>
   </section>
+
+  <!-- SOCIAL PROOF BAR -->
+  <div class="social-proof">
+    <div class="proof-row">
+      <div class="proof-item">
+        <div class="num">23</div>
+        <div class="label">Source works integrated</div>
+      </div>
+      <div class="proof-item">
+        <div class="num">15–20</div>
+        <div class="label">Minutes to complete</div>
+      </div>
+      <div class="proof-item">
+        <div class="num">57</div>
+        <div class="label">Couple combinations</div>
+      </div>
+      <div class="proof-item">
+        <div class="num">30 days</div>
+        <div class="label">Money-back guarantee</div>
+      </div>
+    </div>
+  </div>
 
   <!-- WHAT THIS IS -->
   <section class="land-section">
@@ -1442,15 +1650,102 @@ body.in-synthesis .topnav { display: none; }
     <p style="margin-top: 1.25rem; font-size: 0.9rem;">Your complete profile also includes personalized behavioral markers, gospel truths specific to your pattern, and couple discussion questions for you and your partner.</p>
   </section>
 
+  <!-- FOUNDER -->
+  <div class="founder">
+    <div class="founder-card">
+      <div class="founder-photo">
+        <!-- Replace this entire <div class="founder-photo"> contents with: <img src="/images/chris-hilken.jpg" alt="Dr. Christopher Hilken"> -->
+        Photo of Dr. Hilken
+      </div>
+      <div class="founder-body">
+        <h2>Dr. Christopher Hilken</h2>
+        <div class="founder-title">Pastor &middot; Theology Professor &middot; Counselor</div>
+        <p>Chris has spent over two decades pastoring, teaching theology at the seminary level, and walking hundreds of couples through premarital preparation. He developed the Take 139 framework out of that work — drawing on attachment theory, biblical counseling, family systems, and Scripture.</p>
+        <p>He lives in San Diego with his wife Carolyn and their five children, and serves at College Avenue Church.</p>
+        <div class="founder-creds">
+          <span class="cred">23+ years in pastoral ministry</span>
+          <span class="cred">College Avenue Church, San Diego</span>
+          <span class="cred">Seminary-level theology</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TESTIMONIALS -->
+  <div class="testimonials">
+    <h2>What couples are saying</h2>
+    <p class="lead">Real responses from couples who have taken Take 139.</p>
+    <div class="testimonial-grid">
+      <div class="testimonial placeholder">
+        <blockquote>Testimonial coming soon &mdash; this is where a couple's reflection on what Take 139 surfaced for them will appear.</blockquote>
+        <div class="attr"><strong>[Name placeholder]</strong>Engaged couple, [Location]</div>
+      </div>
+      <div class="testimonial placeholder">
+        <blockquote>Testimonial coming soon &mdash; a pastor or counselor reflection on how Take 139 fit into their premarital track.</blockquote>
+        <div class="attr"><strong>[Pastor name placeholder]</strong>Pastor, [Church name]</div>
+      </div>
+      <div class="testimonial placeholder">
+        <blockquote>Testimonial coming soon &mdash; a married couple's reflection on what changed when they finally saw the story underneath their conflict.</blockquote>
+        <div class="attr"><strong>[Name placeholder]</strong>Married couple, [Years married]</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAMPLE DOWNLOAD -->
+  <div class="sample-section">
+    <div class="sample-card">
+      <div>
+        <h2>See a real report before you take it</h2>
+        <p>Two free sample PDFs &mdash; an individual profile and a paired couples walkthrough &mdash; so you can see exactly what you'll get before you spend a dollar. Real format, real tone, real depth.</p>
+        <div class="sample-buttons">
+          <a href="/Take139-Sample-Profile.pdf" class="btn-outline" download>Sample Profile (PDF)</a>
+          <a href="/Take139-Sample-Walkthrough.pdf" class="btn-outline" download>Sample Walkthrough (PDF)</a>
+        </div>
+      </div>
+      <div class="sample-preview">
+        <div class="preview-stack">139</div>
+        <div class="preview-label">Sample report</div>
+        <div class="preview-pages">Architect &middot; Attorney pattern</div>
+      </div>
+    </div>
+  </div>
+
   <!-- ABOUT -->
   <section class="land-section">
-    <h2>About this assessment</h2>
+    <h2>The scholarship behind it</h2>
     <div class="about-card">
-      <h3>Dr. Christopher Hilken</h3>
-      <p>Pastor, counselor, and creator of the Take 139 diagnostic. This assessment was developed from 23 peer-reviewed and ministry-tested resources in attachment theory, biblical counseling, and family systems — distilled into a single, practical tool for premarital ministry.</p>
-      <p>The framework draws on the work of Levine &amp; Heller, Gibson, Clinton &amp; Sibcy, Powlison, Jones, Sande, Welch, Foster, Friedman, and others — integrated through a gospel lens for pastoral use.</p>
+      <p>This assessment was developed from 23 peer-reviewed and ministry-tested resources in attachment theory, biblical counseling, and family systems &mdash; distilled into a single, practical tool for premarital ministry.</p>
+      <p>The framework draws on the work of Levine &amp; Heller, Gibson, Clinton &amp; Sibcy, Powlison, Jones, Sande, Welch, Foster, Friedman, and others &mdash; integrated through a gospel lens for pastoral use.</p>
+      <p style="margin-top:0.5rem;"><a href="how-it-works.html">See the full bibliography &rarr;</a></p>
     </div>
   </section>
+
+  <!-- PRICING TEASER -->
+  <div class="pricing-teaser">
+    <h2>Simple, transparent pricing</h2>
+    <p class="lead">No subscriptions. No surprise charges. One-time access, yours forever.</p>
+    <div class="tier-row">
+      <div class="mini-tier">
+        <div class="tier-name">Single</div>
+        <div class="tier-price">$20</div>
+        <div class="tier-desc">One report. Take it on your own and download a personal PDF profile.</div>
+      </div>
+      <div class="mini-tier featured">
+        <div class="tier-name">Couple</div>
+        <div class="tier-price">$40</div>
+        <div class="tier-desc">Two codes, two reports, paired walkthrough, plus the date-night appendix.</div>
+      </div>
+      <div class="mini-tier">
+        <div class="tier-name">Connection</div>
+        <div class="tier-price">$10</div>
+        <div class="tier-desc">Add-on for someone who already took the assessment and wants to pair later.</div>
+      </div>
+    </div>
+    <p class="guarantee-row"><strong>30-day money-back guarantee.</strong> If it doesn't help, write to us and we'll refund you.</p>
+    <div class="pricing-teaser-cta">
+      <a href="pricing.html" class="btn-secondary-cta">See full pricing details</a>
+    </div>
+  </div>
 
   <!-- FINAL CTA -->
   <section class="final-cta">
@@ -1462,7 +1757,7 @@ body.in-synthesis .topnav { display: none; }
   <!-- FOOTER -->
   <footer class="site-footer">
     <p class="footer-verse">"Search me, O God, and know my heart; test me and know my anxious thoughts. See if there is any offensive way in me, and lead me in the way everlasting."<br>— Psalm 139:23–24</p>
-    <p class="footer-copy">&copy; 2026 Take 139 &middot; take139.com</p>
+    <p class="footer-copy">&copy; 2026 Take 139 &middot; <a href="how-it-works.html" style="color:var(--faint);">How It Works</a> &middot; <a href="pricing.html" style="color:var(--faint);">Pricing</a> &middot; <a href="faq.html" style="color:var(--faint);">FAQ</a> &middot; <a href="for-churches.html" style="color:var(--faint);">For Churches</a> &middot; <a href="mailto:hello@take139.com" style="color:var(--faint);">hello@take139.com</a></p>
   </footer>
 
 </div>
