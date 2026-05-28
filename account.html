@@ -114,10 +114,10 @@ h1 { font-family: var(--font-heading); font-size: 2.4rem; font-weight: 500; line
 
       <div id="currentPwWrap">
         <label class="label" for="currentPw">Current password</label>
-        <input type="password" class="input" id="currentPw" autocomplete="current-password">
+        <input type="password" class="input" id="currentPw" autocomplete="current-password" placeholder="Enter your current password">
       </div>
 
-      <label class="label" for="newPw">New password</label>
+      <label class="label" for="newPw"><span id="newPwLabel">New password</span></label>
       <input type="password" class="input" id="newPw" placeholder="At least 8 characters" autocomplete="new-password">
       <div class="hint">8 characters minimum. No spaces at the start or end.</div>
 
@@ -172,12 +172,20 @@ function renderAccount() {
 
   // If the user has no password yet (magic-link only), hide "current password"
   // and switch the heading/copy to "Set a password".
-  if (!currentUser.has_password) {
-    document.getElementById('currentPwWrap').style.display = 'none';
-    document.getElementById('pwTitle').textContent = 'Set a password';
-    document.getElementById('pwCopy').textContent = 'Right now you sign in with email links. Setting a password gives you a faster way back in next time.';
-    document.getElementById('savePwBtn').textContent = 'Set password';
-  }
+  applyPasswordMode();
+}
+
+// Centralised so render + post-success both use the same source of truth.
+function applyPasswordMode() {
+  const has = !!(currentUser && currentUser.has_password);
+  document.getElementById('currentPwWrap').style.display = has ? 'block' : 'none';
+  document.getElementById('pwTitle').textContent = has ? 'Change your password' : 'Set a password';
+  document.getElementById('pwCopy').textContent = has
+    ? 'You\u2019ll need your current password to make this change. We recommend at least 8 characters that you don\u2019t use anywhere else.'
+    : 'You currently sign in with one-time email links. Setting a password gives you a faster way back in next time. No current password needed \u2014 you\u2019re creating one now.';
+  document.getElementById('savePwBtn').textContent = has ? 'Update password' : 'Set password';
+  const newPwLabel = document.getElementById('newPwLabel');
+  if (newPwLabel) newPwLabel.textContent = has ? 'New password' : 'Choose a password';
 }
 
 async function saveName() {
@@ -236,20 +244,18 @@ async function savePassword() {
       status.textContent = msg; status.className = 'status err';
       btn.disabled = false; btn.textContent = currentUser.has_password ? 'Update password' : 'Set password'; return;
     }
-    status.textContent = currentUser.has_password ? 'Password updated \u2713' : 'Password set \u2713 \u2014 you can now sign in with your password.';
+    const wasFirstTime = !currentUser.has_password;
+    status.textContent = wasFirstTime
+      ? 'Password set \u2713 \u2014 you can sign in with your email and this password from now on.'
+      : 'Password updated \u2713';
     status.className = 'status ok';
     document.getElementById('newPw').value = '';
     document.getElementById('currentPw').value = '';
-    // After first-time set, treat as if user now has password and update UI.
-    if (!currentUser.has_password) {
-      currentUser.has_password = true;
-      document.getElementById('currentPwWrap').style.display = 'block';
-      document.getElementById('pwTitle').textContent = 'Password';
-      document.getElementById('pwCopy').textContent = 'Change your password. We recommend at least 8 characters that you don\u2019t use anywhere else.';
-      btn.textContent = 'Update password';
-    } else {
-      btn.textContent = 'Update password';
-    }
+    // Flip into "has password" mode so the page now correctly shows "Change
+    // your password" with the current-password field. applyPasswordMode is
+    // the single source of truth.
+    currentUser.has_password = true;
+    applyPasswordMode();
     btn.disabled = false;
   } catch(_) {
     status.textContent = 'Could not reach the server.'; status.className = 'status err';
