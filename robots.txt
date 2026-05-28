@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Block admin pages from indexing
+Disallow: /admin.html
+Disallow: /admin-quick-pdf.html
+Disallow: /account.html
+Disallow: /dashboard.html
+Disallow: /auth.html
+
+Sitemap: https://take139.com/sitemap.xml
