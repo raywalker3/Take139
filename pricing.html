@@ -167,6 +167,40 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 500; line-height: 1.
 }
 .faq-teaser h2 { font-size: 1.7rem; margin-bottom: 0.5rem; }
 .faq-teaser p { color: var(--muted); margin-bottom: 1.25rem; }
+/* ── Free sample banner ── */
+.sample-banner {
+  max-width: 880px; margin: 2.25rem auto 0.5rem; padding: 0 1.5rem;
+}
+.sample-banner-inner {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 1.6rem 1.85rem; display: grid;
+  grid-template-columns: 1fr auto; gap: 1.5rem; align-items: center;
+}
+.sample-banner-text .eyebrow-mini {
+  font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--accent); font-weight: 600; margin-bottom: 0.35rem;
+}
+.sample-banner-text h3 {
+  font-family: var(--font-heading); font-size: 1.25rem; font-weight: 500;
+  margin-bottom: 0.35rem; line-height: 1.3;
+}
+.sample-banner-text p {
+  color: var(--muted); font-size: 0.92rem; line-height: 1.55; margin: 0;
+}
+.sample-banner-buttons { display: flex; flex-wrap: wrap; gap: 0.55rem; }
+.btn-sample {
+  display: inline-block; background: var(--bg); color: var(--text);
+  border: 1px solid var(--border); padding: 0.65rem 1.05rem; border-radius: 6px;
+  font-family: var(--font-body); font-weight: 600; font-size: 0.86rem;
+  text-decoration: none; transition: all 0.18s ease; white-space: nowrap;
+}
+.btn-sample:hover { border-color: var(--accent); color: var(--accent); }
+.btn-sample::before { content: "↓ "; font-weight: 400; opacity: 0.6; margin-right: 0.15rem; }
+@media (max-width: 640px) {
+  .sample-banner-inner { grid-template-columns: 1fr; text-align: center; padding: 1.4rem 1.5rem; }
+  .sample-banner-buttons { justify-content: center; }
+}
+
 .btn-outline {
   display: inline-block; padding: 0.7rem 1.4rem;
   border: 1px solid var(--border); border-radius: 6px;
@@ -202,6 +236,20 @@ footer .links a { color: var(--muted); margin: 0 0.6rem; }
   <p class="subtitle">No subscriptions. No upsells. Three ways to take Take 139, priced for the depth of what you receive.</p>
   <p class="intro">A counselor session in San Diego averages $150-$300. Take 139 gives you and your partner a 30-page personalized walkthrough &mdash; with prayer, scripture, and date-night discussion prompts &mdash; for less than the cost of dinner.</p>
 </section>
+
+<div class="sample-banner">
+  <div class="sample-banner-inner">
+    <div class="sample-banner-text">
+      <div class="eyebrow-mini">See it before you buy it</div>
+      <h3>Two free sample PDFs, no email required.</h3>
+      <p>Real format, real depth. Download a sample profile and walkthrough so you know exactly what you'll receive.</p>
+    </div>
+    <div class="sample-banner-buttons">
+      <a href="/Take139-Sample-Profile.pdf" class="btn-sample" download>Sample Profile</a>
+      <a href="/Take139-Sample-Walkthrough.pdf" class="btn-sample" download>Sample Walkthrough</a>
+    </div>
+  </div>
+</div>
 
 <section class="pricing-grid">
   <div class="tier">
