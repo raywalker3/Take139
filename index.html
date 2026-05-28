@@ -255,39 +255,44 @@ body.in-synthesis .topnav { display: none; }
 
 /* ── Founder ── */
 .founder {
-  max-width: 980px; margin: 3rem auto 0; padding: 0 1.5rem;
+  max-width: 1080px; margin: 3rem auto 0; padding: 0 1.5rem;
 }
 .founder-card {
-  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
-  padding: 2.25rem; display: grid;
-  grid-template-columns: 200px 1fr; gap: 2rem; align-items: center;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 2.5rem; display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 2.5rem; align-items: center;
+  overflow: hidden;
 }
 .founder-photo {
-  width: 200px; height: 200px; border-radius: 50%; overflow: hidden;
+  border-radius: 8px; overflow: hidden;
   background: var(--surface-2); border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--faint); font-size: 0.78rem; letter-spacing: 0.14em;
-  text-transform: uppercase; font-weight: 600; text-align: center; padding: 0.5rem;
+  aspect-ratio: 1100 / 1020;
+  position: relative;
 }
-.founder-photo img { width: 100%; height: 100%; object-fit: cover; }
+.founder-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.founder-caption {
+  font-family: var(--font-heading); font-style: italic; color: var(--faint);
+  font-size: 0.86rem; text-align: center; margin-top: 0.7rem;
+}
 .founder-body h2 {
-  font-family: var(--font-heading); font-size: 1.8rem; font-weight: 500;
-  margin-bottom: 0.25rem;
+  font-family: var(--font-heading); font-size: 2rem; font-weight: 500;
+  margin-bottom: 0.3rem; line-height: 1.15;
 }
 .founder-body .founder-title {
   font-family: var(--font-heading); font-style: italic; color: var(--muted);
-  margin-bottom: 1rem; font-size: 1.02rem;
+  margin-bottom: 1.1rem; font-size: 1.05rem;
 }
-.founder-body p { color: var(--muted); margin-bottom: 0.85rem; font-size: 0.96rem; line-height: 1.7; }
-.founder-creds { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 0.85rem; }
+.founder-body p { color: var(--muted); margin-bottom: 0.9rem; font-size: 0.96rem; line-height: 1.7; }
+.founder-creds { display: flex; flex-wrap: wrap; gap: 0.55rem; margin-top: 1rem; }
 .founder-creds .cred {
   background: var(--bg); border: 1px solid var(--border); border-radius: 999px;
-  padding: 0.32rem 0.85rem; font-size: 0.78rem; color: var(--text); font-weight: 500;
+  padding: 0.35rem 0.9rem; font-size: 0.78rem; color: var(--text); font-weight: 500;
 }
-@media (max-width: 720px) {
-  .founder-card { grid-template-columns: 1fr; text-align: center; padding: 1.85rem; }
-  .founder-photo { margin: 0 auto; width: 160px; height: 160px; }
+@media (max-width: 860px) {
+  .founder-card { grid-template-columns: 1fr; gap: 1.75rem; padding: 1.85rem; text-align: center; }
+  .founder-photo { max-width: 480px; margin: 0 auto; }
   .founder-creds { justify-content: center; }
+  .founder-body h2 { font-size: 1.7rem; }
 }
 
 /* ── Testimonials ── */
@@ -1653,9 +1658,11 @@ body.in-synthesis .topnav { display: none; }
   <!-- FOUNDER -->
   <div class="founder">
     <div class="founder-card">
-      <div class="founder-photo">
-        <!-- Replace this entire <div class="founder-photo"> contents with: <img src="/images/chris-hilken.jpg" alt="Dr. Christopher Hilken"> -->
-        Photo of Dr. Hilken
+      <div>
+        <div class="founder-photo">
+          <img src="/images/chris-carolyn-wedding.jpg" alt="Dr. Christopher Hilken with his wife Carolyn on their wedding day" loading="lazy">
+        </div>
+        <p class="founder-caption">With my wife Carolyn on our wedding day.</p>
       </div>
       <div class="founder-body">
         <h2>Dr. Christopher Hilken</h2>
