@@ -827,6 +827,74 @@ body.in-synthesis .topnav { display: none; }
   margin: 0 0 0.5rem 0;
   font-weight: 400;
 }
+/* Bulleted list inside the email-delivery card — communicates the depth of the PDF */
+.email-delivery-list {
+  margin: 1.25rem 0 1rem;
+  padding-left: 1.1rem;
+  list-style: none;
+}
+.email-delivery-list li {
+  position: relative; padding-left: 1.1rem; margin-bottom: 0.7rem;
+  color: var(--text); font-size: 0.95rem; line-height: 1.6;
+}
+.email-delivery-list li::before {
+  content: "•"; position: absolute; left: 0; top: 0;
+  color: var(--accent); font-weight: 700; font-size: 1.05rem;
+}
+.email-delivery-list li strong { color: var(--text); font-weight: 600; }
+.email-delivery-foot {
+  font-family: var(--font-heading); font-style: italic;
+  font-size: 0.88rem; color: var(--muted);
+  margin-top: 1rem; line-height: 1.6;
+}
+
+/* ── Snapshot banner on the couples synthesis screen ── */
+.snapshot-banner {
+  margin: 2rem auto 2.5rem; max-width: 760px;
+  padding: 2rem 2rem 1.75rem;
+  background: rgba(138, 74, 44, 0.05);
+  border: 1.5px solid var(--accent);
+  border-radius: 12px;
+  text-align: left;
+}
+.snapshot-banner-eyebrow {
+  font-size: 0.78rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--accent); font-weight: 700; margin-bottom: 0.55rem;
+}
+.snapshot-banner-title {
+  font-family: var(--font-heading); font-size: clamp(1.65rem, 3.2vw, 2rem);
+  font-weight: 500; color: var(--text); margin: 0 0 0.95rem;
+  line-height: 1.2;
+}
+.snapshot-banner-copy {
+  color: var(--muted); font-size: 1rem; line-height: 1.65;
+  margin-bottom: 1.4rem;
+}
+.snapshot-banner-copy strong { color: var(--text); font-weight: 600; }
+.snapshot-banner-list {
+  margin: 0 0 1.4rem;
+  padding-left: 1.1rem;
+  list-style: none;
+}
+.snapshot-banner-list li {
+  position: relative; padding-left: 1.25rem; margin-bottom: 0.7rem;
+  color: var(--text); font-size: 0.96rem; line-height: 1.6;
+}
+.snapshot-banner-list li::before {
+  content: "•"; position: absolute; left: 0; top: 0;
+  color: var(--accent); font-weight: 700; font-size: 1.1rem;
+}
+.snapshot-banner-list li strong { color: var(--text); font-weight: 600; }
+.snapshot-banner-foot {
+  font-family: var(--font-heading); font-style: italic;
+  font-size: 0.92rem; color: var(--muted);
+  margin: 1.1rem 0 1.25rem; line-height: 1.6; text-align: center;
+}
+.snapshot-banner-actions {
+  text-align: center;
+}
+.snapshot-banner-actions .btn { display: inline-block; }
+
 .email-delivery-copy {
   color: var(--muted);
   line-height: 1.6;
@@ -4914,11 +4982,21 @@ function showResults() {
       <p class="pair-section-footnote">Codes expire after 30 days for privacy.</p>
     </div>
 
-    <!-- REPORT DELIVERY — confirmation only; submission already happened at the finalize gate. -->
+    <!-- REPORT DELIVERY — confirmation only; submission already happened at the finalize gate.
+         The page above is a snapshot; the real depth is in the PDF we just emailed. -->
     <div class="email-delivery" id="emailDelivery">
-      <div class="email-delivery-label">Report Sent</div>
-      <h3 class="email-delivery-title">Your full PDF is on its way.</h3>
-      <p class="email-delivery-copy">We've emailed your complete profile and walkthrough to <strong>${(window._finalizedEmail || 'your inbox').replace(/</g, '&lt;')}</strong>. If you don't see it in a few minutes, check spam, or write to us at <a href="mailto:hello@take139.com">hello@take139.com</a>.</p>
+      <div class="email-delivery-label">This page is a snapshot</div>
+      <h3 class="email-delivery-title">The real walkthrough is in your inbox.</h3>
+      <p class="email-delivery-copy">We've just emailed <strong>${(window._finalizedEmail || 'your inbox').replace(/</g, '&lt;')}</strong> two PDFs written specifically for you — a complete <strong>Personal Profile</strong> and your <strong>full Walkthrough</strong>. They go far deeper than what you see on this page.</p>
+      <ul class="email-delivery-list">
+        <li><strong>A pastoral reading</strong> of your archetype in your own voice — your trigger, the core question driving it, the mechanism you reach for, and the breakdown pattern when it overheats.</li>
+        <li><strong>Personalized behavioral markers</strong> — specific moments your archetype shows up that you may have never connected to a single root.</li>
+        <li><strong>The gospel truth specific to your pattern</strong> — not a generic verse, but Scripture applied directly to the question your conflict is really asking.</li>
+        <li><strong>Reflection questions</strong> for sitting with the report yourself, and discussion questions for your partner or counselor.</li>
+        <li><strong>A written prayer</strong> for your specific archetype.</li>
+        <li><strong>Practical commitments</strong> to interrupt the pattern this week, drawn from attachment theory, biblical counseling, and family systems work.</li>
+      </ul>
+      <p class="email-delivery-foot">If you don't see the email in a few minutes, check spam, or open your dashboard to download both PDFs directly. Questions? <a href="mailto:hello@take139.com">hello@take139.com</a>.</p>
       <!-- Hidden legacy inputs kept so any older code paths that read them don't error. -->
       <input type="hidden" id="emailInput" value="${(window._finalizedEmail || '').replace(/"/g, '&quot;')}">
       <div class="email-status" id="emailStatus"></div>
@@ -6076,9 +6154,29 @@ function renderSynthesis(me, partner) {
   const container = document.getElementById('synthesisContent');
   container.innerHTML = `
     <div class="synthesis-hero">
-      <div class="synthesis-eyebrow">Take 139 · Couples Synthesis</div>
+      <div class="synthesis-eyebrow">Take 139 · Couples Snapshot</div>
       <h1 class="synthesis-title">${myFirstName} &amp; ${partnerFirstName}</h1>
       <p class="synthesis-subtitle">A counselor's reading of your two profiles together. What to anticipate, what to be cautious of, and what each of you can commit to.</p>
+    </div>
+
+    <!-- Snapshot vs. real walkthrough banner — the magic isn't on this screen,
+         it's in the 30+ page PDF that landed in both partners' inboxes. -->
+    <div class="snapshot-banner">
+      <div class="snapshot-banner-eyebrow">This page is a snapshot</div>
+      <h2 class="snapshot-banner-title">The real walkthrough is in your inboxes.</h2>
+      <p class="snapshot-banner-copy">We've emailed both of you a <strong>30+ page Couples Walkthrough PDF</strong>, written specifically for an ${(me.primary_mechanism||'').toLowerCase()} paired with ${(partner.primary_mechanism||'').toLowerCase()=='architect'?'an':'a'} ${(partner.primary_mechanism||'').toLowerCase()}. It is not a generic report. It calls you both by name, knows your specific archetypes, and walks through your particular pattern of conflict in pastoral and theological depth.</p>
+      <ul class="snapshot-banner-list">
+        <li><strong>A side-by-side reading</strong> of how your two profiles meet under stress — the exact friction points to expect, named and traced to their roots.</li>
+        <li><strong>The gift each of you brings the other</strong> — the specific way your wiring serves your spouse that they may not yet be able to articulate.</li>
+        <li><strong>The collision pattern unique to your pairing</strong> — what gets triggered, what each of you does next, and where the loop has historically broken down.</li>
+        <li><strong>A written prayer</strong> for the two of you together, rooted in Scripture.</li>
+        <li><strong>A five-round date-night appendix</strong> with conversation prompts written specifically for your pairing — questions you'll never get from a generic premarital book.</li>
+        <li><strong>Pastoral commitments</strong> each of you can make this week to honor what the other carries.</li>
+      </ul>
+      <p class="snapshot-banner-foot">Check your inbox now. If it isn't there, check spam, or open your dashboard to download it directly.</p>
+      <div class="snapshot-banner-actions">
+        <a href="/dashboard.html" class="btn btn-primary">Open my dashboard →</a>
+      </div>
     </div>
 
     <div class="synthesis-overview">
@@ -6089,7 +6187,7 @@ function renderSynthesis(me, partner) {
     ${pairSection}
 
     <div class="synthesis-actions">
-      <button class="btn btn-primary" onclick="window.print()">Print / Save as PDF</button>
+      <button class="btn btn-primary" onclick="window.print()">Print this snapshot</button>
       <button class="btn btn-secondary" onclick="backToResults()">Back to my profile</button>
     </div>
   `;
