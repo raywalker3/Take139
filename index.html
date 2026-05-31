@@ -4463,11 +4463,18 @@ function showFinalize() {
   const accessCode = (typeof window._currentAccessCode !== 'undefined' && window._currentAccessCode) || '';
   const isCoupleCode = /^COUPLE-/i.test(accessCode);
 
-  // Try to pre-fill from a signed-in user's session, if available.
-  // (auth-loaded session writes to window._authUser when /auth/me succeeds.)
+  // Pre-fill priority:
+  //   1. Signed-in user (window._authUser, hydrated by /auth/me) — locked
+  //   2. Buyer email from the access-code link's ?buyer= param — confirm-or-change
+  //   3. Empty — cold ask (rare: someone bypassed the email flow entirely)
   const prefName = (window._authUser && window._authUser.name) || '';
-  const prefEmail = (window._authUser && window._authUser.email) || '';
-  const emailLocked = !!prefEmail;
+  const authEmail = (window._authUser && window._authUser.email) || '';
+  const buyerEmail = window._prefilledEmail
+    || (function(){ try { return sessionStorage.getItem('t139_buyer_email') || ''; } catch(_) { return ''; } })()
+    || '';
+  const prefEmail = authEmail || buyerEmail || '';
+  const emailLocked = !!authEmail; // signed in = locked; buyer prefill = editable
+  const emailIsConfirmation = !emailLocked && !!buyerEmail;
 
   const container = document.getElementById('finalizeContent');
   container.innerHTML = `
@@ -4486,11 +4493,17 @@ function showFinalize() {
         </div>
 
         <div class="finalize-field">
-          <label class="finalize-label" for="finalizeEmail">Your email</label>
+          <label class="finalize-label" for="finalizeEmail">
+            ${emailIsConfirmation ? 'Send my report to' : 'Your email'}
+          </label>
           <input class="finalize-input" id="finalizeEmail" type="email" autocomplete="email" required
                  value="${(prefEmail || '').replace(/"/g, '&quot;')}"
                  ${emailLocked ? 'readonly title="You\'re signed in. Edit your email from the Account page."' : 'placeholder="you@example.com"'}>
-          ${emailLocked ? '<p class="finalize-help">Signed in as ' + prefEmail + '.</p>' : ''}
+          ${emailLocked
+            ? `<p class="finalize-help">Signed in as ${prefEmail}.</p>`
+            : (emailIsConfirmation
+                ? `<p class="finalize-help">From your purchase. <a href="#" onclick="clearPrefilledEmail(event)" style="color:var(--accent);">Use a different email →</a></p>`
+                : '')}
         </div>
 
         ${isCoupleCode ? `
@@ -4516,6 +4529,26 @@ function showFinalize() {
     if (nameEl && !nameEl.value) nameEl.focus();
     else if (emailEl && !emailEl.value) emailEl.focus();
   }, 50);
+}
+
+// Lets the user override the pre-filled buyer email at the finalize gate.
+// Clears the value, drops the "From your purchase" caption, focuses the field.
+function clearPrefilledEmail(ev) {
+  if (ev && ev.preventDefault) ev.preventDefault();
+  window._prefilledEmail = '';
+  try { sessionStorage.removeItem('t139_buyer_email'); } catch (_) {}
+  // Re-render the finalize gate so the label flips back to "Your email"
+  // and the caption disappears. Preserves any partner email already typed.
+  const partnerEl = document.getElementById('finalizePartnerEmail');
+  const partnerVal = partnerEl ? partnerEl.value : '';
+  showFinalize();
+  // Restore in-flight partner email after re-render and clear the user's email field.
+  setTimeout(() => {
+    const emailEl = document.getElementById('finalizeEmail');
+    if (emailEl) { emailEl.value = ''; emailEl.focus(); }
+    const partnerElAfter = document.getElementById('finalizePartnerEmail');
+    if (partnerElAfter && partnerVal) partnerElAfter.value = partnerVal;
+  }, 30);
 }
 
 async function submitFinalize(ev) {
@@ -5519,9 +5552,19 @@ document.addEventListener('keydown', (e) => {
   const params = new URLSearchParams(window.location.search);
   const stripeSession = params.get('stripe_session');
   const codeParam = params.get('code');
+  const buyerParam = params.get('buyer');
   const cancelled = params.get('stripe_cancelled');
 
-  if (stripeSession || codeParam || cancelled) {
+  // If the post-purchase email link carried ?buyer=<email>, stash it so the
+  // finalize gate can pre-fill the email field instead of asking cold.
+  // We persist to sessionStorage too so it survives the URL cleanup below and
+  // any incidental page navigation during the assessment.
+  if (buyerParam) {
+    window._prefilledEmail = buyerParam;
+    try { sessionStorage.setItem('t139_buyer_email', buyerParam); } catch (_) {}
+  }
+
+  if (stripeSession || codeParam || cancelled || buyerParam) {
     window.history.replaceState({}, '', window.location.pathname);
   }
 
