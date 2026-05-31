@@ -782,6 +782,28 @@ body.in-synthesis .topnav { display: none; }
 }
 
 /* ── EMAIL DELIVERY ── */
+/* ── Dashboard CTA after results ── */
+.dashboard-cta {
+  margin: 2rem 0; padding: 2rem 1.85rem;
+  background: rgba(138, 74, 44, 0.05);
+  border: 1px solid var(--accent);
+  border-radius: 12px; text-align: center;
+}
+.dashboard-cta-title {
+  font-family: var(--font-heading); font-size: 1.45rem; font-weight: 500;
+  color: var(--text); margin: 0 0 0.55rem;
+}
+.dashboard-cta-copy {
+  color: var(--muted); font-size: 0.96rem; line-height: 1.6;
+  margin: 0 auto 1.25rem; max-width: 480px;
+}
+.dashboard-cta .btn { display: inline-block; }
+.dashboard-cta-foot {
+  font-family: var(--font-heading); font-style: italic;
+  font-size: 0.85rem; color: var(--faint);
+  margin: 1rem auto 0; max-width: 460px;
+}
+
 .email-delivery {
   margin-top: 3rem;
   padding: 2rem 1.75rem;
@@ -1734,7 +1756,7 @@ body.in-synthesis .topnav { display: none; }
       <li><a href="pricing.html">Pricing</a></li>
       <li><a href="faq.html" class="hide-mobile">FAQ</a></li>
       <li><a href="for-churches.html" class="hide-mobile">For Churches</a></li>
-      <li><a href="sign-in.html" class="cta">Sign In</a></li>
+      <li><a href="sign-in.html" class="cta" id="navSignInLink">Sign In</a></li>
     </ul>
   </div>
 </nav>
@@ -4651,6 +4673,18 @@ async function submitFinalize(ev) {
     window._pairCode = data.pair_code;
     window._finalizedName = name;
     window._finalizedEmail = email;
+
+    // Auto-issued session: the backend mints a user session token on /submit
+    // so the user can drop straight into their dashboard without going through
+    // sign-in. Store it in localStorage so /auth/me sees them as signed in.
+    if (data.session_token) {
+      try {
+        localStorage.setItem('t139_token', data.session_token);
+        if (data.user_email) localStorage.setItem('t139_email', data.user_email);
+        window._authUser = { name: name, email: data.user_email || email };
+      } catch (_) { /* localStorage disabled — dashboard CTA still works via magic link */ }
+    }
+
     // Continue to results, now in display-only mode (no re-submit needed).
     showResults();
   } catch (err) {
@@ -4888,6 +4922,15 @@ function showResults() {
       <!-- Hidden legacy inputs kept so any older code paths that read them don't error. -->
       <input type="hidden" id="emailInput" value="${(window._finalizedEmail || '').replace(/"/g, '&quot;')}">
       <div class="email-status" id="emailStatus"></div>
+    </div>
+
+    <!-- DASHBOARD CTA — the user's session was auto-issued at /submit, so this
+         lands them straight in their dashboard with no sign-in friction. -->
+    <div class="dashboard-cta">
+      <h3 class="dashboard-cta-title">Want everything in one place?</h3>
+      <p class="dashboard-cta-copy">Your personal dashboard holds your profile, your full walkthrough, your couples report when you're paired, and your date-night appendix. You're already signed in — just one click.</p>
+      <a href="/dashboard.html" class="btn btn-primary">Go to my dashboard →</a>
+      <p class="dashboard-cta-foot">You can also sign in any time from take139.com with the email you used today.</p>
     </div>
 
     <!-- ACTIONS -->
@@ -5287,7 +5330,8 @@ document.addEventListener('DOMContentLoaded', function() {
   document.body.classList.add('in-welcome');
   checkEnforcement();
   // Best-effort auth hydration so the finalize gate can pre-fill name + email
-  // for signed-in users. Silent failure is fine — the gate still works.
+  // for signed-in users, AND so the top nav can swap 'Sign In' → 'My Dashboard'.
+  // Silent failure is fine — the gate still works without it.
   (async function hydrateAuth() {
     try {
       const token = localStorage.getItem('t139_token');
@@ -5295,10 +5339,20 @@ document.addEventListener('DOMContentLoaded', function() {
       const res = await fetch(BACKEND_URL + '/auth/me', {
         headers: { 'Authorization': 'Bearer ' + token },
       });
-      if (!res.ok) return;
+      if (!res.ok) {
+        // Invalid/expired — clear so the user can re-sign-in cleanly.
+        localStorage.removeItem('t139_token');
+        return;
+      }
       const me = await res.json();
       if (me && (me.name || me.email)) {
         window._authUser = { name: me.name || '', email: me.email || '' };
+        // Swap the top-nav Sign In CTA → My Dashboard.
+        const navLink = document.getElementById('navSignInLink');
+        if (navLink) {
+          navLink.textContent = 'My Dashboard';
+          navLink.setAttribute('href', '/dashboard.html');
+        }
       }
     } catch (_) { /* silent */ }
   })();
