@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Service &mdash; Take 139</title><link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #f5f1e8;
+  --surface: #efe9dc;
+  --surface-2: #e8e1d0;
+  --border: #d8cfba;
+  --hairline: rgba(29, 29, 27, 0.12);
+  --text: #1d1d1b;
+  --muted: #5d564b;
+  --faint: #8b8475;
+  --accent: #8a4a2c;
+  --accent-hover: #6f3a23;
+  --font-heading: 'Fraunces', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+html { font-size: 16px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-image:
+    radial-gradient(rgba(0,0,0,0.012) 1px, transparent 1px),
+    radial-gradient(rgba(0,0,0,0.010) 1px, transparent 1px);
+  background-size: 24px 24px, 36px 36px;
+  background-position: 0 0, 12px 18px;
+  background-attachment: fixed;
+}
+
+h1, h2, h3, h4 { font-family: var(--font-heading); }
+h1 { font-variation-settings: 'opsz' 120; letter-spacing: -0.015em; }
+h2 { font-variation-settings: 'opsz' 80;  letter-spacing: -0.012em; }
+h3 { font-variation-settings: 'opsz' 30; }
+
+/* ── TOP NAV ── */
+.topnav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(245, 241, 232, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--hairline);
+}
+.topnav-inner {
+  max-width: 1100px; margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 2rem;
+}
+.topnav-brand {
+  font-family: var(--font-heading); font-size: 1.25rem; font-weight: 600;
+  color: var(--text); text-decoration: none;
+  letter-spacing: -0.01em;
+}
+.topnav-links {
+  display: flex; align-items: center; gap: 2rem;
+  list-style: none;
+}
+.topnav-links a {
+  font-family: var(--font-body); font-size: 0.92rem; font-weight: 500;
+  color: var(--muted); text-decoration: none;
+  transition: color 0.2s;
+}
+.topnav-links a:hover { color: var(--accent); }
+.topnav-links a.active { color: var(--text); }
+.topnav-links a.cta {
+  color: var(--bg); background: var(--text);
+  padding: 0.55rem 1.2rem; border-radius: 999px;
+  transition: background 0.2s;
+}
+.topnav-links a.cta:hover { background: #2a2a26; color: var(--bg); }
+@media (max-width: 700px) {
+  .topnav-inner { padding: 0.85rem 1rem; gap: 0.5rem; }
+  .topnav-links { gap: 1rem; }
+  .topnav-links a { font-size: 0.85rem; }
+  .topnav-links a.cta { padding: 0.45rem 1rem; }
+  /* Hide one link on very narrow screens to save room */
+  .topnav-links .hide-mobile { display: none; }
+}
+
+/* ── PAGE LAYOUT ── */
+.page {
+  max-width: 760px; margin: 0 auto;
+  padding: 4rem 1.5rem 6rem;
+}
+.page-eyebrow {
+  font-family: var(--font-body); font-size: 0.7rem;
+  letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--accent); font-weight: 600;
+  margin-bottom: 1rem;
+}
+.page-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 5vw, 3.75rem); font-weight: 600;
+  line-height: 1.0; color: var(--text);
+  font-variation-settings: 'opsz' 144; letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+.page-title .marked { position: relative; display: inline-block; }
+.page-title .marked::after {
+  content: '';
+  position: absolute; left: -4px; right: -4px; bottom: -8px; height: 14px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 14' preserveAspectRatio='none'><path d='M2 9 Q 55 2 110 8 T 218 7' fill='none' stroke='%238a4a2c' stroke-width='2.5' stroke-linecap='round'/></svg>");
+  background-repeat: no-repeat; background-size: 100% 100%;
+  pointer-events: none;
+}
+.page-lede {
+  font-family: var(--font-heading); font-size: 1.25rem; font-style: italic;
+  color: var(--muted); line-height: 1.55; max-width: 36rem;
+  margin-bottom: 3rem;
+  font-variation-settings: 'opsz' 14;
+}
+
+section + section { margin-top: 3.5rem; }
+.section-eyebrow {
+  font-family: var(--font-body); font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 0.75rem;
+}
+section h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.85rem, 3.5vw, 2.5rem); font-weight: 600;
+  color: var(--text); line-height: 1.15;
+  font-variation-settings: 'opsz' 100;
+  margin-bottom: 1.25rem;
+}
+section h3 {
+  font-family: var(--font-heading); font-size: 1.35rem; font-weight: 600;
+  color: var(--text); margin-top: 2rem; margin-bottom: 0.75rem;
+  font-variation-settings: 'opsz' 30;
+}
+section p {
+  color: var(--text); font-size: 1.02rem; line-height: 1.75;
+  margin-bottom: 1.1rem;
+}
+section p em {
+  font-family: var(--font-heading); font-style: italic;
+  color: var(--text);
+}
+section ul, section ol {
+  color: var(--text); font-size: 1.02rem; line-height: 1.75;
+  margin: 0 0 1.5rem 1.5rem;
+}
+section ul li, section ol li { margin-bottom: 0.4rem; }
+
+.callout {
+  margin: 2rem 0; padding: 1.5rem 1.75rem;
+  background: var(--surface);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+}
+.callout p:last-child { margin-bottom: 0; }
+.callout .callout-label {
+  font-size: 0.7rem; letter-spacing: 0.28em;
+  text-transform: uppercase; color: var(--accent);
+  font-weight: 700; margin-bottom: 0.5rem;
+}
+
+.divider {
+  width: 48px; height: 0.5px;
+  background: var(--text);
+  margin: 4rem auto;
+}
+
+.cta-row {
+  display: flex; gap: 0.75rem; flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+.btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0.85rem 1.85rem; border-radius: 999px; border: none;
+  font-family: var(--font-body); font-size: 0.95rem; font-weight: 500;
+  cursor: pointer; transition: all 0.2s ease;
+  text-decoration: none;
+}
+.btn-primary { background: var(--text); color: var(--bg); }
+.btn-primary:hover { background: #2a2a26; }
+.btn-secondary {
+  background: transparent; color: var(--text);
+  border: 1.5px solid var(--text);
+}
+.btn-secondary:hover { background: var(--text); color: var(--bg); }
+
+/* ── BIBLIOGRAPHY ── */
+.bib {
+  list-style: none; margin-left: 0;
+}
+.bib li {
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--hairline);
+  font-size: 0.95rem; line-height: 1.6;
+}
+.bib li:last-child { border-bottom: 1px solid var(--hairline); }
+.bib-author { font-weight: 600; color: var(--text); }
+.bib-work {
+  font-family: var(--font-heading); font-style: italic;
+  color: var(--text); font-variation-settings: 'opsz' 14;
+}
+.bib-note {
+  display: block; color: var(--muted); font-size: 0.88rem; margin-top: 0.2rem;
+}
+
+/* ── FOOTER ── */
+.footer {
+  border-top: 1px solid var(--hairline);
+  margin-top: 6rem; padding: 2.5rem 1.5rem;
+  text-align: center; color: var(--faint);
+  font-size: 0.85rem;
+}
+.footer a { color: var(--muted); text-decoration: underline; }
+.footer a:hover { color: var(--text); }
+</style>
+
+<!-- Favicon + Open Graph -->
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icons/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/icons/favicon-180.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="How It Works · Take 139">
+<meta property="og:description" content="The four-part diagnostic — triggers, core question, mechanism, breakdown — and the scholarship behind it.">
+<meta property="og:image" content="https://take139.com/og-image.png">
+<meta property="og:url" content="https://take139.com/how-it-works.html">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How It Works · Take 139">
+<meta name="twitter:description" content="The four-part diagnostic — triggers, core question, mechanism, breakdown — and the scholarship behind it.">
+<meta name="twitter:image" content="https://take139.com/og-image.png">
+<meta name="description" content="Terms of service for Take 139 and IMAGO pastoral diagnostics. Refund policy, acceptable use, intellectual property.">
+
+</head>
+<body>
+
+<!-- ════════════ TOP NAVIGATION ════════════ -->
+<nav class="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="topnav-brand">Take 139</a>
+    <ul class="topnav-links">
+      <li><a href="how-it-works.html">How It Works</a></li>
+      <li><a href="about.html" class="hide-mobile">About</a></li>
+      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="faq.html" class="hide-mobile">FAQ</a></li>
+      <li><a href="for-churches.html" class="hide-mobile">For Churches</a></li>
+      <li><a href="sign-in.html" class="cta">Sign In</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="page">
+
+  <div class="page-eyebrow">Last updated May 30, 2026</div>
+  <h1 class="page-title">Terms of <span class="marked">Service</span></h1>
+  <p class="page-lede">These are the rules of the road for using Take 139 and IMAGO. We've tried to keep them human and short. By taking an assessment, buying a code, or signing into a dashboard, you are agreeing to what's below.</p>
+
+  <section>
+    <div class="section-eyebrow">Section One</div>
+    <h2>What Take 139 and IMAGO are &mdash; and what they're not</h2>
+    <p>Take 139 and IMAGO are <strong>pastoral diagnostic tools</strong>. They are designed to help individuals and couples name patterns in their inner life and their relationship that may otherwise go unnamed. They are written by a senior pastor with seminary training in theology and counseling, and they draw on attachment theory, family systems work, biblical counseling, and a Christian theological frame.</p>
+    <p>They are <strong>not clinical assessments</strong>. They are not psychiatric diagnoses. They are not therapy. They are not a substitute for working with a licensed mental-health professional, a pastoral counselor, or a physician if you are facing serious distress. If you are in crisis &mdash; suicidal, in danger, or unsafe &mdash; please call 988 (in the US) or your local emergency number and contact a qualified professional. Take 139 cannot help with that, and was never designed to.</p>
+    <div class="callout">
+      <div class="callout-label">Plain language</div>
+      <p>If reading your report makes something hard surface, please bring it to a counselor, a pastor, or a trusted friend. The report can be a starting place for that conversation. It is not the whole conversation.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-eyebrow">Section Two</div>
+    <h2>Who can use the service</h2>
+    <p>You must be at least 16 years old to take an assessment. By using Take 139 or IMAGO, you confirm that you are 16 or older and that the information you provide is your own.</p>
+    <p>Couples Reports are designed for two adults who have both chosen to participate. Do not submit an assessment on behalf of someone else without their consent.</p>
+  </section>
+
+  <section>
+    <div class="section-eyebrow">Section Three</div>
+    <h2>What you pay for, and what you get</h2>
+    <p>Pricing is listed on the <a href="pricing.html">pricing page</a> and at checkout. At the time these terms were last updated:</p>
+    <ul>
+      <li><strong>Single ($20)</strong> &mdash; one assessment, personal report, full walkthrough PDF</li>
+      <li><strong>Couple ($40)</strong> &mdash; two assessments, two personal reports, two walkthroughs, one Couples Report</li>
+      <li><strong>Connection Add-On ($10)</strong> &mdash; pair two existing single-tier accounts into a Couples Report</li>
+    </ul>
+    <p>All prices are in US dollars. Payment is processed by Stripe. Once payment clears, your access code is delivered by email and is yours to use at any time.</p>
+  </section>
+
+  <section>
+    <div class="section-eyebrow">Section Four</div>
+    <h2>Refund policy</h2>
+    <p>Take 139 and IMAGO are pastoral diagnostics. The report is delivered as soon as you complete the assessment &mdash; there is no way for us to "take back" what you've already read. For that reason, we do not offer general satisfaction-based refunds: the value of the report is in the reading of it, and a refund mechanism would invite the reader to dismiss what they found uncomfortable as a reason not to pay.</p>
+    <p><strong>We do refund in these specific cases:</strong></p>
+    <ul>
+      <li><strong>Technical failure.</strong> If the assessment crashes, the report fails to generate, or the email never arrives and we cannot recover it, we will refund in full.</li>
+      <li><strong>Duplicate charge.</strong> If Stripe accidentally charges you twice for the same access code, the duplicate is refunded immediately.</li>
+      <li><strong>Bought in error.</strong> If you purchase but never use the access code (no assessment submitted, no report generated), we will refund within 30 days of purchase on request.</li>
+    </ul>
+    <p>To request a refund in any of these cases, write to <a href="mailto:hello@take139.com">hello@take139.com</a> with your order details.</p>
+    <p>If reading your report surfaces something painful, that is the report doing what it was made to do. Please bring it to a counselor, pastor, or trusted friend. That is not a refund situation.</p>
+  </section>
+
+  <section>
+    <div class="section-eyebrow">Section Five</div>
+    <h2>Access codes, pair codes, and account ownership</h2>
+    <p>When you buy, you receive an access code by email. Access codes are single-use for SINGLE and COUPLE tiers, and are tied to whoever first redeems them. CONNECT codes are single-use and bind one specific pair of profiles together.</p>
+    <p>Your dashboard account is tied to the email address you used at finalize. If you lose access to that email, write to <a href="mailto:hello@take139.com">hello@take139.com</a> and we will help you recover it after verifying your identity.</p>
+    <p>You may not resell, redistribute, or share access codes commercially. They are licensed to you for personal pastoral use.</p>
+  </section>
+
+  <section>
+    <div class="section-eyebrow">Section Six</div>
+    <h2>Re-pairing and the orphan-notification email</h2>
+    <p>If you choose to break a current Couples bond and pair with someone new from your dashboard, your previous partner will automatically receive a short, pastoral email letting them know the pairing has been archived. This is not punitive &mdash; it is a matter of basic honesty. We will not facilitate quiet, undisclosed re-pairings.</p>
+    <p>The first five re-pairs on each account are free. After that, additional re-pairs require a Connection Add-On ($10). A 30-day cooldown sits between successive re-pairs.</p>
+  </section>
+
+  <section>
+    <div class="section-eyebrow">Section Seven</div>
+    <h2>Intellectual property</h2>
+    <p>The assessments, item bank, scoring methodology, archetype framework, written walkthroughs, illustrations, and all other content on this site are the original work of Dr. Christopher Hilken and are protected by copyright. You may share your own report freely (it's yours), and you may share quotes from the site for the purpose of review or recommendation. You may not copy, republish, or commercially redistribute the assessments, the item bank, or the walkthroughs without prior written permission.</p>
+    <p>The name "Take 139" and the name "IMAGO" (in the context of this hardwiring profile) are claimed as trademarks.</p>
+  </section>
+
+  <section>
+    <div class="section-eyebrow">Section Eight</div>
+    <h2>Acceptable use</h2>
+    <p>Don't submit assessments on someone else's behalf without their knowledge. Don't attempt to break into other people's accounts. Don't use automated tools to harvest item banks or report content. Don't use the service to harass another person.</p>
+    <p>We reserve the right to suspend or terminate access for any account that violates these rules, with a full refund of any unused access codes.</p>
+  </section>
+
+  <section>
+    <div class="section-eyebrow">Section Nine</div>
+    <h2>Disclaimers and limits of liability</h2>
+    <p>Take 139 and IMAGO are provided "as is." We make every reasonable effort to keep the service available, the reports accurate to the methodology, and the data safe &mdash; but we cannot guarantee uninterrupted uptime, error-free reports, or that any particular insight from a report will apply to your specific situation.</p>
+    <p>To the maximum extent allowed by law, our total liability for any claim arising from your use of the service is limited to the amount you paid us in the twelve months before the claim arose. We are not liable for indirect, consequential, or punitive damages.</p>
+    <p>None of the language in this section is intended to limit our liability for fraud, gross negligence, or anything else that the law does not allow us to limit.</p>
+  </section>
+
+  <section>
+    <div class="section-eyebrow">Section Ten</div>
+    <h2>Changes to these terms</h2>
+    <p>If we change these terms in any substantive way, we will update the "Last updated" date and email registered users in advance. Continued use of the service after a change takes effect counts as agreement to the new version.</p>
+  </section>
+
+  <section>
+    <div class="section-eyebrow">Section Eleven</div>
+    <h2>Governing law</h2>
+    <p>These terms are governed by the laws of the State of California, United States. Any dispute that cannot be resolved by writing to <a href="mailto:hello@take139.com">hello@take139.com</a> first will be brought in the state or federal courts located in San Diego County, California.</p>
+  </section>
+
+  <section>
+    <div class="section-eyebrow">Section Twelve</div>
+    <h2>Contact</h2>
+    <p style="font-family:var(--font-heading); font-size:1.15rem; color:var(--text);"><a href="mailto:hello@take139.com">hello@take139.com</a></p>
+    <p style="font-size:0.92rem; color:var(--muted);">Dr. Christopher Hilken &middot; College Avenue Church &middot; San Diego, California, USA</p>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>Take 139 &middot; <em>Search me, O God, and know my heart.</em> &middot; Created by Dr. Christopher Hilken</p>
+  <p style="margin-top:0.4rem;">
+    <a href="about.html">About</a> &middot;
+    <a href="how-it-works.html">How It Works</a> &middot;
+    <a href="for-churches.html">For Churches</a> &middot;
+    <a href="faq.html">FAQ</a> &middot;
+    <a href="sign-in.html">Sign In</a>
+  </p>
+  <p style="margin-top:0.4rem; font-size:0.78rem; opacity:0.75;">
+    <a href="privacy.html">Privacy</a> &middot;
+    <a href="terms.html">Terms</a> &middot;
+    <a href="mailto:hello@take139.com">hello@take139.com</a>
+  </p>
+</footer>
+
+</body>
+</html>
