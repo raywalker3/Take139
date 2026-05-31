@@ -904,6 +904,113 @@ body.in-synthesis .topnav { display: none; }
   .pair-form .btn { width: 100%; }
 }
 
+/* ── Pair code row + copy button (simplified Connect card) ── */
+.pair-code-row {
+  display: flex; align-items: center; gap: 0.85rem;
+  padding: 0.4rem 0;
+}
+.pair-code-row .pair-code-display {
+  flex: 1; padding: 0;
+}
+.pair-code-copy {
+  font-family: var(--font-body); font-size: 0.82rem; font-weight: 600;
+  padding: 0.45rem 0.95rem; background: var(--bg);
+  border: 1px solid var(--border); border-radius: 6px;
+  color: var(--text); cursor: pointer;
+  letter-spacing: 0.04em; text-transform: uppercase;
+  transition: border-color 0.18s, background 0.18s, color 0.18s;
+}
+.pair-code-copy:hover { border-color: var(--accent); color: var(--accent); }
+.pair-code-copy.is-copied { background: #436b32; color: #fff; border-color: #436b32; }
+.pair-code-copy.is-warn { background: #c97300; color: #fff; border-color: #c97300; }
+
+/* ── Auto-pair status cards ── */
+.pair-auto {
+  margin: 1.5rem 0;
+}
+.pair-auto-card {
+  display: flex; gap: 1rem; align-items: flex-start;
+  padding: 1.15rem 1.25rem; border-radius: 10px;
+  background: var(--bg); border: 1px solid var(--border);
+}
+.pair-auto-card.pair-auto-ready {
+  background: rgba(138, 74, 44, 0.05);
+  border-color: var(--accent);
+}
+.pair-auto-card.pair-auto-paired {
+  background: rgba(67, 107, 50, 0.06);
+  border-color: #7ba36a;
+}
+.pair-auto-card.pair-auto-warn {
+  background: rgba(160, 64, 48, 0.05);
+  border-color: #c47c6e;
+}
+.pair-auto-icon {
+  flex: 0 0 auto;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: #436b32; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.95rem;
+  margin-top: 0.15rem;
+}
+.pair-auto-body { flex: 1; min-width: 0; }
+.pair-auto-title {
+  font-family: var(--font-heading); font-size: 1.05rem; font-weight: 500;
+  color: var(--text); margin-bottom: 0.3rem; line-height: 1.3;
+}
+.pair-auto-sub {
+  font-size: 0.92rem; line-height: 1.55; color: var(--muted);
+}
+.pair-auto-sub strong {
+  font-family: var(--font-heading); color: var(--accent); font-weight: 500;
+  letter-spacing: 0.06em;
+}
+.pair-auto-card .btn {
+  margin-top: 0.85rem;
+}
+
+/* ── Pair section footnote (replaces inline copy) ── */
+.pair-section-footnote {
+  font-size: 0.78rem; color: var(--faint); font-style: italic;
+  margin-top: 1.25rem; text-align: center;
+}
+
+/* ── "Having trouble?" disclosure for the access code field ── */
+.pair-trouble {
+  margin-top: 1.25rem; padding-top: 1rem;
+  border-top: 1px dashed var(--border);
+}
+.pair-trouble summary {
+  cursor: pointer; font-size: 0.85rem; color: var(--muted);
+  font-weight: 500; list-style: none;
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  user-select: none;
+}
+.pair-trouble summary::-webkit-details-marker { display: none; }
+.pair-trouble summary::before {
+  content: "›";
+  display: inline-block; transition: transform 0.18s;
+  font-size: 1rem;
+}
+.pair-trouble[open] summary::before { transform: rotate(90deg); }
+.pair-trouble summary:hover { color: var(--accent); }
+.pair-trouble-body {
+  margin-top: 0.85rem; padding: 0.95rem 1rem;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+  font-size: 0.86rem; line-height: 1.55; color: var(--muted);
+}
+.pair-trouble-body p { margin: 0 0 0.7rem; }
+.pair-trouble-label {
+  display: block; font-size: 0.74rem; text-transform: uppercase;
+  letter-spacing: 0.1em; color: var(--muted); font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+.pair-trouble-note {
+  margin-top: 0.5rem !important; font-size: 0.78rem; color: var(--faint);
+  font-style: italic;
+}
+.pair-trouble-body .pair-input { width: 100%; font-size: 0.92rem; }
+
 /* ── SYNTHESIS PAGE (couples results) ── */
 .synthesis-screen {
   padding: 2rem 0;
@@ -4687,36 +4794,57 @@ function showResults() {
     </div>
 
     <!-- PAIR CODE / PARTNER SYNTHESIS -->
+    <!-- Simplified connect card:
+           1. Your pair code is always visible (from window._pairCode set at the finalize gate)
+           2. For Couple Package buyers, we also show the partner's predicted pair code
+              and offer one-click "Connect now" when both partners have finished
+           3. The access code field is hidden behind a disclosure ("Having trouble?")
+              and auto-fills from the user's submission
+    -->
     <div class="pair-section" id="pairSection">
       <div class="pair-section-label">For Couples</div>
       <h3 class="pair-section-title">Connect With Your Partner</h3>
-      <p class="pair-section-copy">If your partner has also taken Take 139, you can connect your two profiles to see what your wiring looks like together — the strengths you bring as a pair, where you will predictably clash, and the commitments each of you can make to honor what the other carries. Codes expire after 30 days for privacy.</p>
+      <p class="pair-section-copy">If your partner has also taken Take 139, connect your two profiles to see what your wiring looks like together — the strengths you bring as a pair, where you will predictably clash, and the commitments each of you can make to honor what the other carries.</p>
 
+      <!-- Your pair code — always visible -->
       <div class="pair-your-code">
-        <div class="pair-code-label">Your pair code (share this with your partner):</div>
-        <div class="pair-code-display" id="pairCodeDisplay">—</div>
-        <div class="pair-code-hint" id="pairCodeHint">Submit your email above first to get a pair code.</div>
+        <div class="pair-code-label">Your pair code</div>
+        <div class="pair-code-row">
+          <div class="pair-code-display" id="pairCodeDisplay">${window._pairCode || '—'}</div>
+          <button type="button" class="pair-code-copy" id="pairCodeCopyBtn" onclick="copyPairCode()" title="Copy your pair code">Copy</button>
+        </div>
+        <div class="pair-code-hint">Share this with your partner. They'll enter it on their results page to connect your reports.</div>
       </div>
 
-      <div class="pair-enter">
-        <div class="pair-code-label">Enter your partner's pair code to see your couples profile:</div>
+      <!-- Auto-pair / partner status — populated by detectPartner() -->
+      <div class="pair-auto" id="pairAutoSection" style="display:none;">
+        <!-- Filled in dynamically -->
+      </div>
+
+      <!-- Manual partner code entry — always available as the fallback path -->
+      <div class="pair-enter" id="pairManualSection">
+        <div class="pair-code-label">Or enter your partner's pair code</div>
         <div class="pair-form">
           <input type="text" class="pair-input" id="partnerCodeInput" placeholder="e.g. ANCHOR-4829" autocomplete="off" oninput="this.value = this.value.toUpperCase()">
           <button class="btn btn-primary" onclick="connectPartner()" id="connectBtn">Connect</button>
         </div>
-        <!-- Connection code field — always visible so users know what's expected.
-             Auto-fills from window._currentAccessCode when the user took the
-             assessment using a Couple/Connect code. -->
-        <div class="pair-connection-code" id="pairConnectionCodeWrap" style="margin-top:1rem;">
-          <div class="pair-code-label" style="font-size:0.8125rem;">Your access code <span style="color:var(--muted);font-weight:normal;">(auto-filled from your purchase):</span></div>
-          <input type="text" class="pair-input" id="connectionCodeInput" placeholder="e.g. COUPLE-XXXXXX-A or CONNECT-XXXXXX" autocomplete="off" style="width:100%;" oninput="this.value = this.value.toUpperCase()">
-          <div style="font-size:0.78rem;color:var(--muted);margin-top:0.4rem;line-height:1.5;">
-            <strong>Couple Package ($40):</strong> connection is included — just enter either half (COUPLE-XXX-A or -B).<br>
-            <strong>Single ($20) + Connection Add-On ($10):</strong> enter the CONNECT-XXX code you purchased.
-          </div>
-        </div>
         <div class="pair-status" id="pairStatus"></div>
+
+        <!-- Access code hidden behind a disclosure. Auto-filled from the user's
+             submission so the typical user never has to think about it.
+             Stays in DOM so connectPartner() can still read its value. -->
+        <details class="pair-trouble">
+          <summary>Having trouble? Show advanced options</summary>
+          <div class="pair-trouble-body">
+            <p>If you bought a Connection Add-On separately (Single $20 + Connect $10), the system needs your connection code. For Couple Package buyers this is already handled automatically.</p>
+            <label class="pair-trouble-label" for="connectionCodeInput">Your access or connection code</label>
+            <input type="text" class="pair-input" id="connectionCodeInput" placeholder="e.g. COUPLE-XXXXXX-A or CONNECT-XXXXXX" autocomplete="off" oninput="this.value = this.value.toUpperCase()">
+            <p class="pair-trouble-note">This is auto-filled from your purchase — most users don't need to touch this field.</p>
+          </div>
+        </details>
       </div>
+
+      <p class="pair-section-footnote">Codes expire after 30 days for privacy.</p>
     </div>
 
     <!-- REPORT DELIVERY — confirmation only; submission already happened at the finalize gate. -->
@@ -4748,6 +4876,14 @@ function showResults() {
   window._resultsSubmitted = false;
   updateSentence();
   buildRadarChart(results.trigger);
+
+  // Once results are visible, query the backend to see whether this user's
+  // partner has also finished (Couple Package case), and render the right
+  // auto-pair state on the Connect card. Safe to call even when there's no
+  // pair code yet — it short-circuits.
+  if (typeof detectPartner === 'function') {
+    setTimeout(detectPartner, 200);
+  }
 
   // NOTE: We previously fired a silent /submit here to deliver the admin copy.
   // That meant /submit was called twice (once silently, once with email), and
@@ -5467,6 +5603,159 @@ function buildRadarChart(triggerResult) {
 }
 
 // ==================== PAIR CONNECT + SYNTHESIS ====================
+
+// Copy the user's pair code to the clipboard with a small visual confirmation.
+function copyPairCode() {
+  const code = window._pairCode;
+  const btn = document.getElementById('pairCodeCopyBtn');
+  if (!code) { return; }
+  const finish = (ok) => {
+    if (!btn) return;
+    const original = btn.textContent;
+    btn.textContent = ok ? 'Copied' : 'Press Cmd+C';
+    btn.classList.add(ok ? 'is-copied' : 'is-warn');
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.classList.remove('is-copied', 'is-warn');
+    }, 1600);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(() => finish(true), () => finish(false));
+  } else {
+    // Older Safari fallback
+    const ta = document.createElement('textarea');
+    ta.value = code; document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); finish(true); }
+    catch (_) { finish(false); }
+    finally { document.body.removeChild(ta); }
+  }
+}
+
+// Detect the user's partner via the backend /pair/auto-detect endpoint.
+// Populates the Auto-pair section with the right state —
+//   - couple_package, awaiting_signup       → show predicted partner code
+//   - couple_package, awaiting_assessment   → partner has signed up, not yet finished
+//   - couple_package, ready                 → partner is done, offer one-click Connect
+//   - couple_package, paired                → already connected, show partner name
+//   - connection_add_on / single / unknown  → no auto-section (user must type partner code)
+async function detectPartner() {
+  const myCode = window._pairCode;
+  if (!myCode) return;
+  const autoEl = document.getElementById('pairAutoSection');
+  if (!autoEl) return;
+
+  let data = null;
+  try {
+    const res = await fetch(BACKEND_URL + '/pair/auto-detect/' + encodeURIComponent(myCode));
+    if (!res.ok) return;
+    data = await res.json();
+  } catch (_) { return; }
+  if (!data) return;
+
+  // Auto-fill the (hidden) access code input so connectPartner() still works
+  // for users who fall back to the manual path.
+  if (data.sibling_access_code || window._currentAccessCode) {
+    const cci = document.getElementById('connectionCodeInput');
+    if (cci && !cci.value) {
+      cci.value = (window._currentAccessCode || '').toUpperCase();
+    }
+  }
+
+  const kind = data.kind;
+  const status = data.partner_status;
+
+  if (data.already_paired) {
+    // Already connected — show a confirmation card. Don't duplicate the
+    // synthesis screen here (that lives elsewhere); just confirm the bond.
+    autoEl.style.display = '';
+    autoEl.innerHTML = `
+      <div class="pair-auto-card pair-auto-paired">
+        <div class="pair-auto-icon">✓</div>
+        <div class="pair-auto-body">
+          <div class="pair-auto-title">Connected with ${(data.partner_name || 'your partner').replace(/</g,'&lt;')}</div>
+          <div class="pair-auto-sub">Your couples report has been delivered to both of you.</div>
+        </div>
+      </div>`;
+    // No need for the manual path anymore.
+    const manual = document.getElementById('pairManualSection');
+    if (manual) manual.style.display = 'none';
+    return;
+  }
+
+  if (kind !== 'couple_package') {
+    // Connection Add-On or Single — no auto-pair flow possible. Leave the
+    // auto section hidden so the user just sees the manual code entry.
+    return;
+  }
+
+  // Couple Package paths
+  if (status === 'awaiting_signup') {
+    autoEl.style.display = '';
+    autoEl.innerHTML = `
+      <div class="pair-auto-card pair-auto-waiting">
+        <div class="pair-auto-body">
+          <div class="pair-auto-title">Waiting for your partner</div>
+          <div class="pair-auto-sub">Your partner's access code is <strong>${data.sibling_access_code}</strong>. They can use it at <a href="/">take139.com</a> to start the assessment. When they finish, we'll automatically connect your two reports here.</div>
+        </div>
+      </div>`;
+    return;
+  }
+
+  if (status === 'awaiting_assessment') {
+    autoEl.style.display = '';
+    autoEl.innerHTML = `
+      <div class="pair-auto-card pair-auto-waiting">
+        <div class="pair-auto-body">
+          <div class="pair-auto-title">Your partner is on their way</div>
+          <div class="pair-auto-sub">Your partner has signed up but hasn't finished the assessment yet. Refresh this page once they're done and we'll auto-connect you.</div>
+        </div>
+      </div>`;
+    return;
+  }
+
+  if (status === 'ready' && data.auto_pair_eligible) {
+    autoEl.style.display = '';
+    autoEl.innerHTML = `
+      <div class="pair-auto-card pair-auto-ready">
+        <div class="pair-auto-body">
+          <div class="pair-auto-title">${(data.partner_name || 'Your partner').replace(/</g,'&lt;')} is ready to connect</div>
+          <div class="pair-auto-sub">Both of you have finished. Click below and we'll combine your two profiles into a Couples Walkthrough.</div>
+          <button type="button" class="btn btn-primary" onclick="autoPair('${data.partner_pair_code}')" id="autoPairBtn">Connect now</button>
+        </div>
+      </div>`;
+    // The manual section is still available below, but the auto-pair card
+    // makes it visually secondary.
+    return;
+  }
+
+  if (status === 'locked_to_other') {
+    autoEl.style.display = '';
+    autoEl.innerHTML = `
+      <div class="pair-auto-card pair-auto-warn">
+        <div class="pair-auto-body">
+          <div class="pair-auto-title">Already connected elsewhere</div>
+          <div class="pair-auto-sub">One of you is already paired with someone else. To re-pair, you'll need a Connection Add-On. Or write to <a href="mailto:hello@take139.com">hello@take139.com</a> for help.</div>
+        </div>
+      </div>`;
+    return;
+  }
+}
+
+// Auto-pair handler for the "Connect now" button. Fires /pair/connect using
+// the user's own pair code and the detected partner pair code — no typing.
+async function autoPair(partnerPairCode) {
+  if (!partnerPairCode || !window._pairCode) return;
+  // Populate the visible manual input so the handler's status messages remain
+  // accurate and the user can see what got connected.
+  const partnerInput = document.getElementById('partnerCodeInput');
+  if (partnerInput) partnerInput.value = partnerPairCode;
+  // Disable the auto-pair button while we connect.
+  const autoBtn = document.getElementById('autoPairBtn');
+  if (autoBtn) { autoBtn.disabled = true; autoBtn.textContent = 'Connecting...'; }
+  await connectPartner();
+  // If the connect succeeded, re-detect to flip into the 'paired' state UI.
+  setTimeout(detectPartner, 600);
+}
 
 async function connectPartner() {
   const myCode = window._pairCode;
