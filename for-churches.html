@@ -63,6 +63,7 @@ h3 { font-variation-settings: 'opsz' 30; }
   font-family: var(--font-heading); font-size: 1.25rem; font-weight: 600;
   color: var(--text); text-decoration: none;
   letter-spacing: -0.01em;
+  white-space: nowrap;
 }
 .topnav-links {
   display: flex; align-items: center; gap: 2rem;
@@ -82,10 +83,18 @@ h3 { font-variation-settings: 'opsz' 30; }
 .topnav-links a.cta:hover { background: #2a2a26; color: var(--bg); }
 @media (max-width: 700px) {
   .topnav-inner { padding: 0.85rem 1rem; gap: 0.5rem; }
-  .topnav-links { gap: 1rem; }
-  .topnav-links a { font-size: 0.85rem; }
-  .topnav-links a.cta { padding: 0.45rem 1rem; }
+  .topnav-links { gap: 0.9rem; }
+  .topnav-links a { font-size: 0.85rem; white-space: nowrap; }
+  .topnav-links a.cta { padding: 0.45rem 0.95rem; }
   .topnav-links .hide-mobile { display: none; }
+  .topnav-brand { font-size: 1.1rem; }
+}
+@media (max-width: 460px) {
+  .topnav-inner { padding: 0.75rem 0.85rem; gap: 0.4rem; }
+  .topnav-links { gap: 0.55rem; }
+  .topnav-links a { font-size: 0.8rem; }
+  .topnav-links a.cta { padding: 0.4rem 0.85rem; font-size: 0.8rem; }
+  .topnav-links .hide-narrow { display: none; }
 }
 
 /* ── PAGE ── */
@@ -237,9 +246,9 @@ section ul li, section ol li { margin-bottom: 0.4rem; }
   <div class="topnav-inner">
     <a href="index.html" class="topnav-brand">Take 139</a>
     <ul class="topnav-links" id="navLinks">
-      <li><a href="how-it-works.html">How It Works</a></li>
+      <li><a href="how-it-works.html" class="hide-narrow">How It Works</a></li>
       <li><a href="about.html" class="hide-mobile">About</a></li>
-      <li><a href="pricing.html">Pricing</a></li>
+      <li><a href="pricing.html" class="hide-narrow">Pricing</a></li>
       <li><a href="faq.html" class="hide-mobile">FAQ</a></li>
       <li><a href="for-churches.html" class="active">For Churches</a></li>
       <li><a href="sign-in.html" class="cta">Sign In</a></li>
