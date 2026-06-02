@@ -4594,6 +4594,17 @@ function showFinalize() {
         </div>
 
         <div class="finalize-field">
+          <label class="finalize-label" for="finalizeGender">Your gender</label>
+          <select class="finalize-input" id="finalizeGender" required style="appearance:auto; -webkit-appearance:menulist;">
+            <option value="">— select —</option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+            <option value="X">Prefer not to say</option>
+          </select>
+          <p class="finalize-help">We use this to render your walkthrough with the right pronouns. It is never shared.</p>
+        </div>
+
+        <div class="finalize-field">
           <label class="finalize-label" for="finalizeEmail">
             ${emailIsConfirmation ? 'Send my report to' : 'Your email'}
           </label>
@@ -4612,7 +4623,28 @@ function showFinalize() {
           <label class="finalize-label" for="finalizePartnerEmail">Your partner's email</label>
           <input class="finalize-input" id="finalizePartnerEmail" type="email" autocomplete="off"
                  placeholder="partner@example.com">
-          <p class="finalize-help">Make sure this is the same email your partner will use when they take Take 139 — it's how we know to connect your two reports.</p>
+          <p class="finalize-help">We'll email your partner their own access code so they can take Take 139 on their own. Once they finish, your two reports auto-connect.</p>
+        </div>
+
+        <div class="finalize-field">
+          <label class="finalize-label" for="finalizePartnerGender">Your partner's gender</label>
+          <select class="finalize-input" id="finalizePartnerGender" required style="appearance:auto; -webkit-appearance:menulist;">
+            <option value="">— select —</option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+            <option value="X">Prefer not to say</option>
+          </select>
+        </div>
+
+        <div class="finalize-field">
+          <label class="finalize-label" for="finalizeRelationship">Your relationship</label>
+          <select class="finalize-input" id="finalizeRelationship" required style="appearance:auto; -webkit-appearance:menulist;">
+            <option value="">— select —</option>
+            <option value="married">Married</option>
+            <option value="engaged">Engaged</option>
+            <option value="dating">Dating</option>
+            <option value="figuring_out">Figuring things out</option>
+          </select>
         </div>
         ` : ''}
 
@@ -4657,7 +4689,10 @@ async function submitFinalize(ev) {
 
   const name = (document.getElementById('finalizeName')?.value || '').trim();
   const email = (document.getElementById('finalizeEmail')?.value || '').trim();
+  const gender = (document.getElementById('finalizeGender')?.value || '').trim();
   const partnerEmail = (document.getElementById('finalizePartnerEmail')?.value || '').trim();
+  const partnerGender = (document.getElementById('finalizePartnerGender')?.value || '').trim();
+  const relationship = (document.getElementById('finalizeRelationship')?.value || '').trim();
   const errEl = document.getElementById('finalizeError');
   const cta = document.getElementById('finalizeCta');
 
@@ -4667,9 +4702,12 @@ async function submitFinalize(ev) {
   }
 
   if (!name) return showError('Please enter your first name.');
+  if (!gender) return showError('Please select your gender so we can write your report in the right voice.');
   if (!email || !email.includes('@') || !email.includes('.')) return showError('Please enter a valid email address.');
   if (partnerEmail && (!partnerEmail.includes('@') || !partnerEmail.includes('.'))) return showError("Your partner's email doesn't look right.");
   if (partnerEmail && partnerEmail.toLowerCase() === email.toLowerCase()) return showError("Your partner's email should be different from your own.");
+  if (partnerEmail && !partnerGender) return showError("Please select your partner's gender so we can write your couples report correctly.");
+  if (partnerEmail && !relationship) return showError("Please select your relationship status.");
 
   if (cta) { cta.disabled = true; cta.textContent = 'Sending your report...'; }
   if (errEl) { errEl.classList.remove('show'); errEl.textContent = ''; }
@@ -4718,7 +4756,10 @@ async function submitFinalize(ev) {
   const payload = {
     name: name,
     email: email,
+    gender: gender || null,
     partner_email: partnerEmail || null,
+    partner_gender: partnerGender || null,
+    relationship_status: relationship || null,
     access_code_used: (typeof window._currentAccessCode !== 'undefined') ? window._currentAccessCode : null,
     intake: {
       family_type: window._familyType || familyType || null,
