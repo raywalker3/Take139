@@ -4599,7 +4599,6 @@ function showFinalize() {
             <option value="">— select —</option>
             <option value="M">Male</option>
             <option value="F">Female</option>
-            <option value="X">Prefer not to say</option>
           </select>
           <p class="finalize-help">We use this to render your walkthrough with the right pronouns. It is never shared.</p>
         </div>
@@ -4632,7 +4631,6 @@ function showFinalize() {
             <option value="">— select —</option>
             <option value="M">Male</option>
             <option value="F">Female</option>
-            <option value="X">Prefer not to say</option>
           </select>
         </div>
 
@@ -4702,11 +4700,11 @@ async function submitFinalize(ev) {
   }
 
   if (!name) return showError('Please enter your first name.');
-  if (!gender) return showError('Please select your gender so we can write your report in the right voice.');
+  if (!gender || (gender !== 'M' && gender !== 'F')) return showError('Please select Male or Female so we can write your report with the right pronouns.');
   if (!email || !email.includes('@') || !email.includes('.')) return showError('Please enter a valid email address.');
   if (partnerEmail && (!partnerEmail.includes('@') || !partnerEmail.includes('.'))) return showError("Your partner's email doesn't look right.");
   if (partnerEmail && partnerEmail.toLowerCase() === email.toLowerCase()) return showError("Your partner's email should be different from your own.");
-  if (partnerEmail && !partnerGender) return showError("Please select your partner's gender so we can write your couples report correctly.");
+  if (partnerEmail && (!partnerGender || (partnerGender !== 'M' && partnerGender !== 'F'))) return showError("Please select Male or Female for your partner so we can write your couples report with the right pronouns.");
   if (partnerEmail && !relationship) return showError("Please select your relationship status.");
 
   if (cta) { cta.disabled = true; cta.textContent = 'Sending your report...'; }
