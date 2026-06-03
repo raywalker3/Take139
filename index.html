@@ -1812,13 +1812,58 @@ body.in-synthesis .topnav { display: none; }
         <div class="product-desc">For couples who each already took the assessment separately and now want to connect their profiles.</div>
       </div>
 
-      <div style="margin:1.25rem 0 0.5rem;">
+      <div style="margin:1.25rem 0 0.5rem;" id="purchaseEmailRow">
         <label for="purchaseEmail" style="display:block;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:0.4rem;">Your email</label>
         <input type="email" class="modal-input" id="purchaseEmail" placeholder="you@example.com" autocomplete="email">
       </div>
       <div class="modal-error" id="purchaseError"></div>
       <button class="modal-btn" id="purchaseSubmitBtn" onclick="submitPurchase()" disabled>Pick a product to continue</button>
       <button type="button" class="modal-close" onclick="showCodeScreen()">← Back to code entry</button>
+    </div>
+
+    <!-- HIS / HER screen — only shown when Couple Package is selected -->
+    <div id="modalHisHerScreen" style="display:none;">
+      <h3>Couple Package</h3>
+      <p style="margin-bottom:1.2rem;font-size:0.95rem;color:var(--muted);">Fill out both of you below. We'll send each of you your own access code by email, addressed by name. The Couples Walkthrough auto-generates once both of you have taken Take 139.</p>
+
+      <div style="background:#fff;border:1px solid var(--hairline,#e0d6c5);border-left:3px solid var(--accent,#c8956c);padding:1rem 1.1rem;border-radius:4px;margin-bottom:1.2rem;">
+        <div style="font-size:0.72rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:0.7rem;">His info</div>
+        <div style="margin-bottom:0.7rem;">
+          <label for="hisName" style="display:block;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.3rem;">His first name</label>
+          <input type="text" class="modal-input" id="hisName" placeholder="e.g. Chris" autocomplete="given-name">
+        </div>
+        <div>
+          <label for="hisEmail" style="display:block;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.3rem;">His email</label>
+          <input type="email" class="modal-input" id="hisEmail" placeholder="chris@example.com" autocomplete="email">
+        </div>
+      </div>
+
+      <div style="background:#fff;border:1px solid var(--hairline,#e0d6c5);border-left:3px solid var(--accent,#c8956c);padding:1rem 1.1rem;border-radius:4px;margin-bottom:1.2rem;">
+        <div style="font-size:0.72rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:0.7rem;">Her info</div>
+        <div style="margin-bottom:0.7rem;">
+          <label for="herName" style="display:block;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.3rem;">Her first name</label>
+          <input type="text" class="modal-input" id="herName" placeholder="e.g. Carolyn" autocomplete="off">
+        </div>
+        <div>
+          <label for="herEmail" style="display:block;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.3rem;">Her email</label>
+          <input type="email" class="modal-input" id="herEmail" placeholder="carolyn@example.com" autocomplete="off">
+        </div>
+      </div>
+
+      <div style="margin-bottom:1.1rem;">
+        <label for="hisHerRelationship" style="display:block;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.3rem;">Your relationship</label>
+        <select class="modal-input" id="hisHerRelationship" style="appearance:auto; -webkit-appearance:menulist;">
+          <option value="">— select —</option>
+          <option value="married">Married</option>
+          <option value="engaged">Engaged</option>
+          <option value="dating">Dating</option>
+          <option value="figuring_out">Figuring things out</option>
+        </select>
+      </div>
+
+      <div class="modal-error" id="hisHerError"></div>
+      <button class="modal-btn" id="hisHerSubmitBtn" onclick="submitHisHer()">Continue — $40</button>
+      <button type="button" class="modal-close" onclick="backFromHisHer()">← Back</button>
     </div>
 
   </div>
@@ -5656,7 +5701,90 @@ function selectProduct(kind) {
   btn.textContent = labels[kind] || 'Continue';
 }
 
+function showHisHerScreen() {
+  document.getElementById('modalPurchaseScreen').style.display = 'none';
+  document.getElementById('modalHisHerScreen').style.display = 'block';
+  // Reset error + button
+  document.getElementById('hisHerError').textContent = '';
+  const btn = document.getElementById('hisHerSubmitBtn');
+  btn.disabled = false;
+  btn.textContent = 'Continue \u2014 $40';
+}
+
+function backFromHisHer() {
+  document.getElementById('modalHisHerScreen').style.display = 'none';
+  document.getElementById('modalPurchaseScreen').style.display = 'block';
+}
+
+async function submitHisHer() {
+  const hisName  = (document.getElementById('hisName').value  || '').trim();
+  const hisEmail = (document.getElementById('hisEmail').value || '').trim().toLowerCase();
+  const herName  = (document.getElementById('herName').value  || '').trim();
+  const herEmail = (document.getElementById('herEmail').value || '').trim().toLowerCase();
+  const relationship = (document.getElementById('hisHerRelationship').value || '').trim();
+  const errEl = document.getElementById('hisHerError');
+  const btn = document.getElementById('hisHerSubmitBtn');
+  errEl.textContent = '';
+
+  if (!hisName)  { errEl.textContent = "Please enter his first name."; return; }
+  if (!herName)  { errEl.textContent = "Please enter her first name."; return; }
+  if (!hisEmail || !hisEmail.includes('@') || !hisEmail.includes('.')) {
+    errEl.textContent = "Please enter his email address."; return;
+  }
+  if (!herEmail || !herEmail.includes('@') || !herEmail.includes('.')) {
+    errEl.textContent = "Please enter her email address."; return;
+  }
+  if (hisEmail === herEmail) {
+    errEl.textContent = "His and her emails should be different so each of you gets your own code."; return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Connecting to Stripe...';
+
+  try {
+    const res = await fetch(BACKEND_URL + '/purchase/couple-prepay', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        his_name: hisName, his_email: hisEmail,
+        her_name: herName, her_email: herEmail,
+        relationship: relationship || null,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      const detail = data.detail;
+      const msg = (detail && typeof detail === 'object' && detail.message)
+                  ? detail.message
+                  : (typeof detail === 'string' ? detail : 'Could not start checkout.');
+      errEl.textContent = msg;
+      btn.disabled = false;
+      btn.textContent = 'Continue \u2014 $40';
+      return;
+    }
+    if (data.checkout_url) {
+      window.location.href = data.checkout_url;
+    } else {
+      errEl.textContent = 'Stripe did not return a checkout URL. Try again.';
+      btn.disabled = false;
+      btn.textContent = 'Continue \u2014 $40';
+    }
+  } catch (err) {
+    console.error('couple-prepay error', err);
+    errEl.textContent = 'Network error \u2014 check your internet and try again.';
+    btn.disabled = false;
+    btn.textContent = 'Continue \u2014 $40';
+  }
+}
+
 async function submitPurchase() {
+  // Couple Package goes through the HIS/HER screen instead of the
+  // single-email checkout path.
+  if (_selectedProduct === 'couple') {
+    showHisHerScreen();
+    return;
+  }
+
   const emailInput = document.getElementById('purchaseEmail');
   const errorEl = document.getElementById('purchaseError');
   const btn = document.getElementById('purchaseSubmitBtn');
