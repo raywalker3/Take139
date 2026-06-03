@@ -1547,6 +1547,14 @@ body.in-synthesis .topnav { display: none; }
   padding: 2.5rem 2.75rem 2rem;
   max-height: 85vh; overflow-y: auto;
 }
+@media (max-width: 560px) {
+  .modal-box.modal-box-wide {
+    padding: 1.4rem 1.1rem 1.2rem;
+    max-height: 92vh;
+    width: 96%;
+  }
+  .modal-box.modal-box-wide h3 { font-size: 1.25rem; margin-top: 0; }
+}
 .intro-modal .intro-eyebrow {
   font-family: var(--font-body);
   font-size: 0.78rem; letter-spacing: 0.14em;
@@ -1823,37 +1831,24 @@ body.in-synthesis .topnav { display: none; }
 
     <!-- HIS / HER screen — only shown when Couple Package is selected -->
     <div id="modalHisHerScreen" style="display:none;">
-      <h3>Couple Package</h3>
-      <p style="margin-bottom:1.2rem;font-size:0.95rem;color:var(--muted);">Fill out both of you below. We'll send each of you your own access code by email, addressed by name. The Couples Walkthrough auto-generates once both of you have taken Take 139.</p>
+      <h3 style="margin-bottom:0.4rem;">Couple Package</h3>
+      <p style="margin-bottom:0.9rem;font-size:0.88rem;color:var(--muted);line-height:1.45;">Fill out both of you below. Each of you will receive your own access code by email. The Couples Walkthrough auto-generates after both of you complete Take 139.</p>
 
-      <div style="background:#fff;border:1px solid var(--hairline,#e0d6c5);border-left:3px solid var(--accent,#c8956c);padding:1rem 1.1rem;border-radius:4px;margin-bottom:1.2rem;">
-        <div style="font-size:0.72rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:0.7rem;">His info</div>
-        <div style="margin-bottom:0.7rem;">
-          <label for="hisName" style="display:block;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.3rem;">His first name</label>
-          <input type="text" class="modal-input" id="hisName" placeholder="e.g. Chris" autocomplete="given-name">
-        </div>
-        <div>
-          <label for="hisEmail" style="display:block;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.3rem;">His email</label>
-          <input type="email" class="modal-input" id="hisEmail" placeholder="chris@example.com" autocomplete="email">
-        </div>
+      <div style="background:#fff;border:1px solid var(--hairline,#e0d6c5);border-left:3px solid var(--accent,#c8956c);padding:0.65rem 0.85rem 0.75rem;border-radius:4px;margin-bottom:0.75rem;">
+        <div style="font-size:0.7rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:0.45rem;">His info</div>
+        <input type="text" class="modal-input" id="hisName" placeholder="His first name" autocomplete="given-name" aria-label="His first name" style="margin-bottom:0.45rem;">
+        <input type="email" class="modal-input" id="hisEmail" placeholder="His email here" autocomplete="email" aria-label="His email">
       </div>
 
-      <div style="background:#fff;border:1px solid var(--hairline,#e0d6c5);border-left:3px solid var(--accent,#c8956c);padding:1rem 1.1rem;border-radius:4px;margin-bottom:1.2rem;">
-        <div style="font-size:0.72rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:0.7rem;">Her info</div>
-        <div style="margin-bottom:0.7rem;">
-          <label for="herName" style="display:block;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.3rem;">Her first name</label>
-          <input type="text" class="modal-input" id="herName" placeholder="e.g. Carolyn" autocomplete="off">
-        </div>
-        <div>
-          <label for="herEmail" style="display:block;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.3rem;">Her email</label>
-          <input type="email" class="modal-input" id="herEmail" placeholder="carolyn@example.com" autocomplete="off">
-        </div>
+      <div style="background:#fff;border:1px solid var(--hairline,#e0d6c5);border-left:3px solid var(--accent,#c8956c);padding:0.65rem 0.85rem 0.75rem;border-radius:4px;margin-bottom:0.75rem;">
+        <div style="font-size:0.7rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);font-weight:600;margin-bottom:0.45rem;">Her info</div>
+        <input type="text" class="modal-input" id="herName" placeholder="Her first name" autocomplete="off" aria-label="Her first name" style="margin-bottom:0.45rem;">
+        <input type="email" class="modal-input" id="herEmail" placeholder="Her email here" autocomplete="off" aria-label="Her email">
       </div>
 
-      <div style="margin-bottom:1.1rem;">
-        <label for="hisHerRelationship" style="display:block;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.3rem;">Your relationship</label>
-        <select class="modal-input" id="hisHerRelationship" style="appearance:auto; -webkit-appearance:menulist;">
-          <option value="">— select —</option>
+      <div style="margin-bottom:0.85rem;">
+        <select class="modal-input" id="hisHerRelationship" aria-label="Your relationship" style="appearance:auto; -webkit-appearance:menulist;">
+          <option value="">— your relationship —</option>
           <option value="married">Married</option>
           <option value="engaged">Engaged</option>
           <option value="dating">Dating</option>
