@@ -5422,12 +5422,13 @@ async function checkEnforcement() {
   }
   try {
     const res = await fetch(BACKEND_URL + '/codes/enforcement', { cache: 'no-store' });
-    if (!res.ok) { _enforcementCache = false; applyEnforcementUI(false); return false; }
+    if (!res.ok) { _enforcementCache = true; applyEnforcementUI(true); return true; } // fail closed
     const data = await res.json();
     _enforcementCache = !!data.enforced;
   } catch (err) {
-    console.warn('enforcement check failed, defaulting to false', err);
-    _enforcementCache = false;
+    // Fail CLOSED: if the server can't be reached, still require a code.
+    console.warn('enforcement check failed, defaulting to enforced', err);
+    _enforcementCache = true;
   }
   applyEnforcementUI(_enforcementCache);
   return _enforcementCache;
