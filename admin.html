@@ -286,6 +286,15 @@
     border-radius: 3px;
   }
   .copy-btn:hover { color: var(--accent); background: var(--highlight); }
+  .mini-btn { font-size: 11px; padding: 3px 8px; margin: 4px 4px 0 0; border: 1px solid var(--rule); background: white; border-radius: 3px; cursor: pointer; color: var(--ink); }
+  .mini-btn:hover { border-color: var(--ink); }
+  .mini-btn.dark { background: var(--ink); color: white; border-color: var(--ink); }
+  .pair-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .pair-slot { background: white; border: 1px solid var(--rule); border-radius: 4px; padding: 12px; min-height: 58px; font-size: 13px; }
+  .pair-slot .who { font-weight: 600; }
+  .sub-list { max-height: 420px; overflow: auto; margin-top: 10px; }
+  .sub-profile { font-size: 12px; color: var(--muted); }
+  @media (max-width: 700px) { .pair-panel { grid-template-columns: 1fr; } }
 </style>
 
 <!-- Favicon + Open Graph -->
@@ -405,6 +414,41 @@
           <button class="btn-ghost" id="jc-copy">Copy all</button>
           <button class="btn-ghost" id="jc-download">Download as .txt</button>
           <button class="btn-ghost" id="jc-dismiss">Dismiss</button>
+        </div>
+      </div>
+
+      <!-- Reports & pairing -->
+      <div class="section-h" style="margin-top: 28px;">Reports &amp; pairing</div>
+      <div class="gen-form">
+        <div class="pair-panel">
+          <div>
+            <label>Partner A</label>
+            <div class="pair-slot" id="slot-a"><span class="sub-profile">Click "Set as A" on a report below, or type a pair code:</span>
+              <input type="text" id="pair-a" placeholder="e.g. HARBOR-9612" style="margin-top:6px;width:100%;" /></div>
+          </div>
+          <div>
+            <label>Partner B</label>
+            <div class="pair-slot" id="slot-b"><span class="sub-profile">Click "Set as B" on a report below, or type a pair code:</span>
+              <input type="text" id="pair-b" placeholder="e.g. GRAFTED-7480" style="margin-top:6px;width:100%;" /></div>
+          </div>
+        </div>
+        <div class="actions" style="margin-top:12px;flex-wrap:wrap;gap:8px;">
+          <button type="button" class="btn-ghost" id="pair-preview-btn">Download couples PDF</button>
+          <button type="button" class="btn-primary" id="pair-save-btn">Pair these two</button>
+          <label style="display:inline-flex;align-items:center;gap:6px;font-size:13px;margin:0;text-transform:none;letter-spacing:0;">
+            <input type="checkbox" id="pair-email" style="width:auto;" /> Email both partners the couples walkthrough
+          </label>
+        </div>
+        <div class="hint" style="margin-top:6px;">Pairing replaces any earlier partner for either person. Downloading never emails anyone.</div>
+        <div style="margin-top:16px;display:flex;gap:8px;">
+          <input type="text" id="sub-search" placeholder="Search reports by name, email, or pair code" style="flex:1;" />
+          <button class="btn-ghost" id="sub-refresh">Refresh</button>
+        </div>
+        <div class="sub-list">
+          <table class="codes-table" id="sub-table">
+            <thead><tr><th>Person</th><th>Profile</th><th>Pair code</th><th>Paired with</th><th>Taken</th><th>Downloads &amp; pairing</th></tr></thead>
+            <tbody id="sub-tbody"></tbody>
+          </table>
         </div>
       </div>
 
@@ -737,14 +781,23 @@
     table.classList.remove('hidden');
     empty.classList.add('hidden');
 
+    const redeemedMap = {};
+    data.codes.forEach(x => { if (x.redeemed_by_submission_pair_code) redeemedMap[x.code] = x.redeemed_by_submission_pair_code; });
     tbody.innerHTML = data.codes.map(c => {
       const batchNotes = [
         c.batch_label ? `<div>${escapeHtml(c.batch_label)}</div>` : '',
         c.notes ? `<div class="pair-row">${escapeHtml(c.notes).slice(0, 120)}</div>` : '',
       ].join('');
 
+      const pc = c.redeemed_by_submission_pair_code || '';
+      const sibPc = c.sibling_code ? (redeemedMap[c.sibling_code] || '') : '';
+      const dl = pc ? `<div>
+          <button class="mini-btn" data-dl="profile" data-code="${escapeHtml(pc)}">Profile PDF</button>
+          <button class="mini-btn" data-dl="walkthrough" data-code="${escapeHtml(pc)}">Walkthrough</button>
+          ${sibPc && /-A$/.test(c.code) ? `<button class="mini-btn dark" data-dl="couples" data-code="${escapeHtml(pc)}" data-code2="${escapeHtml(sibPc)}">Couples PDF</button>` : ''}
+        </div>` : '';
       const redeemedBy = c.redeemed_by_email
-        ? `<div>${escapeHtml(c.redeemed_by_email)}</div><div class="pair-row">${escapeHtml(c.redeemed_by_submission_pair_code || '')}</div>`
+        ? `<div>${escapeHtml(c.redeemed_by_email)}</div><div class="pair-row">${escapeHtml(pc)}</div>${dl}`
         : '—';
 
       const actions = (c.status === 'active' || c.status === 'redeemed')
@@ -789,6 +842,7 @@
         }
       });
     });
+    wireDownloads(tbody);
     // Copy buttons
     tbody.querySelectorAll('[data-copy]').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -807,9 +861,158 @@
     batchTimeout = setTimeout(loadCodes, 300);
   });
 
+
+  // ───────────────────────────────────────────────────────────────────────
+  // Reports, PDF downloads & manual pairing
+  // ───────────────────────────────────────────────────────────────────────
+  const LBL = {
+    DIS:'Disrespect', DISC:'Disconnection', INJ:'Injustice', CTRL:'Control', SHM:'Shame', SHAM:'Shame', SIG:'Significance',
+    COMP:'Competent?', LOV:'Lovable?', PROT:'Protected?', FREE:'Free?', ACC:'Acceptable?', REM:'Significant?',
+    ARCH:'Architect', ISLE:'Island', AMB:'Ambassador', VAULT:'Vault', ADPT:'Adapter', CAMP:'Performance',
+  };
+  const BRK = { COURT:'Attorney', ATTY:'Attorney', DISAP:'Ghost', FLOOD:'Flood', GHOST:'Mask', MASK:'Mask', VERD:'Quiet Exit', PLEA:'Plea' };
+  let subsCache = [];
+
+  async function downloadPdf(path, btn) {
+    const label = btn ? btn.textContent : '';
+    if (btn) { btn.disabled = true; btn.textContent = 'Building…'; }
+    try {
+      const r = await fetch(BACKEND + path, { headers: { 'Authorization': 'Bearer ' + token } });
+      if (!r.ok) {
+        let msg = 'Download failed (' + r.status + ')';
+        try { const j = await r.json(); if (j.detail) msg = j.detail; } catch (_) {}
+        throw new Error(msg);
+      }
+      const blob = await r.blob();
+      const cd = r.headers.get('Content-Disposition') || '';
+      const m = cd.match(/filename="([^"]+)"/);
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = m ? m[1] : 'Take139.pdf';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+    } catch (err) {
+      toast(err.message, 'error');
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = label; }
+    }
+  }
+
+  function wireDownloads(root) {
+    root.querySelectorAll('[data-dl]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const kind = btn.getAttribute('data-dl');
+        const code = encodeURIComponent(btn.getAttribute('data-code'));
+        if (kind === 'couples') {
+          downloadPdf(`/admin/pdf/couples/${code}/${encodeURIComponent(btn.getAttribute('data-code2'))}`, btn);
+        } else {
+          downloadPdf(`/admin/pdf/${kind}/${code}`, btn);
+        }
+      });
+    });
+    root.querySelectorAll('[data-set]').forEach(btn => {
+      btn.addEventListener('click', () => setSlot(btn.getAttribute('data-set'), btn.getAttribute('data-code')));
+    });
+  }
+
+  function profileText(s) {
+    return `${LBL[s.mechanism] || s.mechanism || '?'} · ${BRK[s.breakdown] || s.breakdown || '?'}<br>${LBL[s.trigger] || s.trigger || '?'} · Am I ${(LBL[s.core_question] || s.core_question || '?').toLowerCase()}`;
+  }
+
+  function setSlot(which, code) {
+    const input = document.getElementById('pair-' + which);
+    input.value = code;
+    renderSlot(which);
+  }
+
+  function renderSlot(which) {
+    const input = document.getElementById('pair-' + which);
+    const code = input.value.trim().toUpperCase();
+    const s = subsCache.find(x => x.pair_code === code);
+    let info = document.getElementById('slot-' + which + '-info');
+    if (!info) { info = document.createElement('div'); info.id = 'slot-' + which + '-info'; info.style.marginTop = '6px'; input.after(info); }
+    info.innerHTML = s
+      ? `<div class="who">${escapeHtml(s.name || '(no name)')} <span class="sub-profile">${escapeHtml(s.email || '')}</span></div><div class="sub-profile">${profileText(s)}</div>`
+      : (code ? '<div class="sub-profile">Not in the loaded list — the server will look it up.</div>' : '');
+  }
+
+  async function loadSubmissions() {
+    const data = await api('GET', '/admin/submissions?limit=1000');
+    subsCache = data.submissions || [];
+    renderSubmissions();
+  }
+
+  function renderSubmissions() {
+    const q = document.getElementById('sub-search').value.trim().toLowerCase();
+    const rows = subsCache.filter(s => !q || [s.name, s.email, s.pair_code, s.paired_with_code, s.access_code_used].join(' ').toLowerCase().includes(q));
+    const byCode = {}; subsCache.forEach(s => byCode[s.pair_code] = s);
+    const tb = document.getElementById('sub-tbody');
+    tb.innerHTML = rows.map(s => {
+      const partner = s.paired_with_code ? byCode[s.paired_with_code] : null;
+      const pairedCell = s.paired_with_code
+        ? `${escapeHtml(partner ? partner.name || '' : '')}<div class="pair-row">${escapeHtml(s.paired_with_code)}</div>`
+        : '—';
+      return `<tr>
+        <td><div>${escapeHtml(s.name || '(no name)')}</div><div class="pair-row">${escapeHtml(s.email || '')}</div></td>
+        <td class="sub-profile">${profileText(s)}</td>
+        <td><span class="code-str">${escapeHtml(s.pair_code)}</span></td>
+        <td>${pairedCell}</td>
+        <td>${fmtDate(s.created_at)}</td>
+        <td>
+          <button class="mini-btn" data-dl="profile" data-code="${escapeHtml(s.pair_code)}">Profile PDF</button>
+          <button class="mini-btn" data-dl="walkthrough" data-code="${escapeHtml(s.pair_code)}">Walkthrough</button>
+          ${s.paired_with_code ? `<button class="mini-btn dark" data-dl="couples" data-code="${escapeHtml(s.pair_code)}" data-code2="${escapeHtml(s.paired_with_code)}">Couples PDF</button>` : ''}
+          <br>
+          <button class="mini-btn" data-set="a" data-code="${escapeHtml(s.pair_code)}">Set as A</button>
+          <button class="mini-btn" data-set="b" data-code="${escapeHtml(s.pair_code)}">Set as B</button>
+        </td>
+      </tr>`;
+    }).join('') || '<tr><td colspan="6" class="sub-profile">No reports match.</td></tr>';
+    wireDownloads(tb);
+  }
+
+  function pairCodes() {
+    const a = document.getElementById('pair-a').value.trim().toUpperCase();
+    const b = document.getElementById('pair-b').value.trim().toUpperCase();
+    if (!a || !b) { toast('Choose both Partner A and Partner B first.', 'error'); return null; }
+    if (a === b) { toast('Partner A and Partner B must be different reports.', 'error'); return null; }
+    return [a, b];
+  }
+
+  document.getElementById('pair-a').addEventListener('input', () => renderSlot('a'));
+  document.getElementById('pair-b').addEventListener('input', () => renderSlot('b'));
+  document.getElementById('sub-search').addEventListener('input', renderSubmissions);
+  document.getElementById('sub-refresh').addEventListener('click', () => loadSubmissions().catch(e => toast(e.message, 'error')));
+  document.getElementById('pair-preview-btn').addEventListener('click', (e) => {
+    const p = pairCodes(); if (!p) return;
+    downloadPdf(`/admin/pdf/couples/${encodeURIComponent(p[0])}/${encodeURIComponent(p[1])}`, e.currentTarget);
+  });
+  document.getElementById('pair-save-btn').addEventListener('click', async (e) => {
+    const p = pairCodes(); if (!p) return;
+    const sendEmail = document.getElementById('pair-email').checked;
+    const na = (subsCache.find(x => x.pair_code === p[0]) || {}).name || p[0];
+    const nb = (subsCache.find(x => x.pair_code === p[1]) || {}).name || p[1];
+    if (!confirm(`Pair ${na} (${p[0]}) with ${nb} (${p[1]})?` + (sendEmail ? '\n\nBoth partners will be emailed the couples walkthrough.' : '\n\nNo emails will be sent.'))) return;
+    const btn = e.currentTarget; btn.disabled = true;
+    try {
+      const r = await api('POST', '/admin/pair', { code_a: p[0], code_b: p[1], send_email: sendEmail });
+      let msg = `Paired ${na} + ${nb}.`;
+      if (r.unlinked_previous && r.unlinked_previous.length) msg += ` Unlinked earlier partner: ${r.unlinked_previous.join(', ')}.`;
+      if (sendEmail) {
+        const es = r.email_status || {};
+        const sent = [es.me, es.partner].filter(x => x && x.sent).map(x => x.email);
+        msg += sent.length ? ` Emailed: ${sent.join(', ')}.` : ' Email did not send: ' + ((es.me && es.me.reason) || 'unknown reason') + '.';
+      }
+      toast(msg, 'success');
+      await loadSubmissions();
+    } catch (err) {
+      toast(err.message, 'error');
+    } finally { btn.disabled = false; }
+  });
+
   async function refreshAll() {
     try {
-      await Promise.all([loadStats(), loadCodes()]);
+      await Promise.all([loadStats(), loadCodes(), loadSubmissions()]);
     } catch (err) {
       if (err.message !== 'Auth expired') {
         toast(err.message || 'Failed to load', 'error');
